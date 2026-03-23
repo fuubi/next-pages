@@ -1,8 +1,8 @@
 {
   "slug": "",
   "seo": {
-    "title": "Astro Marketing Site - Fast, Modern, SEO-Friendly",
-    "description": "Build lightning-fast marketing sites with Astro. Static-first architecture with minimal dependencies and beautiful UI.",
+    "title": "coonnect.ch - AI-Powered Applicant Tracking System | Transform Your Hiring",
+    "description": "Next-generation ATS with semantic candidate matching, automated workflows, and fair hiring built-in. Find perfect matches in seconds with AI-powered recruitment.",
     "ogImage": "/images/og-home.jpg"
   },
   "headerVariant": "transparent",
@@ -12,44 +12,39 @@
       "id": "hero",
       "variant": "default",
       "content": {
-        "headline": "Build Lightning-Fast Marketing Sites",
-        "text": "Create beautiful, SEO-friendly static websites with Astro. Minimal dependencies, maximum performance.",
+        "headline": "Transform Your Hiring Process with AI-Powered Recruitment",
+        "text": "Next-generation Applicant Tracking System combining intelligent automation, semantic candidate matching, and fair hiring practices to streamline your entire recruitment workflow.",
         "cta": {
-          "text": "Get Started",
+          "text": "Start Free Trial",
           "href": "/contact"
         },
         "secondaryCta": {
-          "text": "Learn More",
-          "href": "/about"
+          "text": "View Features",
+          "href": "/features"
         },
-        "image": "/images/hero-placeholder.jpg"
+        "image": "/images/hero-dashboard.jpg"
       }
     },
     {
-      "type": "logo-cloud",
-      "id": "clients",
+      "type": "stats-row",
+      "id": "impact",
       "content": {
-        "headline": "Trusted by teams worldwide",
-        "logos": [
+        "stats": [
           {
-            "name": "Company 1",
-            "logo": "/images/logo-placeholder.svg"
+            "value": "60%",
+            "label": "Faster Time-to-Hire"
           },
           {
-            "name": "Company 2",
-            "logo": "/images/logo-placeholder.svg"
+            "value": "15+",
+            "label": "Hours Saved Weekly"
           },
           {
-            "name": "Company 3",
-            "logo": "/images/logo-placeholder.svg"
+            "value": "3x",
+            "label": "Qualified Applicants"
           },
           {
-            "name": "Company 4",
-            "logo": "/images/logo-placeholder.svg"
-          },
-          {
-            "name": "Company 5",
-            "logo": "/images/logo-placeholder.svg"
+            "value": "99.9%",
+            "label": "Platform Uptime"
           }
         ]
       }
@@ -59,153 +54,181 @@
       "id": "features",
       "variant": "three-column",
       "content": {
-        "headline": "Why Choose Astro?",
-        "text": "Everything you need to build modern marketing sites",
+        "headline": "Why Choose coonnect.ch?",
+        "text": "Everything you need to hire smarter, faster, and fairer",
         "items": [
           {
+            "icon": "🤖",
+            "title": "AI-Native Semantic Search",
+            "description": "Find perfect matches in seconds using natural language. Our AI understands context, not just keywords - powered by Azure OpenAI."
+          },
+          {
             "icon": "⚡",
-            "title": "Lightning Fast",
-            "description": "Static HTML output means instant page loads and perfect Lighthouse scores."
+            "title": "Fully Automated Workflows",
+            "description": "15+ recruitment stages managed automatically. From first contact to offer acceptance, save 15+ hours per week per recruiter."
+          },
+          {
+            "icon": "✅",
+            "title": "Fair Hiring Built-In",
+            "description": "First ATS with interview compensation tracking and ethical hiring signals. Showcase your values, attract better talent."
           },
           {
             "icon": "🎯",
-            "title": "SEO Optimized",
-            "description": "Semantic HTML and prerendered pages give you excellent search rankings."
+            "title": "Intelligent Job Posting",
+            "description": "Multi-channel publishing optimized for Google Jobs with automatic SEO. Reach 3x more qualified candidates."
           },
           {
-            "icon": "🔧",
-            "title": "Minimal Dependencies",
-            "description": "Small, focused toolset that's easy to understand and maintain."
+            "icon": "📊",
+            "title": "Complete ATS Platform",
+            "description": "Candidate database, team collaboration, interview scheduling, offer management - everything in one place."
           },
           {
-            "icon": "📱",
-            "title": "Responsive Design",
-            "description": "One content source works perfectly on mobile and desktop."
-          },
-          {
-            "icon": "🎨",
-            "title": "Beautiful UI",
-            "description": "Polished components and design tokens for consistent branding."
-          },
-          {
-            "icon": "🤖",
-            "title": "AI-Friendly",
-            "description": "Content-driven architecture makes it easy for AI to help build pages."
-          }
-        ]
-      }
-    },
-    {
-      "type": "stats-row",
-      "id": "stats",
-      "content": {
-        "stats": [
-          {
-            "value": "100",
-            "label": "Lighthouse Score"
-          },
-          {
-            "value": "<1s",
-            "label": "Page Load Time"
-          },
-          {
-            "value": "10KB",
-            "label": "JavaScript Bundle"
-          },
-          {
-            "value": "100%",
-            "label": "Static Pages"
+            "icon": "🔒",
+            "title": "Enterprise-Grade Security",
+            "description": "Multi-tenant isolation, encrypted backups, 99.9% uptime SLA. Cloud-native architecture built for scale."
           }
         ]
       }
     },
     {
       "type": "feature-split",
-      "id": "feature-1",
+      "id": "ai-matching",
       "content": {
-        "headline": "Content Collections as Single Source of Truth",
-        "text": "Edit content once in structured JSON files. Astro's content collections provide type-safe schemas and automatic validation. Your content stays organized and maintainable.",
-        "image": "/images/feature-placeholder.jpg",
-        "imagePosition": "right",
+        "headline": "Find Perfect Matches in Seconds, Not Days",
+        "text": "Our AI-powered semantic search transforms how you discover talent. Search using natural language like 'senior frontend developer with React experience' and find candidates based on meaning and context, not just keyword matching.",
+        "image": "/images/ai-search-demo.jpg",
+        "features": [
+          "3072-dimensional vector embeddings capture semantic meaning",
+          "Natural language queries understand your intent",
+          "Transparent similarity scores show match quality",
+          "Hybrid search combines AI with keyword precision",
+          "Automatic CV parsing and profile generation",
+          "Find passive candidates traditional search misses"
+        ],
         "cta": {
-          "text": "Learn More",
-          "href": "/features"
+          "text": "See How It Works",
+          "href": "/features#ai-matching"
         }
       }
     },
     {
       "type": "feature-split",
-      "id": "feature-2",
+      "id": "automation",
       "content": {
-        "headline": "Reusable Section Components",
-        "text": "Build pages from a small set of battle-tested marketing sections. No need to reinvent the wheel for every page. Compose freely while staying consistent.",
-        "image": "/images/feature-placeholder.jpg",
+        "headline": "Automation That Actually Works",
+        "text": "State-driven workflows manage your entire recruitment process automatically. Smart transitions, automatic notifications, and deadline management mean you focus on relationships, not administrative tasks.",
+        "image": "/images/workflow-automation.jpg",
         "imagePosition": "left",
+        "features": [
+          "15+ automated recruitment stages",
+          "Multi-round interview management",
+          "Candidate self-service scheduling",
+          "Centralized communication hub",
+          "Automatic deadline and reminder management",
+          "Complete audit trail for compliance"
+        ],
         "cta": {
-          "text": "View Components",
-          "href": "/components"
+          "text": "Explore Workflows",
+          "href": "/features#automated-workflows"
         }
+      }
+    },
+    {
+      "type": "logo-cloud",
+      "id": "trust",
+      "content": {
+        "headline": "Trusted by Forward-Thinking Companies",
+        "logos": [
+          {
+            "name": "TechScale Inc",
+            "logo": "/images/logos/techscale.svg"
+          },
+          {
+            "name": "DataFlow Solutions",
+            "logo": "/images/logos/dataflow.svg"
+          },
+          {
+            "name": "EthicalTech Co",
+            "logo": "/images/logos/ethical.svg"
+          },
+          {
+            "name": "InnovateCorp",
+            "logo": "/images/logos/innovate.svg"
+          },
+          {
+            "name": "GrowthHub",
+            "logo": "/images/logos/growthhub.svg"
+          }
+        ]
       }
     },
     {
       "type": "testimonials",
       "id": "testimonials",
       "content": {
-        "headline": "Loved by Developers",
-        "text": "See what teams are saying about building with Astro",
+        "headline": "What Our Customers Say",
         "testimonials": [
           {
-            "quote": "Astro made it so easy to build a fast, SEO-friendly site. The content collections system is brilliant.",
+            "quote": "We reduced our time-to-hire by 60% and found candidates we would have completely missed with keyword-only search. The AI matching is truly transformative.",
             "author": "Sarah Chen",
-            "role": "Lead Developer",
-            "company": "TechCorp"
+            "role": "VP of Talent Acquisition",
+            "company": "TechScale Inc",
+            "avatar": "/images/avatars/sarah.jpg"
           },
           {
-            "quote": "We migrated from a complex React setup to Astro. Page loads went from 3s to 0.5s. Game changer.",
-            "author": "Mike Johnson",
-            "role": "CTO",
-            "company": "StartupXYZ"
+            "quote": "The automated workflows save us 15+ hours per week. Our team can focus on building relationships with candidates instead of chasing status updates.",
+            "author": "Michael Rodriguez",
+            "role": "Head of Recruitment",
+            "company": "DataFlow Solutions",
+            "avatar": "/images/avatars/michael.jpg"
           },
           {
-            "quote": "The component system is so clean. We can update marketing pages in minutes instead of hours.",
-            "author": "Emma Davis",
-            "role": "Product Manager",
-            "company": "SaaS Inc"
+            "quote": "Fair hiring features helped us showcase our values and attract significantly better talent. The interview compensation tracking is a game changer.",
+            "author": "Emma Thompson",
+            "role": "Chief People Officer",
+            "company": "EthicalTech Co",
+            "avatar": "/images/avatars/emma.jpg"
           }
         ]
       }
     },
     {
-      "type": "faq",
-      "id": "faq",
+      "type": "feature-grid",
+      "id": "differentiators",
+      "variant": "three-column",
       "content": {
-        "headline": "Frequently Asked Questions",
-        "text": "Everything you need to know about getting started",
-        "faqs": [
+        "headline": "What Sets Us Apart",
+        "text": "Not just another ATS - a modern recruitment platform designed for the AI era",
+        "items": [
           {
-            "id": "1",
-            "question": "What is Astro?",
-            "answer": "Astro is a modern static site generator that builds lightning-fast websites with minimal JavaScript. It's perfect for content-focused sites like marketing pages, blogs, and documentation."
+            "icon": "🌟",
+            "title": "AI-First, Not Bolted-On",
+            "description": "Semantic search and intelligent automation built into the core, not added as afterthought features."
           },
           {
-            "id": "2",
-            "question": "Do I need to know React or Vue?",
-            "answer": "No! While Astro supports framework components, this marketing site system uses only Astro components. They're similar to HTML but with extra features."
+            "icon": "🤝",
+            "title": "Fair Hiring Pioneer",
+            "description": "Only ATS with built-in interview compensation tracking and ethical recruitment signals."
           },
           {
-            "id": "3",
-            "question": "How do I edit content?",
-            "answer": "Content lives in JSON files in the src/content/ directory. Edit these files to change copy, add sections, or create new pages. Templates stay separate."
+            "icon": "🔓",
+            "title": "API-First Architecture",
+            "description": "Open platform enables custom integrations and workflows. Build your perfect recruitment ecosystem."
           },
           {
-            "id": "4",
-            "question": "Is it mobile responsive?",
-            "answer": "Yes! All components use responsive CSS. One content source works for both mobile and desktop. No duplicate content needed."
+            "icon": "👥",
+            "title": "Dual B2B/B2C Interface",
+            "description": "Exceptional experience for both recruiters and candidates. Build your employer brand."
           },
           {
-            "id": "5",
-            "question": "Can I add custom sections?",
-            "answer": "Absolutely. Create new Astro components in src/components/sections/ and register them in the page router. Follow the existing patterns."
+            "icon": "🔍",
+            "title": "Transparent AI",
+            "description": "Explainable matching with visible similarity scores. No black box algorithms."
+          },
+          {
+            "icon": "📈",
+            "title": "Project-Based Workflows",
+            "description": "Organize hiring by project, not just requisition, for superior team collaboration."
           }
         ]
       }
@@ -214,15 +237,15 @@
       "type": "cta-section",
       "id": "cta",
       "content": {
-        "headline": "Ready to Build Something Amazing?",
-        "text": "Get started with Astro today and experience the future of static sites.",
+        "headline": "Ready to Transform Your Hiring?",
+        "text": "Join forward-thinking companies using AI-powered recruitment. Start your free trial today, no credit card required.",
         "cta": {
-          "text": "Get Started",
+          "text": "Start Free Trial",
           "href": "/contact"
         },
         "secondaryCta": {
-          "text": "View Documentation",
-          "href": "https://docs.astro.build"
+          "text": "Schedule a Demo",
+          "href": "/contact?demo=true"
         }
       }
     }

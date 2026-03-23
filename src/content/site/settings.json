@@ -1,8 +1,8 @@
 {
-  "siteName": "Astro Site",
+  "siteName": "coonnect.ch",
   "defaultSeo": {
-    "title": "Astro Marketing Site",
-    "description": "Fast, modern, SEO-friendly marketing sites built with Astro",
+    "title": "coonnect.ch - AI-Powered Applicant Tracking System",
+    "description": "Next-generation ATS with semantic candidate matching, automated workflows, and fair hiring built-in. Transform your recruitment process.",
     "ogImage": "/images/og-default.jpg"
   },
   "navigation": [
@@ -11,12 +11,12 @@
       "href": "/"
     },
     {
-      "label": "About",
-      "href": "/about"
+      "label": "Features",
+      "href": "/features"
     },
     {
-      "label": "Services",
-      "href": "/services"
+      "label": "About",
+      "href": "/about"
     },
     {
       "label": "Contact",
@@ -37,25 +37,33 @@
             "href": "/pricing"
           },
           {
-            "label": "About",
-            "href": "/about"
+            "label": "API Documentation",
+            "href": "/docs/api"
+          },
+          {
+            "label": "Integrations",
+            "href": "/integrations"
           }
         ]
       },
       {
-        "title": "Resources",
+        "title": "Solutions",
         "links": [
           {
-            "label": "Blog",
-            "href": "/blog"
+            "label": "For Enterprises",
+            "href": "/solutions/enterprise"
           },
           {
-            "label": "Documentation",
-            "href": "/docs"
+            "label": "For Startups",
+            "href": "/solutions/startups"
           },
           {
-            "label": "Support",
-            "href": "/support"
+            "label": "For Agencies",
+            "href": "/solutions/agencies"
+          },
+          {
+            "label": "Use Cases",
+            "href": "/features#use-cases"
           }
         ]
       },
@@ -67,12 +75,16 @@
             "href": "/about"
           },
           {
+            "label": "Fair Hiring Values",
+            "href": "/about#fair-hiring"
+          },
+          {
             "label": "Contact",
             "href": "/contact"
           },
           {
-            "label": "Careers",
-            "href": "/careers"
+            "label": "Support",
+            "href": "/support"
           }
         ]
       },
@@ -80,12 +92,16 @@
         "title": "Legal",
         "links": [
           {
-            "label": "Privacy",
+            "label": "Privacy Policy",
             "href": "/privacy"
           },
           {
-            "label": "Terms",
+            "label": "Terms of Service",
             "href": "/terms"
+          },
+          {
+            "label": "Data Processing",
+            "href": "/dpa"
           }
         ]
       }
@@ -93,24 +109,24 @@
     "socialLinks": [
       {
         "platform": "Twitter",
-        "url": "https://twitter.com/example",
+        "url": "https://twitter.com/coonnect_ch",
         "icon": "twitter"
       },
       {
-        "platform": "GitHub",
-        "url": "https://github.com/example",
-        "icon": "github"
+        "platform": "LinkedIn",
+        "url": "https://linkedin.com/company/coonnect-ch",
+        "icon": "linkedin"
       },
       {
-        "platform": "LinkedIn",
-        "url": "https://linkedin.com/company/example",
-        "icon": "linkedin"
+        "platform": "GitHub",
+        "url": "https://github.com/coonnect",
+        "icon": "github"
       }
     ],
-    "copyright": "Astro Site. All rights reserved."
+    "copyright": "coonnect.ch. All rights reserved."
   },
   "contact": {
-    "email": "hello@example.com",
-    "phone": "+1 (555) 123-4567"
+    "email": "hello@coonnect.ch",
+    "phone": "+41 (0) 44 123 4567"
   }
 }
