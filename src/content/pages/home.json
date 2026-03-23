@@ -1,7 +1,7 @@
 {
   "slug": "",
   "seo": {
-    "title": "coonnect.ch - AI-Powered Applicant Tracking System | Transform Your Hiring",
+    "title": "recruiter.coonnect.ch - AI-Powered Applicant Tracking System | Transform Your Hiring",
     "description": "Next-generation ATS with semantic candidate matching, automated workflows, and fair hiring built-in. Find perfect matches in seconds with AI-powered recruitment.",
     "ogImage": "/images/og-home.jpg"
   },
@@ -54,7 +54,7 @@
       "id": "features",
       "variant": "three-column",
       "content": {
-        "headline": "Why Choose coonnect.ch?",
+        "headline": "Why Choose recruiter.coonnect.ch?",
         "text": "Everything you need to hire smarter, faster, and fairer",
         "items": [
           {

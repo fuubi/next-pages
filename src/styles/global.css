@@ -125,7 +125,7 @@ img {
 
 /* Selection */
 ::selection {
-  background-color: var(--color-primary-light);
+  background-color: var(--color-primary);
   color: white;
 }
 
@@ -157,4 +157,50 @@ select {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* Coonnect Brand Utilities */
+.text-brand {
+  color: var(--color-primary) !important;
+}
+
+.text-brand-dark {
+  color: var(--color-primary-dark) !important;
+}
+
+.bg-brand {
+  background-color: var(--color-primary) !important;
+}
+
+.bg-surface-neutral {
+  background-color: var(--color-surface-neutral) !important;
+}
+
+.border-brand {
+  border-color: var(--color-primary) !important;
+}
+
+/* Status Utilities */
+.text-success {
+  color: var(--color-success-text) !important;
+}
+
+.text-warning {
+  color: var(--color-warning-text) !important;
+}
+
+.text-error {
+  color: var(--color-alarm-text) !important;
+}
+
+.bg-success {
+  background-color: var(--color-success-bg) !important;
+}
+
+.bg-warning {
+  background-color: var(--color-warning-bg) !important;
+}
+
+.bg-error {
+  background-color: var(--color-alarm-bg) !important;
 }

@@ -1,7 +1,7 @@
 {
-  "siteName": "coonnect.ch",
+  "siteName": "recruiter.coonnect.ch",
   "defaultSeo": {
-    "title": "coonnect.ch - AI-Powered Applicant Tracking System",
+    "title": "recruiter.coonnect.ch - AI-Powered Applicant Tracking System",
     "description": "Next-generation ATS with semantic candidate matching, automated workflows, and fair hiring built-in. Transform your recruitment process.",
     "ogImage": "/images/og-default.jpg"
   },
@@ -123,10 +123,10 @@
         "icon": "github"
       }
     ],
-    "copyright": "coonnect.ch. All rights reserved."
+    "copyright": "recruiter.coonnect.ch. All rights reserved."
   },
   "contact": {
-    "email": "hello@coonnect.ch",
+    "email": "hello@recruiter.coonnect.ch",
     "phone": "+41 (0) 44 123 4567"
   }
 }
