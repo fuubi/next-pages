@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/site/Header.astro';
+import Footer from '@/components/site/Footer.astro';
+import Hero from '@/components/sections/Hero.astro';
+import FeatureGrid from '@/components/sections/FeatureGrid.astro';
+import FeatureSplit from '@/components/sections/FeatureSplit.astro';
+import LogoCloud from '@/components/sections/LogoCloud.astro';
+import StatsRow from '@/components/sections/StatsRow.astro';
+import Testimonials from '@/components/sections/Testimonials.astro';
+import FAQ from '@/components/sections/FAQ.astro';
+import CTASection from '@/components/sections/CTASection.astro';
+import ContactBlock from '@/components/sections/ContactBlock.astro';
+
+// Component mapping for dynamic section rendering
+const sectionComponents = {
+  hero: Hero,
+  'feature-grid': FeatureGrid,
+  'feature-split': FeatureSplit,
+  'logo-cloud': LogoCloud,
+  'stats-row': StatsRow,
+  testimonials: Testimonials,
+  faq: FAQ,
+  'cta-section': CTASection,
+  'contact-block': ContactBlock,
+};
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages
+    .filter((page) => page.data.slug !== '') // Exclude homepage (handled by index.astro)
+    .map((page) => ({
+      params: { slug: page.data.slug },
+      props: { page },
+    }));
+}
+
+const { page } = Astro.props;
+const { seo, sections, headerVariant } = page.data;
+---
+
+<BaseLayout title={seo.title} description={seo.description} ogImage={seo.ogImage}>
+  <Header variant={headerVariant || 'default'} />
+
+  <main>
+    {
+      sections.map((section: any) => {
+        const Component = sectionComponents[section.type as keyof typeof sectionComponents];
+        if (!Component) {
+          console.warn(`Unknown section type: ${section.type}`);
+          return null;
+        }
+        return <Component {...section.content} />;
+      })
+    }
+  </main>
+
+  <Footer />
+</BaseLayout>

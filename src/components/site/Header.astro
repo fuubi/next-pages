@@ -1,0 +1,111 @@
+---
+import Container from './Container.astro';
+
+export interface Props {
+  variant?: 'default' | 'transparent' | 'minimal';
+}
+
+const { variant = 'default' } = Astro.props;
+---
+
+<header class:list={['header', `variant-${variant}`]}>
+  <Container>
+    <nav class="nav">
+      <a href="/" class="logo">
+        <span class="logo-text">Astro Site</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="/about" class="nav-link">About</a>
+        <a href="/services" class="nav-link">Services</a>
+        <a href="/contact" class="nav-link">Contact</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="/contact" class="cta-button">Get Started</a>
+      </div>
+    </nav>
+  </Container>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    width: 100%;
+    border-bottom: var(--border-width) solid var(--color-border);
+    background-color: var(--color-background);
+    backdrop-filter: blur(8px);
+  }
+
+  .variant-transparent {
+    background-color: transparent;
+    border-bottom-color: transparent;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4rem;
+    gap: var(--space-8);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .logo-text {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+
+  .nav-links {
+    display: none;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .nav-links {
+      display: flex;
+    }
+  }
+
+  .nav-link {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .nav-link:hover {
+    color: var(--color-primary);
+  }
+
+  .nav-actions {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-2) var(--space-6);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: white;
+    background-color: var(--color-primary);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    transition: background-color var(--transition-fast);
+  }
+
+  .cta-button:hover {
+    background-color: var(--color-primary-dark);
+  }
+</style>

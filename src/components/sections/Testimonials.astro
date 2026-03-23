@@ -1,0 +1,105 @@
+---
+import Section from '../site/Section.astro';
+import Container from '../site/Container.astro';
+import SectionHeader from '../site/SectionHeader.astro';
+import Card from '../ui/Card.astro';
+
+export interface Props {
+  headline?: string;
+  text?: string;
+  testimonials: Array<{
+    quote: string;
+    author: string;
+    role: string;
+    company: string;
+    avatar?: string;
+  }>;
+}
+
+const { headline, text, testimonials } = Astro.props;
+---
+
+<Section variant="default" spacing="lg">
+  <Container>
+    <SectionHeader headline={headline} text={text} />
+    
+    <div class="testimonials-grid">
+      {
+        testimonials.map((testimonial) => (
+          <Card padding="lg">
+            <div class="quote-content">
+              <p class="quote-text">"{testimonial.quote}"</p>
+            </div>
+            <div class="author-info">
+              {testimonial.avatar && (
+                <img src={testimonial.avatar} alt={testimonial.author} class="avatar" />
+              )}
+              <div class="author-details">
+                <div class="author-name">{testimonial.author}</div>
+                <div class="author-role">
+                  {testimonial.role} at {testimonial.company}
+                </div>
+              </div>
+            </div>
+          </Card>
+        ))
+      }
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .testimonials-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .testimonials-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .quote-content {
+    margin-bottom: var(--space-6);
+  }
+
+  .quote-text {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-secondary);
+    font-style: italic;
+    margin-bottom: 0;
+  }
+
+  .author-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--border-radius-full);
+    object-fit: cover;
+  }
+
+  .author-name {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin-bottom: var(--space-1);
+  }
+
+  .author-role {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+  }
+</style>

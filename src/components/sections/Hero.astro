@@ -1,0 +1,118 @@
+---
+import Section from '../site/Section.astro';
+import Container from '../site/Container.astro';
+import Button from '../ui/Button.astro';
+
+export interface Props {
+  headline: string;
+  text?: string;
+  cta?: {
+    text: string;
+    href: string;
+  };
+  secondaryCta?: {
+    text: string;
+    href: string;
+  };
+  image?: string;
+  variant?: 'default' | 'centered';
+}
+
+const { headline, text, cta, secondaryCta, image, variant = 'default' } = Astro.props;
+---
+
+<Section variant="default" spacing="xl">
+  <Container>
+    <div class:list={['hero', `variant-${variant}`]}>
+      <div class="hero-content">
+        <h1 class="hero-headline">{headline}</h1>
+        {text && <p class="hero-text">{text}</p>}
+        
+        {
+          (cta || secondaryCta) && (
+            <div class="hero-actions">
+              {cta && (
+                <Button href={cta.href} variant="primary" size="lg">
+                  {cta.text}
+                </Button>
+              )}
+              {secondaryCta && (
+                <Button href={secondaryCta.href} variant="outline" size="lg">
+                  {secondaryCta.text}
+                </Button>
+              )}
+            </div>
+          )
+        }
+      </div>
+      
+      {
+        image && (
+          <div class="hero-image">
+            <img src={image} alt={headline} />
+          </div>
+        )
+      }
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  .variant-centered {
+    text-align: center;
+  }
+
+  .variant-centered .hero-content {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .variant-centered .hero-actions {
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .variant-default {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .hero-headline {
+    font-size: clamp(var(--font-size-4xl), 6vw, var(--font-size-6xl));
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    margin-bottom: var(--space-6);
+    color: var(--color-text);
+  }
+
+  .hero-text {
+    font-size: clamp(var(--font-size-lg), 2vw, var(--font-size-xl));
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-8);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .hero-image {
+    width: 100%;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-xl);
+  }
+</style>

@@ -1,0 +1,66 @@
+---
+import Section from '../site/Section.astro';
+import Container from '../site/Container.astro';
+
+export interface Props {
+  stats: Array<{
+    value: string;
+    label: string;
+  }>;
+}
+
+const { stats } = Astro.props;
+---
+
+<Section variant="dark" spacing="lg">
+  <Container>
+    <div class="stats-row">
+      {
+        stats.map((stat) => (
+          <div class="stat-item">
+            <div class="stat-value">{stat.value}</div>
+            <div class="stat-label">{stat.label}</div>
+          </div>
+        ))
+      }
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .stats-row {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    margin-bottom: var(--space-2);
+    color: var(--color-primary-light);
+  }
+
+  .stat-label {
+    font-size: var(--font-size-base);
+    color: var(--color-surface);
+    opacity: 0.9;
+  }
+
+  @media (min-width: 768px) {
+    .stat-value {
+      font-size: var(--font-size-5xl);
+    }
+  }
+</style>

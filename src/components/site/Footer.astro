@@ -1,0 +1,155 @@
+---
+import Container from './Container.astro';
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <Container>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="logo-text">Astro Site</div>
+        <p class="tagline">Built with Astro. Fast, modern, and SEO-friendly.</p>
+      </div>
+      
+      <div class="footer-links">
+        <div class="link-column">
+          <h3 class="column-title">Product</h3>
+          <ul class="link-list">
+            <li><a href="/features">Features</a></li>
+            <li><a href="/pricing">Pricing</a></li>
+            <li><a href="/about">About</a></li>
+          </ul>
+        </div>
+        
+        <div class="link-column">
+          <h3 class="column-title">Resources</h3>
+          <ul class="link-list">
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/docs">Documentation</a></li>
+            <li><a href="/support">Support</a></li>
+          </ul>
+        </div>
+        
+        <div class="link-column">
+          <h3 class="column-title">Company</h3>
+          <ul class="link-list">
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/careers">Careers</a></li>
+          </ul>
+        </div>
+        
+        <div class="link-column">
+          <h3 class="column-title">Legal</h3>
+          <ul class="link-list">
+            <li><a href="/privacy">Privacy</a></li>
+            <li><a href="/terms">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="copyright">© {currentYear} Astro Site. All rights reserved.</p>
+    </div>
+  </Container>
+</footer>
+
+<style>
+  .footer {
+    background-color: var(--color-surface-dark);
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-8);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .footer-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    margin-bottom: var(--space-12);
+  }
+
+  @media (min-width: 768px) {
+    .footer-content {
+      grid-template-columns: 1.5fr 2fr;
+    }
+  }
+
+  .footer-brand {
+    max-width: 320px;
+  }
+
+  .logo-text {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin-bottom: var(--space-3);
+  }
+
+  .tagline {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .footer-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 640px) {
+    .footer-links {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .link-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .column-title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0;
+  }
+
+  .link-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .link-list a {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .link-list a:hover {
+    color: var(--color-primary);
+  }
+
+  .footer-bottom {
+    padding-top: var(--space-8);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .copyright {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+    text-align: center;
+    margin-bottom: 0;
+  }
+</style>

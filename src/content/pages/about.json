@@ -1,0 +1,57 @@
+{
+  "slug": "about",
+  "seo": {
+    "title": "About Us - Astro Marketing Site",
+    "description": "Learn about our mission to help teams build fast, modern marketing sites with Astro.",
+    "ogImage": "/images/og-about.jpg"
+  },
+  "sections": [
+    {
+      "type": "hero",
+      "id": "hero",
+      "variant": "centered",
+      "content": {
+        "headline": "Building the Future of Static Sites",
+        "text": "We believe marketing sites should be fast, simple, and maintainable. That's why we built this system on Astro."
+      }
+    },
+    {
+      "type": "feature-grid",
+      "id": "values",
+      "variant": "three-column",
+      "content": {
+        "headline": "Our Values",
+        "text": "What drives us to build better tools",
+        "items": [
+          {
+            "icon": "🚀",
+            "title": "Performance First",
+            "description": "Every decision prioritizes speed and user experience."
+          },
+          {
+            "icon": "🎯",
+            "title": "Simplicity",
+            "description": "Keep it simple. Avoid complexity unless absolutely necessary."
+          },
+          {
+            "icon": "🤝",
+            "title": "Developer Experience",
+            "description": "Tools should be delightful to use and easy to maintain."
+          }
+        ]
+      }
+    },
+    {
+      "type": "cta-section",
+      "id": "cta",
+      "content": {
+        "headline": "Want to Work Together?",
+        "text": "We're always looking to help teams build better sites.",
+        "cta": {
+          "text": "Get in Touch",
+          "href": "/contact"
+        }
+      }
+    }
+  ]
+}

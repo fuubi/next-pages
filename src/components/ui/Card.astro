@@ -1,0 +1,46 @@
+---
+export interface Props {
+  variant?: 'default' | 'hover';
+  padding?: 'sm' | 'md' | 'lg';
+}
+
+const { variant = 'default', padding = 'md' } = Astro.props;
+---
+
+<div class:list={['card', `variant-${variant}`, `padding-${padding}`]}>
+  <slot />
+</div>
+
+<style>
+  .card {
+    background-color: var(--color-background);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+  }
+
+  .variant-default {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .variant-hover {
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+  }
+
+  .variant-hover:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  .padding-sm {
+    padding: var(--space-4);
+  }
+
+  .padding-md {
+    padding: var(--space-6);
+  }
+
+  .padding-lg {
+    padding: var(--space-8);
+  }
+</style>

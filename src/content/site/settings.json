@@ -1,0 +1,116 @@
+{
+  "siteName": "Astro Site",
+  "defaultSeo": {
+    "title": "Astro Marketing Site",
+    "description": "Fast, modern, SEO-friendly marketing sites built with Astro",
+    "ogImage": "/images/og-default.jpg"
+  },
+  "navigation": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    },
+    {
+      "label": "Services",
+      "href": "/services"
+    },
+    {
+      "label": "Contact",
+      "href": "/contact"
+    }
+  ],
+  "footer": {
+    "sections": [
+      {
+        "title": "Product",
+        "links": [
+          {
+            "label": "Features",
+            "href": "/features"
+          },
+          {
+            "label": "Pricing",
+            "href": "/pricing"
+          },
+          {
+            "label": "About",
+            "href": "/about"
+          }
+        ]
+      },
+      {
+        "title": "Resources",
+        "links": [
+          {
+            "label": "Blog",
+            "href": "/blog"
+          },
+          {
+            "label": "Documentation",
+            "href": "/docs"
+          },
+          {
+            "label": "Support",
+            "href": "/support"
+          }
+        ]
+      },
+      {
+        "title": "Company",
+        "links": [
+          {
+            "label": "About Us",
+            "href": "/about"
+          },
+          {
+            "label": "Contact",
+            "href": "/contact"
+          },
+          {
+            "label": "Careers",
+            "href": "/careers"
+          }
+        ]
+      },
+      {
+        "title": "Legal",
+        "links": [
+          {
+            "label": "Privacy",
+            "href": "/privacy"
+          },
+          {
+            "label": "Terms",
+            "href": "/terms"
+          }
+        ]
+      }
+    ],
+    "socialLinks": [
+      {
+        "platform": "Twitter",
+        "url": "https://twitter.com/example",
+        "icon": "twitter"
+      },
+      {
+        "platform": "GitHub",
+        "url": "https://github.com/example",
+        "icon": "github"
+      },
+      {
+        "platform": "LinkedIn",
+        "url": "https://linkedin.com/company/example",
+        "icon": "linkedin"
+      }
+    ],
+    "copyright": "Astro Site. All rights reserved."
+  },
+  "contact": {
+    "email": "hello@example.com",
+    "phone": "+1 (555) 123-4567"
+  }
+}

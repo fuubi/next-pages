@@ -1,0 +1,81 @@
+---
+export interface Props {
+  variant?: 'primary' | 'secondary' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+}
+
+const { variant = 'primary', size = 'md', href, type = 'button' } = Astro.props;
+
+const Element = href ? 'a' : 'button';
+---
+
+<Element
+  class:list={['button', `variant-${variant}`, `size-${size}`]}
+  href={href}
+  type={!href ? type : undefined}
+>
+  <slot />
+</Element>
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: all var(--transition-fast);
+    cursor: pointer;
+    border: var(--border-width) solid transparent;
+  }
+
+  /* Sizes */
+  .size-sm {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--font-size-sm);
+  }
+
+  .size-md {
+    padding: var(--space-3) var(--space-6);
+    font-size: var(--font-size-base);
+  }
+
+  .size-lg {
+    padding: var(--space-4) var(--space-8);
+    font-size: var(--font-size-lg);
+  }
+
+  /* Variants */
+  .variant-primary {
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  .variant-primary:hover {
+    background-color: var(--color-primary-dark);
+  }
+
+  .variant-secondary {
+    background-color: var(--color-secondary);
+    color: white;
+  }
+
+  .variant-secondary:hover {
+    background-color: var(--color-secondary-dark);
+  }
+
+  .variant-outline {
+    background-color: transparent;
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .variant-outline:hover {
+    background-color: var(--color-primary);
+    color: white;
+  }
+</style>

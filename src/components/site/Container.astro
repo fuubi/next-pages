@@ -1,0 +1,53 @@
+---
+export interface Props {
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  padding?: boolean;
+}
+
+const { maxWidth = 'xl', padding = true } = Astro.props;
+
+const maxWidthClass = {
+  sm: 'max-w-screen-sm',
+  md: 'max-w-screen-md',
+  lg: 'max-w-screen-lg',
+  xl: 'max-w-screen-xl',
+  full: 'max-w-full',
+}[maxWidth];
+---
+
+<div class:list={['container', maxWidthClass, { 'with-padding': padding }]}>
+  <slot />
+</div>
+
+<style>
+  .container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+
+  .with-padding {
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+  }
+
+  .max-w-screen-sm {
+    max-width: 640px;
+  }
+
+  .max-w-screen-md {
+    max-width: 768px;
+  }
+
+  .max-w-screen-lg {
+    max-width: 1024px;
+  }
+
+  .max-w-screen-xl {
+    max-width: var(--container-max-width);
+  }
+
+  .max-w-full {
+    max-width: 100%;
+  }
+</style>

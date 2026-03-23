@@ -1,0 +1,230 @@
+{
+  "slug": "",
+  "seo": {
+    "title": "Astro Marketing Site - Fast, Modern, SEO-Friendly",
+    "description": "Build lightning-fast marketing sites with Astro. Static-first architecture with minimal dependencies and beautiful UI.",
+    "ogImage": "/images/og-home.jpg"
+  },
+  "headerVariant": "transparent",
+  "sections": [
+    {
+      "type": "hero",
+      "id": "hero",
+      "variant": "default",
+      "content": {
+        "headline": "Build Lightning-Fast Marketing Sites",
+        "text": "Create beautiful, SEO-friendly static websites with Astro. Minimal dependencies, maximum performance.",
+        "cta": {
+          "text": "Get Started",
+          "href": "/contact"
+        },
+        "secondaryCta": {
+          "text": "Learn More",
+          "href": "/about"
+        },
+        "image": "/images/hero-placeholder.jpg"
+      }
+    },
+    {
+      "type": "logo-cloud",
+      "id": "clients",
+      "content": {
+        "headline": "Trusted by teams worldwide",
+        "logos": [
+          {
+            "name": "Company 1",
+            "logo": "/images/logo-placeholder.svg"
+          },
+          {
+            "name": "Company 2",
+            "logo": "/images/logo-placeholder.svg"
+          },
+          {
+            "name": "Company 3",
+            "logo": "/images/logo-placeholder.svg"
+          },
+          {
+            "name": "Company 4",
+            "logo": "/images/logo-placeholder.svg"
+          },
+          {
+            "name": "Company 5",
+            "logo": "/images/logo-placeholder.svg"
+          }
+        ]
+      }
+    },
+    {
+      "type": "feature-grid",
+      "id": "features",
+      "variant": "three-column",
+      "content": {
+        "headline": "Why Choose Astro?",
+        "text": "Everything you need to build modern marketing sites",
+        "items": [
+          {
+            "icon": "⚡",
+            "title": "Lightning Fast",
+            "description": "Static HTML output means instant page loads and perfect Lighthouse scores."
+          },
+          {
+            "icon": "🎯",
+            "title": "SEO Optimized",
+            "description": "Semantic HTML and prerendered pages give you excellent search rankings."
+          },
+          {
+            "icon": "🔧",
+            "title": "Minimal Dependencies",
+            "description": "Small, focused toolset that's easy to understand and maintain."
+          },
+          {
+            "icon": "📱",
+            "title": "Responsive Design",
+            "description": "One content source works perfectly on mobile and desktop."
+          },
+          {
+            "icon": "🎨",
+            "title": "Beautiful UI",
+            "description": "Polished components and design tokens for consistent branding."
+          },
+          {
+            "icon": "🤖",
+            "title": "AI-Friendly",
+            "description": "Content-driven architecture makes it easy for AI to help build pages."
+          }
+        ]
+      }
+    },
+    {
+      "type": "stats-row",
+      "id": "stats",
+      "content": {
+        "stats": [
+          {
+            "value": "100",
+            "label": "Lighthouse Score"
+          },
+          {
+            "value": "<1s",
+            "label": "Page Load Time"
+          },
+          {
+            "value": "10KB",
+            "label": "JavaScript Bundle"
+          },
+          {
+            "value": "100%",
+            "label": "Static Pages"
+          }
+        ]
+      }
+    },
+    {
+      "type": "feature-split",
+      "id": "feature-1",
+      "content": {
+        "headline": "Content Collections as Single Source of Truth",
+        "text": "Edit content once in structured JSON files. Astro's content collections provide type-safe schemas and automatic validation. Your content stays organized and maintainable.",
+        "image": "/images/feature-placeholder.jpg",
+        "imagePosition": "right",
+        "cta": {
+          "text": "Learn More",
+          "href": "/features"
+        }
+      }
+    },
+    {
+      "type": "feature-split",
+      "id": "feature-2",
+      "content": {
+        "headline": "Reusable Section Components",
+        "text": "Build pages from a small set of battle-tested marketing sections. No need to reinvent the wheel for every page. Compose freely while staying consistent.",
+        "image": "/images/feature-placeholder.jpg",
+        "imagePosition": "left",
+        "cta": {
+          "text": "View Components",
+          "href": "/components"
+        }
+      }
+    },
+    {
+      "type": "testimonials",
+      "id": "testimonials",
+      "content": {
+        "headline": "Loved by Developers",
+        "text": "See what teams are saying about building with Astro",
+        "testimonials": [
+          {
+            "quote": "Astro made it so easy to build a fast, SEO-friendly site. The content collections system is brilliant.",
+            "author": "Sarah Chen",
+            "role": "Lead Developer",
+            "company": "TechCorp"
+          },
+          {
+            "quote": "We migrated from a complex React setup to Astro. Page loads went from 3s to 0.5s. Game changer.",
+            "author": "Mike Johnson",
+            "role": "CTO",
+            "company": "StartupXYZ"
+          },
+          {
+            "quote": "The component system is so clean. We can update marketing pages in minutes instead of hours.",
+            "author": "Emma Davis",
+            "role": "Product Manager",
+            "company": "SaaS Inc"
+          }
+        ]
+      }
+    },
+    {
+      "type": "faq",
+      "id": "faq",
+      "content": {
+        "headline": "Frequently Asked Questions",
+        "text": "Everything you need to know about getting started",
+        "faqs": [
+          {
+            "id": "1",
+            "question": "What is Astro?",
+            "answer": "Astro is a modern static site generator that builds lightning-fast websites with minimal JavaScript. It's perfect for content-focused sites like marketing pages, blogs, and documentation."
+          },
+          {
+            "id": "2",
+            "question": "Do I need to know React or Vue?",
+            "answer": "No! While Astro supports framework components, this marketing site system uses only Astro components. They're similar to HTML but with extra features."
+          },
+          {
+            "id": "3",
+            "question": "How do I edit content?",
+            "answer": "Content lives in JSON files in the src/content/ directory. Edit these files to change copy, add sections, or create new pages. Templates stay separate."
+          },
+          {
+            "id": "4",
+            "question": "Is it mobile responsive?",
+            "answer": "Yes! All components use responsive CSS. One content source works for both mobile and desktop. No duplicate content needed."
+          },
+          {
+            "id": "5",
+            "question": "Can I add custom sections?",
+            "answer": "Absolutely. Create new Astro components in src/components/sections/ and register them in the page router. Follow the existing patterns."
+          }
+        ]
+      }
+    },
+    {
+      "type": "cta-section",
+      "id": "cta",
+      "content": {
+        "headline": "Ready to Build Something Amazing?",
+        "text": "Get started with Astro today and experience the future of static sites.",
+        "cta": {
+          "text": "Get Started",
+          "href": "/contact"
+        },
+        "secondaryCta": {
+          "text": "View Documentation",
+          "href": "https://docs.astro.build"
+        }
+      }
+    }
+  ]
+}

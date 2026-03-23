@@ -1,0 +1,39 @@
+{
+  "items": [
+    {
+      "id": "1",
+      "quote": "This platform transformed how we build marketing pages. Fast, simple, and maintainable.",
+      "author": "Sarah Chen",
+      "role": "Lead Developer",
+      "company": "TechCorp"
+    },
+    {
+      "id": "2",
+      "quote": "We went from 3-second load times to sub-second. Our conversion rate jumped 25%.",
+      "author": "Mike Johnson",
+      "role": "CTO",
+      "company": "StartupXYZ"
+    },
+    {
+      "id": "3",
+      "quote": "The content system makes it easy for non-developers to update pages. Game changer.",
+      "author": "Emma Davis",
+      "role": "Product Manager",
+      "company": "SaaS Inc"
+    },
+    {
+      "id": "4",
+      "quote": "Perfect Lighthouse scores out of the box. Our SEO rankings improved significantly.",
+      "author": "David Kim",
+      "role": "Marketing Director",
+      "company": "GrowthCo"
+    },
+    {
+      "id": "5",
+      "quote": "Clean architecture and minimal dependencies mean we can actually maintain this long-term.",
+      "author": "Lisa Park",
+      "role": "Engineering Manager",
+      "company": "Enterprise Solutions"
+    }
+  ]
+}

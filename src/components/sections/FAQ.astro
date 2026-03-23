@@ -1,0 +1,36 @@
+---
+import Section from '../site/Section.astro';
+import Container from '../site/Container.astro';
+import SectionHeader from '../site/SectionHeader.astro';
+import Accordion from '../ui/Accordion.astro';
+
+export interface Props {
+  headline?: string;
+  text?: string;
+  faqs: Array<{
+    id: string;
+    question: string;
+    answer: string;
+  }>;
+}
+
+const { headline, text, faqs } = Astro.props;
+---
+
+<Section variant="surface" spacing="lg">
+  <Container maxWidth="md">
+    <SectionHeader headline={headline} text={text} />
+    
+    <div class="faq-list">
+      {faqs.map((faq) => <Accordion id={faq.id} question={faq.question} answer={faq.answer} />)}
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+</style>
