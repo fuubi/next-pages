@@ -19,9 +19,13 @@ const { siteName, navigation } = settings.data;
       </a>
 
       <div class="nav-links">
-        {navigation.map((item) => (
-          <a href={item.href} class="nav-link">{item.label}</a>
-        ))}
+        {
+          navigation.map((item) => (
+            <a href={item.href} class="nav-link">
+              {item.label}
+            </a>
+          ))
+        }
       </div>
 
       <div class="nav-actions">
