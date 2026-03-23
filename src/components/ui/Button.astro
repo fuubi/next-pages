@@ -25,12 +25,43 @@ const Element = href ? 'a' : 'button';
     align-items: center;
     justify-content: center;
     gap: var(--space-2);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
     text-decoration: none;
     border-radius: var(--border-radius);
-    transition: all var(--transition-fast);
+    transition: all var(--duration-fast) var(--ease-out);
     cursor: pointer;
     border: var(--border-width) solid transparent;
+    position: relative;
+    overflow: hidden;
+    /* Hardware acceleration */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  
+  /* Ripple effect on click */
+  .button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width var(--duration-slow) var(--ease-out),
+                height var(--duration-slow) var(--ease-out);
+  }
+  
+  .button:active::before {
+    width: 300px;
+    height: 300px;
+  }
+  
+  /* Focus ring */
+  .button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 
   /* Sizes */
@@ -53,19 +84,33 @@ const Element = href ? 'a' : 'button';
   .variant-primary {
     background-color: var(--color-primary);
     color: white;
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3);
   }
 
   .variant-primary:hover {
     background-color: var(--color-primary-dark);
+    transform: translateY(-1px) translateZ(0);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+  }
+  
+  .variant-primary:active {
+    transform: translateY(0) translateZ(0);
   }
 
   .variant-secondary {
     background-color: var(--color-secondary);
     color: white;
+    box-shadow: 0 1px 3px rgba(124, 58, 237, 0.3);
   }
 
   .variant-secondary:hover {
     background-color: var(--color-secondary-dark);
+    transform: translateY(-1px) translateZ(0);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+  }
+  
+  .variant-secondary:active {
+    transform: translateY(0) translateZ(0);
   }
 
   .variant-outline {
@@ -77,5 +122,17 @@ const Element = href ? 'a' : 'button';
   .variant-outline:hover {
     background-color: var(--color-primary);
     color: white;
+    transform: translateY(-1px) translateZ(0);
+  }
+  
+  .variant-outline:active {
+    transform: translateY(0) translateZ(0);
+  }
+  
+  /* Disabled state */
+  .button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
   }
 </style>

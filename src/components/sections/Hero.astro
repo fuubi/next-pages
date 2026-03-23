@@ -24,10 +24,10 @@ const { headline, text, cta, secondaryCta, image, variant = 'default' } = Astro.
 <Section variant="default" spacing="xl">
   <Container>
     <div class:list={['hero', `variant-${variant}`]}>
-      <div class="hero-content">
+      <div class="hero-content" data-animate="fade">
         <h1 class="hero-headline">{headline}</h1>
         {text && <p class="hero-text">{text}</p>}
-        
+
         {
           (cta || secondaryCta) && (
             <div class="hero-actions">
@@ -45,7 +45,7 @@ const { headline, text, cta, secondaryCta, image, variant = 'default' } = Astro.
           )
         }
       </div>
-      
+
       {
         image && (
           <div class="hero-image">
@@ -91,6 +91,33 @@ const { headline, text, cta, secondaryCta, image, variant = 'default' } = Astro.
     line-height: var(--line-height-tight);
     margin-bottom: var(--space-6);
     color: var(--color-text);
+    /* Add text shimmer effect */
+    background: linear-gradient(
+      90deg,
+      var(--color-text) 0%,
+      var(--color-primary) 50%,
+      var(--color-text) 100%
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s linear infinite;
+  }
+  
+  @keyframes shimmer {
+    to {
+      background-position: 200% center;
+    }
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .hero-headline {
+      animation: none;
+      background: none;
+      -webkit-text-fill-color: var(--color-text);
+      color: var(--color-text);
+    }
   }
 
   .hero-text {
@@ -108,11 +135,43 @@ const { headline, text, cta, secondaryCta, image, variant = 'default' } = Astro.
 
   .hero-image {
     width: 100%;
+    position: relative;
+  }
+  
+  .hero-image::before {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    background: linear-gradient(
+      135deg,
+      var(--color-primary),
+      var(--color-secondary)
+    );
+    border-radius: var(--border-radius-xl);
+    opacity: 0.1;
+    z-index: -1;
+    transition: opacity var(--duration-normal) var(--ease-out);
+  }
+  
+  .hero-image:hover::before {
+    opacity: 0.2;
   }
 
   .hero-image img {
     width: 100%;
     height: auto;
     border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-xl);
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+  
+  .hero-image:hover img {
+    transform: translateY(-4px) translateZ(0);
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .hero-image:hover img {
+      transform: none;
+    }
   }
 </style>

@@ -1,0 +1,339 @@
+/**
+ * Professional Animation Utilities
+ * Best practices for performant, accessible animations
+ */
+
+/* ===================================
+   PERFORMANCE OPTIMIZATIONS
+   =================================== */
+
+/* Enable hardware acceleration for animated elements */
+.will-animate {
+  will-change: transform, opacity;
+}
+
+/* Remove will-change after animation completes to save resources */
+.animated {
+  will-change: auto;
+}
+
+/* Optimize for GPU compositing */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ===================================
+   FADE ANIMATIONS
+   =================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===================================
+   SCALE ANIMATIONS
+   =================================== */
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* ===================================
+   SLIDE ANIMATIONS
+   =================================== */
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ===================================
+   UTILITY CLASSES
+   =================================== */
+
+/* Fade animations */
+.animate-fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-fade-in-left {
+  animation: fadeInLeft var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-fade-in-right {
+  animation: fadeInRight var(--duration-normal) var(--ease-out) forwards;
+}
+
+/* Scale animations */
+.animate-scale-in {
+  animation: scaleIn var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-pulse {
+  animation: pulse 2s var(--ease-in-out) infinite;
+}
+
+/* Delays for stagger effects */
+.delay-1 { animation-delay: calc(var(--stagger-delay) * 1); }
+.delay-2 { animation-delay: calc(var(--stagger-delay) * 2); }
+.delay-3 { animation-delay: calc(var(--stagger-delay) * 3); }
+.delay-4 { animation-delay: calc(var(--stagger-delay) * 4); }
+.delay-5 { animation-delay: calc(var(--stagger-delay) * 5); }
+.delay-6 { animation-delay: calc(var(--stagger-delay) * 6); }
+
+/* ===================================
+   HOVER EFFECTS
+   =================================== */
+
+.hover-lift {
+  transition: transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+.hover-scale {
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.hover-glow {
+  transition: box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
+}
+
+/* ===================================
+   LOADING ANIMATIONS
+   =================================== */
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 0%,
+    var(--color-surface-dark) 50%,
+    var(--color-surface) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* ===================================
+   SCROLL ANIMATIONS
+   =================================== */
+
+/* Elements start hidden, JavaScript adds visible class when in view */
+[data-animate] {
+  opacity: 0;
+}
+
+[data-animate].is-visible {
+  animation: fadeInUp var(--duration-slow) var(--ease-out) forwards;
+}
+
+/* Parallax container */
+.parallax-container {
+  overflow: hidden;
+}
+
+.parallax-item {
+  transition: transform 0.3s ease-out;
+}
+
+/* ===================================
+   ACCESSIBILITY
+   =================================== */
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .hover-lift:hover,
+  .hover-scale:hover {
+    transform: none;
+  }
+  
+  [data-animate] {
+    opacity: 1;
+    animation: none !important;
+  }
+}
+
+/* ===================================
+   FOCUS ANIMATIONS
+   =================================== */
+
+.focus-ring {
+  transition: box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.focus-ring:focus-visible {
+  box-shadow: 0 0 0 3px var(--color-primary),
+              0 0 0 5px rgba(37, 99, 235, 0.3);
+}
+
+/* ===================================
+   PAGE TRANSITIONS
+   =================================== */
+
+/* Astro View Transitions enhancement */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--duration-normal);
+  animation-timing-function: var(--ease-smooth);
+}
+
+/* ===================================
+   PERFORMANCE HINTS
+   =================================== */
+
+/* Critical elements that need smooth animations */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Contain layout shifts */
+.contain-layout {
+  contain: layout;
+}
+
+.contain-paint {
+  contain: paint;
+}
+
+.contain-strict {
+  contain: strict;
+}

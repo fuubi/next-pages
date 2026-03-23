@@ -99,6 +99,30 @@
   --transition-normal: 250ms ease;
   --transition-slow: 350ms ease;
   
+  /* Animation Durations */
+  --duration-instant: 100ms;
+  --duration-fast: 200ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 700ms;
+  
+  /* Easing Functions - Professional curves */
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-snappy: cubic-bezier(0.4, 0.0, 0.2, 1);
+  
+  /* Animation Delays for Stagger Effects */
+  --stagger-delay: 50ms;
+  --stagger-delay-slow: 100ms;
+  
+  /* Transform Origins */
+  --transform-origin-center: center;
+  --transform-origin-top: top;
+  --transform-origin-bottom: bottom;
+  
   /* Z-index */
   --z-dropdown: 1000;
   --z-sticky: 1020;

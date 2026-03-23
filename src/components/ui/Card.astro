@@ -5,9 +5,11 @@ export interface Props {
 }
 
 const { variant = 'default', padding = 'md' } = Astro.props;
+
+const hoverAttr = variant === 'hover' ? { 'data-hover': 'scale' } : {};
 ---
 
-<div class:list={['card', `variant-${variant}`, `padding-${padding}`]}>
+<div class:list={['card', `variant-${variant}`, `padding-${padding}`]} {...hoverAttr}>
   <slot />
 </div>
 
@@ -16,6 +18,33 @@ const { variant = 'default', padding = 'md' } = Astro.props;
     background-color: var(--color-background);
     border: var(--border-width) solid var(--color-border);
     border-radius: var(--border-radius-lg);
+    position: relative;
+    overflow: hidden;
+    /* Hardware acceleration */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  
+  /* Subtle gradient overlay on hover */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(37, 99, 235, 0.05) 0%,
+      transparent 50%
+    );
+    opacity: 0;
+    transition: opacity var(--duration-normal) var(--ease-out);
+    pointer-events: none;
+  }
+  
+  .card:hover::before {
+    opacity: 1;
   }
 
   .variant-default {
@@ -24,12 +53,23 @@ const { variant = 'default', padding = 'md' } = Astro.props;
 
   .variant-hover {
     box-shadow: var(--shadow-sm);
-    transition: all var(--transition-normal);
+    transition: all var(--duration-normal) var(--ease-out);
   }
 
   .variant-hover:hover {
     box-shadow: var(--shadow-lg);
-    transform: translateY(-2px);
+    transform: translateY(-4px) translateZ(0);
+    border-color: var(--color-primary);
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .variant-hover:hover {
+      transform: none;
+    }
+    
+    .card::before {
+      display: none;
+    }
   }
 
   .padding-sm {

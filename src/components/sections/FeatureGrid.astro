@@ -27,8 +27,12 @@ const columns = {
 <Section variant="surface" spacing="lg">
   <Container>
     <SectionHeader headline={headline} text={text} />
-    
-    <div class:list={['feature-grid', `columns-${columns}`]}>
+
+    <div
+      class:list={['feature-grid', `columns-${columns}`]}
+      id="feature-grid"
+      data-animate="stagger"
+    >
       {
         items.map((item) => (
           <Card variant="hover" padding="lg">

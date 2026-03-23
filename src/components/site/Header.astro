@@ -8,10 +8,10 @@ export interface Props {
 const { variant = 'default' } = Astro.props;
 ---
 
-<header class:list={['header', `variant-${variant}`]}>
+<header class:list={['header', `variant-${variant}`]} id="main-header">
   <Container>
     <nav class="nav">
-      <a href="/" class="logo">
+      <a href="/" class="logo" aria-label="Home">
         <span class="logo-text">Astro Site</span>
       </a>
 
@@ -28,6 +28,47 @@ const { variant = 'default' } = Astro.props;
   </Container>
 </header>
 
+<script>
+  // Smooth header behavior on scroll
+  let lastScroll = 0;
+  const header = document.getElementById('main-header');
+  
+  function handleScroll() {
+    const currentScroll = window.pageYOffset;
+    
+    // Add shadow when scrolled
+    if (currentScroll > 10) {
+      header?.classList.add('scrolled');
+    } else {
+      header?.classList.remove('scrolled');
+    }
+    
+    // Hide/show header on scroll (optional)
+    // Uncomment to enable auto-hide behavior
+    /*
+    if (currentScroll > lastScroll && currentScroll > 80) {
+      header?.classList.add('hidden');
+    } else {
+      header?.classList.remove('hidden');
+    }
+    */
+    
+    lastScroll = currentScroll;
+  }
+  
+  // Throttle scroll events for better performance
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        handleScroll();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+</script>
+
 <style>
   .header {
     position: sticky;
@@ -35,13 +76,29 @@ const { variant = 'default' } = Astro.props;
     z-index: var(--z-sticky);
     width: 100%;
     border-bottom: var(--border-width) solid var(--color-border);
-    background-color: var(--color-background);
-    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all var(--duration-normal) var(--ease-out);
+  }
+  
+  .header.scrolled {
+    box-shadow: var(--shadow-md);
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+  
+  .header.hidden {
+    transform: translateY(-100%);
   }
 
   .variant-transparent {
     background-color: transparent;
     border-bottom-color: transparent;
+  }
+  
+  .variant-transparent.scrolled {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-bottom-color: var(--color-border);
   }
 
   .nav {
@@ -80,11 +137,28 @@ const { variant = 'default' } = Astro.props;
     font-weight: var(--font-weight-medium);
     color: var(--color-text-secondary);
     text-decoration: none;
-    transition: color var(--transition-fast);
+    transition: color var(--duration-fast) var(--ease-out);
+    position: relative;
+  }
+  
+  /* Underline effect */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-primary);
+    transition: width var(--duration-normal) var(--ease-out);
   }
 
   .nav-link:hover {
     color: var(--color-primary);
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
   }
 
   .nav-actions {
@@ -97,15 +171,22 @@ const { variant = 'default' } = Astro.props;
     align-items: center;
     padding: var(--space-2) var(--space-6);
     font-size: var(--font-size-base);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
     color: white;
     background-color: var(--color-primary);
     border-radius: var(--border-radius);
     text-decoration: none;
-    transition: background-color var(--transition-fast);
+    transition: all var(--duration-fast) var(--ease-out);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
   }
 
   .cta-button:hover {
     background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+  }
+  
+  .cta-button:active {
+    transform: translateY(0);
   }
 </style>
