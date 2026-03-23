@@ -2,7 +2,9 @@
 @import './animations.css';
 
 /* CSS Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -24,7 +26,7 @@ html {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  
+
   html {
     scroll-behavior: auto;
   }
@@ -39,7 +41,12 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
   color: var(--color-text);
@@ -93,7 +100,8 @@ textarea:focus-visible {
 }
 
 /* Lists */
-ul, ol {
+ul,
+ol {
   margin-bottom: var(--space-4);
   padding-left: var(--space-6);
 }
@@ -131,7 +139,9 @@ button {
 }
 
 /* Form elements */
-input, textarea, select {
+input,
+textarea,
+select {
   font-family: inherit;
   font-size: inherit;
 }

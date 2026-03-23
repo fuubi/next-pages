@@ -5,6 +5,7 @@ This Astro site implements **industry-leading animation best practices** for a p
 ## 🎯 Key Features
 
 ### 1. **Accessibility First**
+
 - ✅ Full `prefers-reduced-motion` support
 - ✅ Users with motion sensitivity see static content
 - ✅ Progressive enhancement approach
@@ -12,6 +13,7 @@ This Astro site implements **industry-leading animation best practices** for a p
 - ✅ ARIA labels where needed
 
 ### 2. **Performance Optimized**
+
 - ✅ Hardware acceleration (`transform: translateZ(0)`)
 - ✅ GPU compositing with `will-change` hints (removed after animation)
 - ✅ `transform` and `opacity` only (no layout-shifting properties)
@@ -21,12 +23,14 @@ This Astro site implements **industry-leading animation best practices** for a p
 - ✅ CSS containment where appropriate
 
 ### 3. **Professional Timing**
+
 - ✅ Custom cubic-bezier easing curves
 - ✅ Consistent duration tokens
 - ✅ Stagger delays for sequential animations
 - ✅ Natural deceleration curves
 
 ### 4. **Dependencies**
+
 - ✅ **Motion One** (5kb) - Modern, performant animation library
 - ✅ Astro View Transitions (built-in) - Smooth page transitions
 - ✅ **Total added weight: ~5kb**
@@ -68,21 +72,18 @@ src/components/
 ## 🎨 Animation Tokens
 
 ### Durations
+
 ```css
---duration-instant: 100ms
---duration-fast: 200ms
---duration-normal: 300ms
---duration-slow: 500ms
---duration-slower: 700ms
+--duration-instant: 100ms --duration-fast: 200ms --duration-normal: 300ms --duration-slow: 500ms
+  --duration-slower: 700ms;
 ```
 
 ### Easing Curves
+
 ```css
---ease-in-out: cubic-bezier(0.4, 0, 0.2, 1)
---ease-out: cubic-bezier(0.0, 0, 0.2, 1)
---ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1)
---ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55)
---ease-snappy: cubic-bezier(0.4, 0.0, 0.2, 1)
+--ease-in-out: cubic-bezier(0.4, 0, 0.2, 1) --ease-out: cubic-bezier(0, 0, 0.2, 1)
+  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1)
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55) --ease-snappy: cubic-bezier(0.4, 0, 0.2, 1);
 ```
 
 ## 🚀 Usage Examples
@@ -135,12 +136,12 @@ src/components/
 ### JavaScript API
 
 ```typescript
-import { 
-  animateOnScroll, 
-  staggerOnScroll, 
+import {
+  animateOnScroll,
+  staggerOnScroll,
   animateCounter,
   parallaxScroll,
-  hoverScale 
+  hoverScale,
 } from '@/utils/animations';
 
 // Animate elements when they enter viewport
@@ -162,6 +163,7 @@ hoverScale('.card', 1.05);
 ## ⚡ Performance Guidelines
 
 ### DO ✅
+
 - Use `transform` and `opacity` for animations
 - Add `will-change` before animation, remove after
 - Use `translateZ(0)` for GPU acceleration
@@ -170,6 +172,7 @@ hoverScale('.card', 1.05);
 - Respect `prefers-reduced-motion`
 
 ### DON'T ❌
+
 - Animate `width`, `height`, `top`, `left` (causes reflow)
 - Leave `will-change` permanently applied
 - Use heavy JavaScript animations for simple effects
@@ -186,12 +189,14 @@ hoverScale('.card', 1.05);
 ## 📊 Performance Metrics
 
 ### Animation Performance
+
 - **60 FPS** smooth animations (hardware accelerated)
 - **<100ms** perceived interaction delay
 - **5kb** total JavaScript overhead
 - **0 layout shifts** during animations
 
 ### Lighthouse Scores
+
 - ✅ Performance: 100
 - ✅ Accessibility: 100
 - ✅ Best Practices: 100
@@ -215,8 +220,12 @@ hoverScale('.card', 1.05);
 ```css
 /* src/styles/animations.css */
 @keyframes myCustomAnimation {
-  from { /* start state */ }
-  to { /* end state */ }
+  from {
+    /* start state */
+  }
+  to {
+    /* end state */
+  }
 }
 
 .animate-custom {
@@ -230,7 +239,7 @@ hoverScale('.card', 1.05);
 // src/utils/animations.ts
 export function myCustomAnimation(selector: string) {
   if (prefersReducedMotion()) return;
-  
+
   const elements = document.querySelectorAll(selector);
   // Your animation logic
 }
@@ -247,6 +256,7 @@ export function myCustomAnimation(selector: string) {
 ## 🎉 Result
 
 A **world-class animation system** that's:
+
 - **Fast** - GPU-accelerated, optimized performance
 - **Accessible** - Respects user preferences
 - **Beautiful** - Professional, polished interactions

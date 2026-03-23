@@ -24,7 +24,7 @@ const hoverAttr = variant === 'hover' ? { 'data-hover': 'scale' } : {};
     transform: translateZ(0);
     backface-visibility: hidden;
   }
-  
+
   /* Subtle gradient overlay on hover */
   .card::before {
     content: '';
@@ -33,16 +33,12 @@ const hoverAttr = variant === 'hover' ? { 'data-hover': 'scale' } : {};
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(37, 99, 235, 0.05) 0%,
-      transparent 50%
-    );
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, transparent 50%);
     opacity: 0;
     transition: opacity var(--duration-normal) var(--ease-out);
     pointer-events: none;
   }
-  
+
   .card:hover::before {
     opacity: 1;
   }
@@ -61,12 +57,12 @@ const hoverAttr = variant === 'hover' ? { 'data-hover': 'scale' } : {};
     transform: translateY(-4px) translateZ(0);
     border-color: var(--color-primary);
   }
-  
+
   @media (prefers-reduced-motion: reduce) {
     .variant-hover:hover {
       transform: none;
     }
-    
+
     .card::before {
       display: none;
     }

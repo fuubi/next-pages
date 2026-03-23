@@ -32,17 +32,17 @@ const { variant = 'default' } = Astro.props;
   // Smooth header behavior on scroll
   let lastScroll = 0;
   const header = document.getElementById('main-header');
-  
+
   function handleScroll() {
     const currentScroll = window.pageYOffset;
-    
+
     // Add shadow when scrolled
     if (currentScroll > 10) {
       header?.classList.add('scrolled');
     } else {
       header?.classList.remove('scrolled');
     }
-    
+
     // Hide/show header on scroll (optional)
     // Uncomment to enable auto-hide behavior
     /*
@@ -52,21 +52,25 @@ const { variant = 'default' } = Astro.props;
       header?.classList.remove('hidden');
     }
     */
-    
+
     lastScroll = currentScroll;
   }
-  
+
   // Throttle scroll events for better performance
   let ticking = false;
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        handleScroll();
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    },
+    { passive: true }
+  );
 </script>
 
 <style>
@@ -81,12 +85,12 @@ const { variant = 'default' } = Astro.props;
     -webkit-backdrop-filter: blur(12px);
     transition: all var(--duration-normal) var(--ease-out);
   }
-  
+
   .header.scrolled {
     box-shadow: var(--shadow-md);
     background-color: rgba(255, 255, 255, 0.95);
   }
-  
+
   .header.hidden {
     transform: translateY(-100%);
   }
@@ -95,7 +99,7 @@ const { variant = 'default' } = Astro.props;
     background-color: transparent;
     border-bottom-color: transparent;
   }
-  
+
   .variant-transparent.scrolled {
     background-color: rgba(255, 255, 255, 0.95);
     border-bottom-color: var(--color-border);
@@ -140,7 +144,7 @@ const { variant = 'default' } = Astro.props;
     transition: color var(--duration-fast) var(--ease-out);
     position: relative;
   }
-  
+
   /* Underline effect */
   .nav-link::after {
     content: '';
@@ -156,7 +160,7 @@ const { variant = 'default' } = Astro.props;
   .nav-link:hover {
     color: var(--color-primary);
   }
-  
+
   .nav-link:hover::after {
     width: 100%;
   }
@@ -185,7 +189,7 @@ const { variant = 'default' } = Astro.props;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
   }
-  
+
   .cta-button:active {
     transform: translateY(0);
   }

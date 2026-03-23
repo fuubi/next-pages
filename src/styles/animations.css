@@ -97,7 +97,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -162,20 +163,33 @@
 }
 
 /* Delays for stagger effects */
-.delay-1 { animation-delay: calc(var(--stagger-delay) * 1); }
-.delay-2 { animation-delay: calc(var(--stagger-delay) * 2); }
-.delay-3 { animation-delay: calc(var(--stagger-delay) * 3); }
-.delay-4 { animation-delay: calc(var(--stagger-delay) * 4); }
-.delay-5 { animation-delay: calc(var(--stagger-delay) * 5); }
-.delay-6 { animation-delay: calc(var(--stagger-delay) * 6); }
+.delay-1 {
+  animation-delay: calc(var(--stagger-delay) * 1);
+}
+.delay-2 {
+  animation-delay: calc(var(--stagger-delay) * 2);
+}
+.delay-3 {
+  animation-delay: calc(var(--stagger-delay) * 3);
+}
+.delay-4 {
+  animation-delay: calc(var(--stagger-delay) * 4);
+}
+.delay-5 {
+  animation-delay: calc(var(--stagger-delay) * 5);
+}
+.delay-6 {
+  animation-delay: calc(var(--stagger-delay) * 6);
+}
 
 /* ===================================
    HOVER EFFECTS
    =================================== */
 
 .hover-lift {
-  transition: transform var(--duration-fast) var(--ease-out),
-              box-shadow var(--duration-fast) var(--ease-out);
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
 }
 
 .hover-lift:hover {
@@ -270,12 +284,12 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  
+
   .hover-lift:hover,
   .hover-scale:hover {
     transform: none;
   }
-  
+
   [data-animate] {
     opacity: 1;
     animation: none !important;
@@ -291,8 +305,9 @@
 }
 
 .focus-ring:focus-visible {
-  box-shadow: 0 0 0 3px var(--color-primary),
-              0 0 0 5px rgba(37, 99, 235, 0.3);
+  box-shadow:
+    0 0 0 3px var(--color-primary),
+    0 0 0 5px rgba(37, 99, 235, 0.3);
 }
 
 /* ===================================
