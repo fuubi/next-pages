@@ -1,17 +1,19 @@
 ---
 import BaseLayout from '@shared/layouts/BaseLayout.astro';
 import Hero from '@templates/hero/Classic.astro';
-import { getContent, getAlternateLanguageUrls } from '../../i18n/utils.ts';
+import { getAlternateLanguageUrls } from '../../i18n/utils.ts';
+import content from './index.json';
 
-const content = await getContent('de', 'home');
-const alternateLanguages = getAlternateLanguageUrls('/', 'de').map(
-  (alt: { lang: string; url: string }) => ({
-    lang: alt.lang,
-    url: `https://garage-mueller.ch${alt.url}`,
-  })
-);
+const alternateLanguages = getAlternateLanguageUrls('/', 'de').map((alt: { lang: string; url: string }) => ({
+  lang: alt.lang,
+  url: `https://garage-mueller.ch${alt.url}`
+}));
 ---
 
-<BaseLayout title="Garage Mueller" lang="de" alternateLanguages={alternateLanguages}>
+<BaseLayout 
+  title="Garage Mueller" 
+  lang="de"
+  alternateLanguages={alternateLanguages}
+>
   <Hero {...content.hero} />
 </BaseLayout>

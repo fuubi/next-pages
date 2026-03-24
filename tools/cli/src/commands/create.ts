@@ -106,9 +106,6 @@ export async function createSite(name: string, options: CreateOptions) {
 function createSiteStructure(sitePath: string, name: string, config: any) {
   // Create directories
   mkdirSync(sitePath, { recursive: true });
-  mkdirSync(join(sitePath, 'src/content/de'), { recursive: true });
-  mkdirSync(join(sitePath, 'src/content/fr'), { recursive: true });
-  mkdirSync(join(sitePath, 'src/content/it'), { recursive: true });
   mkdirSync(join(sitePath, 'src/pages/de'), { recursive: true });
   mkdirSync(join(sitePath, 'src/pages/fr'), { recursive: true });
   mkdirSync(join(sitePath, 'src/pages/it'), { recursive: true });
@@ -232,26 +229,12 @@ export const defaultLang: Language = '${config.language}';
 // Create i18n utilities with site configuration
 const i18n = createI18n(languages, defaultLang);
 
-// Re-export for convenience
+// Re-export all utilities
 export const { getLangFromUrl, useTranslatedPath, getAlternateLanguageUrls } = i18n;
-
-// Site-specific content loader (must be local to resolve relative imports correctly)
-export async function getContent<T = any>(lang: Language, page: string): Promise<T> {
-  try {
-    const content = await import(\`../content/\${lang}/\${page}.json\`);
-    return content.default || content;
-  } catch (error) {
-    // Fallback to default language
-    if (lang !== defaultLang) {
-      return getContent(defaultLang, page);
-    }
-    throw error;
-  }
-}
 `
   );
 
-  // Create content for each language
+  // Content for each language (colocated with pages)
   const contentDe = {
     hero: {
       title: `Willkommen bei ${config.businessName}`,
@@ -276,21 +259,6 @@ export async function getContent<T = any>(lang: Language, page: string): Promise
     }
   };
 
-  writeFileSync(
-    join(sitePath, 'src/content/de/home.json'),
-    JSON.stringify(contentDe, null, 2)
-  );
-
-  writeFileSync(
-    join(sitePath, 'src/content/fr/home.json'),
-    JSON.stringify(contentFr, null, 2)
-  );
-
-  writeFileSync(
-    join(sitePath, 'src/content/it/home.json'),
-    JSON.stringify(contentIt, null, 2)
-  );
-
   // Create root index page (redirects to default language)
   writeFileSync(
     join(sitePath, 'src/pages/index.astro'),
@@ -302,15 +270,20 @@ return Astro.redirect(\`/\${defaultLang}/\`);
 `
   );
 
-  // Create German page
+  // Create German page with colocated content
+  writeFileSync(
+    join(sitePath, 'src/pages/de/index.json'),
+    JSON.stringify(contentDe, null, 2)
+  );
+
   writeFileSync(
     join(sitePath, 'src/pages/de/index.astro'),
     `---
 import BaseLayout from '@shared/layouts/BaseLayout.astro';
 import Hero from '@templates/hero/Classic.astro';
-import { getContent, getAlternateLanguageUrls } from '../../i18n/utils.ts';
+import { getAlternateLanguageUrls } from '../../i18n/utils.ts';
+import content from './index.json';
 
-const content = await getContent('de', 'home');
 const alternateLanguages = getAlternateLanguageUrls('/', 'de').map((alt: { lang: string; url: string }) => ({
   lang: alt.lang,
   url: \`https://${config.domain}\${alt.url}\`
@@ -327,15 +300,20 @@ const alternateLanguages = getAlternateLanguageUrls('/', 'de').map((alt: { lang:
 `
   );
 
-  // Create French page
+  // Create French page with colocated content
+  writeFileSync(
+    join(sitePath, 'src/pages/fr/index.json'),
+    JSON.stringify(contentFr, null, 2)
+  );
+
   writeFileSync(
     join(sitePath, 'src/pages/fr/index.astro'),
     `---
 import BaseLayout from '@shared/layouts/BaseLayout.astro';
 import Hero from '@templates/hero/Classic.astro';
-import { getContent, getAlternateLanguageUrls } from '../../i18n/utils.ts';
+import { getAlternateLanguageUrls } from '../../i18n/utils.ts';
+import content from './index.json';
 
-const content = await getContent('fr', 'home');
 const alternateLanguages = getAlternateLanguageUrls('/', 'fr').map((alt: { lang: string; url: string }) => ({
   lang: alt.lang,
   url: \`https://${config.domain}\${alt.url}\`
@@ -352,15 +330,20 @@ const alternateLanguages = getAlternateLanguageUrls('/', 'fr').map((alt: { lang:
 `
   );
 
-  // Create Italian page
+  // Create Italian page with colocated content
+  writeFileSync(
+    join(sitePath, 'src/pages/it/index.json'),
+    JSON.stringify(contentIt, null, 2)
+  );
+
   writeFileSync(
     join(sitePath, 'src/pages/it/index.astro'),
     `---
 import BaseLayout from '@shared/layouts/BaseLayout.astro';
 import Hero from '@templates/hero/Classic.astro';
-import { getContent, getAlternateLanguageUrls } from '../../i18n/utils.ts';
+import { getAlternateLanguageUrls } from '../../i18n/utils.ts';
+import content from './index.json';
 
-const content = await getContent('it', 'home');
 const alternateLanguages = getAlternateLanguageUrls('/', 'it').map((alt: { lang: string; url: string }) => ({
   lang: alt.lang,
   url: \`https://${config.domain}\${alt.url}\`
