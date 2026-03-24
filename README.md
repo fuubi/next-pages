@@ -2,6 +2,16 @@
 
 Multi-client website system with shared component library and component-level versioning.
 
+## Multi-Agent Architecture
+
+This monorepo uses **specialized agents** for parallel work:
+
+- **@site-developer** — Works on individual client sites (parallelizable)
+- **@component-library** — Maintains shared components (single-threaded)
+- **@cli-developer** — Builds CLI tooling (single-threaded)
+
+See [Multi-Agent Quick Reference](.github/MULTI-AGENT-QUICK-REF.md) for usage guide.
+
 ## Structure
 
 ```

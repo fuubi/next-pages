@@ -1,6 +1,57 @@
-# Client Sites Agent
+# Client Sites Workspace
 
 This workspace contains a **multi-client website system** using Astro and component-level versioning.
+
+## Multi-Agent Architecture
+
+This workspace uses **specialized agents** for parallel and focused work:
+
+### Available Agents
+
+1. **Site Developer** (`@site-developer`) — Works on individual client sites
+   - Scope: `sites/[site-name]/`
+   - Tasks: Pages, content, i18n, site configuration
+   - **Parallelizable**: Multiple Site Developer agents can work on different sites simultaneously
+
+2. **Component Library** (`@component-library`) — Maintains shared components
+   - Scope: `packages/shared/`, `packages/templates/`
+   - Tasks: Components, layouts, styles, versioning, Changesets
+   - **Single-threaded**: Only one agent should modify shared components at a time
+
+3. **CLI Developer** (`@cli-developer`) — Builds tooling
+   - Scope: `tools/cli/`
+   - Tasks: Commands, validation, scaffolding, utilities
+   - **Single-threaded**: CLI changes affect all sites
+
+### Delegation Strategy
+
+**When to use which agent:**
+
+- Working on **specific site** (garage-mueller, client-xyz content/pages) → `@site-developer`
+- Adding/modifying **shared components** → `@component-library`
+- Building **CLI commands** or validation logic → `@cli-developer`
+
+**Parallel work pattern:**
+
+```
+Agent 1: @site-developer → sites/garage-mueller/
+Agent 2: @site-developer → sites/client-abc/
+Agent 3: @component-library → packages/shared/
+```
+
+Sites are independent, so multiple Site Developer agents can work simultaneously without conflicts.
+
+### Agent Boundaries
+
+Each agent has strict scope constraints to avoid conflicts:
+
+| Agent             | Can Modify                                | Cannot Modify                      |
+| ----------------- | ----------------------------------------- | ---------------------------------- |
+| Site Developer    | `sites/[specific-site]/`                  | `packages/`, `tools/`, other sites |
+| Component Library | `packages/shared/`, `packages/templates/` | `sites/`, `tools/`                 |
+| CLI Developer     | `tools/cli/`                              | `sites/`, `packages/`              |
+
+This ensures clean separation and enables safe parallel work.
 
 ## Core Principles
 
@@ -236,11 +287,30 @@ npm run changeset
 
 ## Summary
 
-This is a **monorepo for multiple garage sites** that share components but have separate content. The component library uses versioning to ensure old sites never break, even years later. Each garage manages its own content in JSON files alongside their pages.
+This is a **multi-agent monorepo** for client websites that share components but have separate content.
+
+### Architecture
+
+- **Shared components** (`packages/shared/`) with component-level versioning
+- **Independent sites** (`sites/`) with their own content and configuration
+- **CLI tooling** (`tools/cli/`) for site management
+
+### Agent Workflow
+
+- **@site-developer**: Works on individual sites (parallelizable)
+- **@component-library**: Maintains shared components (single-threaded)
+- **@cli-developer**: Builds CLI tools (single-threaded)
+
+### Key Rules
+
+- Sites are independent → safe for parallel work
+- Component changes need versioning → use Changesets
+- Breaking changes → new version folder (v1/, v2/), MINOR bump
+- Old sites never break → locked imports from version folders
 
 When working here:
 
-- **Edit content**: Go to the specific garage site's JSON files
-- **Edit components**: Work in `packages/shared/components/`
-- **Breaking changes**: Create new version, keep old in `v1/`
-- **Always test**: Check that changes don't break existing garage sites
+- **Edit content**: Use `@site-developer` for specific site
+- **Edit components**: Use `@component-library` for shared packages
+- **Edit CLI**: Use `@cli-developer` for tooling
+- **Parallel work**: Multiple `@site-developer` agents on different sites
