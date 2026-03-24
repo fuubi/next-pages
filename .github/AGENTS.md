@@ -1,332 +1,240 @@
-# Marketing Site Agent
+# Garage Sites Agent
 
-This workspace contains an **AI-friendly static website system** built with Astro for marketing pages.
+This workspace contains a **multi-client website system** for Swiss garages using Astro and component-level versioning.
 
 ## Core Principles
 
-When working on this project, always follow these principles:
-
-1. **Static-first**: All pages should be prerendered at build time as static HTML
-2. **Content-driven**: Edit content files, not templates - content collections are the single source of truth
-3. **HTML-first architecture**: Use semantic HTML, CSS for responsiveness, JS only where necessary
-4. **Minimal dependencies**: Keep the dependency tree small and understandable
-5. **One content source**: Never duplicate content for mobile/desktop - use responsive CSS
-6. **Component library constraints**: Use only the existing small set of components
+1. **Component library approach**: Shared components in `packages/shared`, each site has its own content
+2. **Multi-language support**: All garage sites support DE/FR/IT with i18n
+3. **Component-level versioning**: Breaking changes create new versions (v1/, v2/) instead of breaking old sites
+4. **Static-first**: All pages prerendered at build time as static HTML
+5. **Long-running sites**: Old garage sites should never break, even years later
 
 ## Architecture Overview
 
-### Rendering Model
-
-This site uses **Astro in static mode**. All routes are prerendered at build time to plain HTML files.
-
-### Routing Model
-
-**File-based routing** via `src/pages/`. Pages are generated from:
-- Direct files in `src/pages/` (e.g., `index.astro`)
-- Dynamic routes using `getStaticPaths()` from content collections (e.g., `[...slug].astro`)
-
-### Content Model
-
-**Astro content collections** are the single source of truth for all page content:
-- `src/content/pages/` - Page content entries
-- `src/content/site/` - Global site settings
-- `src/content/shared/` - Reusable content blocks (testimonials, FAQs, etc.)
-
-## File Structure
+### Monorepo Structure
 
 ```
-src/
-  pages/
-    index.astro              # Homepage (can use content collection)
-    [...slug].astro          # Dynamic pages from content collections
-  layouts/
-    BaseLayout.astro         # Base HTML shell
-  components/
-    site/                    # Site shell components
-      Header.astro
-      Footer.astro
-      Container.astro
-      Section.astro
-    sections/                # Marketing section components
-      Hero.astro
-      FeatureGrid.astro
-      FeatureSplit.astro
-      LogoCloud.astro
-      StatsRow.astro
-      Testimonials.astro
-      FAQ.astro
-      CTASection.astro
-      ContactBlock.astro
-    ui/                      # UI primitives
-      Button.astro
-      Card.astro
-      Badge.astro
-      Accordion.astro
-      Input.astro
-      Textarea.astro
-  content/
-    config.ts                # Content collection schemas
-    pages/                   # Page content entries
-    site/                    # Global settings
-    shared/                  # Shared content blocks
-  styles/
-    tokens.css               # Design tokens
-    global.css               # Global styles
+packages/
+  shared/              # Shared component library (versioned)
+    components/
+      sections/        # Hero, ContactBlock, etc.
+        Hero.astro     # Latest version
+        v1/            # Locked versions for legacy sites
+          Hero.astro
+      ui/              # Button, Card, etc.
+      site/            # Header, Footer, Container
+    layouts/           # BaseLayout
+    styles/            # Design tokens, global styles
+    utils/             # Utility functions, i18n helpers
+
+sites/
+  garage-mueller/      # Individual garage site
+    src/
+      pages/           # File-based routing
+        index.astro    # Redirects to /de/
+        de/            # German pages
+          index.astro
+          index.json   # German content
+        fr/            # French pages
+        it/            # Italian pages
+      i18n/            # i18n utilities
+    astro.config.ts
+    site.config.ts
 ```
 
-## What You Should Edit
+## Content Management
 
-### Primary: Content Files
+### Each Garage Site Manages Its Own Content
 
-When asked to make content changes, edit files in `src/content/`:
+Content is stored in JSON files alongside pages, **NOT** in a central content collection:
 
-- **Page copy, CTAs, headings** → `src/content/pages/*.json`
-- **Navigation, footer links, contact info** → `src/content/site/settings.json`
-- **Testimonials, FAQs, logos** → `src/content/shared/*.json`
-- **SEO metadata** → page frontmatter in content entries
-- **Section order** → `sections[]` array in page content
+```
+sites/garage-mueller/src/pages/
+  de/
+    index.astro       # Loads index.json
+    index.json        # German content: services, testimonials, contact info
+  fr/
+    index.astro
+    index.json        # French content
+  it/
+    index.astro
+    index.json        # Italian content
+```
 
-### Secondary: Components (When Necessary)
+### Why This Approach?
 
-Edit components only when:
-- Adding a new section type that doesn't exist
-- Fixing bugs or improving existing components
-- Adding new UI primitives that will be reused
+- **No shared content**: Each garage has different services, testimonials, team
+- **Language-specific**: Content lives with the language route
+- **Simple**: No content collection complexity, just import JSON
 
-### Rarely: Templates and Layouts
+## Component Versioning
 
-Edit these only when:
-- Changing site-wide structure
-- Adding new layout variants
-- Modifying the section rendering system
+### Latest vs Locked Versions
+
+```astro
+// New sites - use latest
+import Hero from '@garage-sites/shared/components/sections/Hero.astro';
+
+// Legacy sites - locked to v1
+import Hero from '@garage-sites/shared/components/sections/v1/Hero.astro';
+```
+
+See [COMPONENT-VERSIONING.md](../COMPONENT-VERSIONING.md) for details.
 
 ## Component Library
 
-### Site Shell Components
+### Available in packages/shared/components/
 
-- `BaseLayout` - HTML document wrapper with SEO meta tags
-- `Header` - Site header with navigation
-- `Footer` - Site footer with links
-- `Container` - Max-width container with padding
-- `Section` - Semantic section wrapper with optional background variants
-- `SectionHeader` - Reusable headline + description pattern
-
-### Marketing Sections
-
-Available section types for page composition:
-
-- `Hero` - Hero section with headline, description, CTA, optional image
-- `FeatureGrid` - Grid of features (2, 3, or 4 columns)
-- `FeatureSplit` - Side-by-side feature with image
-- `LogoCloud` - Client/partner logo grid
-- `StatsRow` - Stat counters in a row
-- `Testimonials` - Customer testimonials (grid or carousel)
-- `FAQ` - Accordion FAQ list
+**Section Components:**
+- `Hero` - Hero section with headline, CTA, image
+- `ContactBlock` - Contact form and info
 - `CTASection` - Call-to-action banner
-- `ContactBlock` - Contact form or contact information
+- `FAQ` - Accordion FAQ list
+- `FeatureGrid` - Grid of features (2/3/4 columns)
+- `FeatureSplit` - Side-by-side feature + image
+- `LogoCloud` - Partner/client logos
+- `StatsRow` - Statistics counters
+- `Testimonials` - Customer testimonials
 
-### UI Primitives
+**UI Components:**
+- `Button` - Primary/secondary buttons
+- `Card` - Content card
+- `Badge` - Status badge
+- `Accordion` - Expandable content
+- `Input` - Form input
+- `Textarea` - Form textarea
 
-- `Button` - Primary, secondary, outline variants
-- `Card` - Content card with optional hover effects
-- `Badge` - Small label/tag
-- `Input` - Form input field
-- `Textarea` - Multi-line text input
-- `Accordion` - Collapsible content block
+**Site Components:**
+- `Header` - Site header with navigation
+- `Footer` - Site footer
+- `Container` - Max-width container
+- `Section` - Section wrapper
+- `SectionHeader` - Headline + description
+- `LanguageSwitcher` - DE/FR/IT switcher
 
-**Do not create new components unless absolutely necessary.** Reuse and compose from this set.
+## Working on Garage Sites
 
-## Page Content Schema
+### To Create a New Garage Site
 
-Each page entry should have this structure:
-
-```typescript
-{
-  slug: string              // URL path (e.g., "about", "industries/saas")
-  seo: {
-    title: string
-    description: string
-    ogImage?: string
-  }
-  sections: Array<{
-    type: string           // Maps to component (e.g., "hero", "feature-grid")
-    id: string             // Unique ID for the section
-    variant?: string       // Optional variant (e.g., "three-column")
-    content: object        // Section-specific content
-  }>
-}
+```bash
+npm run garage create garage-[name]
 ```
 
-## Responsive Design Rule
+This creates:
+- Site structure in `sites/garage-[name]/`
+- DE/FR/IT language routes
+- Example JSON content files
+- Configured to use shared components
 
-**Critical**: There must be **one content source** for both mobile and desktop.
+### To Edit Content for a Garage
 
-✅ **Correct approach**:
-- One content entry per page
-- CSS handles layout changes via media queries
-- Optional decorative differences in CSS
+1. Find the site: `sites/garage-mueller/`
+2. Edit content: `src/pages/de/index.json` (or fr/it)
+3. Update text, testimonials, services, contact info
+4. No need to touch components
 
-❌ **Never do this**:
-- Separate mobile and desktop content files
-- Duplicate page data
-- Conditional rendering based on device type
-- Copy-pasting content into two versions
+### To Add/Modify Components
 
-## Styling Strategy
-
-This project uses **Astro scoped CSS** with design tokens:
-
-- `src/styles/tokens.css` - CSS custom properties for colors, spacing, typography
-- `src/styles/global.css` - Global resets and base styles
-- Component `.astro` files - Scoped styles in `<style>` blocks
-
-**Styling rules**:
-- Use CSS custom properties from tokens.css
-- Keep scoped styles minimal and component-specific
-- Use responsive design patterns (flex, grid, clamp)
-- Avoid inline styles unless truly dynamic
-
-## Animation Strategy
-
-Animations should be **subtle and selective**:
-
-✅ **Acceptable animations**:
-- Fade in on scroll
-- Hover lift on cards
-- Accordion open/close
-- Simple number counters
-- Sticky header behavior
-
-❌ **Avoid**:
-- Constant motion everywhere
-- Heavy animation libraries
-- Complex timeline animations
-- Parallax unless specifically requested
-
-If animation is needed, implement with CSS transitions/animations or lightweight vanilla JS.
-
-## AI Workflow Guidelines
-
-### What You Should Do
-
-When asked to work on this project:
-
-1. **Create new pages**: Add entries to `src/content/pages/`
-2. **Edit copy**: Update text in content collection files
-3. **Reorder sections**: Change the `sections[]` array order
-4. **Swap variants**: Change section `variant` property
-5. **Update CTAs**: Edit CTA text and links in content
-6. **Add testimonials/FAQs**: Add items to `src/content/shared/`
-7. **Compose pages**: Build new pages from existing section types
-
-### What You Should NOT Do
-
-❌ **Don't**:
-- Introduce new frameworks or heavy dependencies
-- Create separate mobile/desktop content versions
-- Build one-off custom components for every page
-- Add client-side routing or turn this into an SPA
-- Create new styling systems or methodologies
-- Add random npm packages without justification
-
-### Before Adding Dependencies
-
-Ask yourself:
-1. Can this be done with vanilla JS/CSS?
-2. Is there an existing component that can be adapted?
-3. Will this package be used in multiple places?
-4. Is the bundle size justified?
-
-**Default answer should be: use what's already there.**
-
-## SEO Requirements
-
-All generated pages must be SEO-friendly:
-
-- ✅ Semantic HTML5 elements (`header`, `main`, `section`, `article`, `footer`)
-- ✅ One `<h1>` per page
-- ✅ Proper heading hierarchy
-- ✅ Static prerendered HTML (not client-rendered)
-- ✅ Title and meta description from content
-- ✅ Canonical URL support
-- ✅ Alt text on images
-- ✅ Clean internal linking with `<a>` tags
-
-## Build and Development
-
-**Commands**:
-- `npm run dev` - Start dev server at localhost:4321
-- `npm run build` - Build static site to `dist/`
-- `npm run preview` - Preview built site locally
-
-**Build rules**:
-- All pages MUST build to static HTML
-- No client-side rendering of routes
-- No framework JS unless component explicitly needs it
-- Optimize images through Astro's image component
-
-## Content Editing Workflow
-
-### To create a new page:
-
-1. Create a content entry in `src/content/pages/[name].json`
-2. Define the slug, SEO metadata, and sections array
-3. Use existing section types from the component library
-4. Build - the dynamic route will pick it up automatically
-
-### To edit an existing page:
-
-1. Find the page content file in `src/content/pages/`
-2. Edit the relevant section content
-3. To reorder sections, reorder the `sections[]` array
-4. To change variants, update the `variant` property
-
-### To add shared content:
-
-1. Add to appropriate file in `src/content/shared/`
-2. Reference it from page sections using the content collection query system
+1. Edit in `packages/shared/components/`
+2. For breaking changes:
+   - Keep old version in `v1/` folder
+   - Update latest version
+   - Create MINOR changeset (not MAJOR)
+3. Old sites using `v1/` imports never break
 
 ## Common Tasks
 
-### Add a new page
+### Update Hero Text for Garage Mueller
 
 ```bash
-# Create content entry
-src/content/pages/new-page.json
+# Edit German content
+vim sites/garage-mueller/src/pages/de/index.json
 
-# Content structure
+# Change the hero section content
 {
-  "slug": "new-page",
-  "seo": {
-    "title": "Page Title",
-    "description": "Page description for SEO"
-  },
-  "sections": [
-    {
-      "type": "hero",
-      "id": "hero-1",
-      "content": {
-        "headline": "Welcome",
-        "text": "Description",
-        "cta": { "text": "Get Started", "href": "/contact" }
-      }
-    }
-  ]
+  "hero": {
+    "headline": "Willkommen bei Garage Müller",
+    "text": "..."
+  }
 }
 ```
 
-### Change homepage hero
+### Add New Section Component
 
-Edit `src/content/pages/home.json` and update the hero section in the `sections[]` array.
+```bash
+# Create component
+vim packages/shared/components/sections/NewSection.astro
 
-### Update navigation
+# Update shared package exports if needed
+vim packages/shared/package.json
 
-Edit `src/content/site/settings.json` and modify the `navigation` array.
+# Use in any garage site
+import NewSection from '@garage-sites/shared/components/sections/NewSection.astro';
+```
 
-### Add a testimonial
+### Make Breaking Change to Component
 
-Add an entry to `src/content/shared/testimonials.json`.
+```bash
+# Copy current to v1
+cp packages/shared/components/sections/Hero.astro packages/shared/components/sections/v1/
+
+# Update latest with breaking changes
+vim packages/shared/components/sections/Hero.astro
+
+# Create changeset (MINOR, not MAJOR!)
+npm run changeset
+# Select: minor
+# Summary: "Hero v2: [describe changes]. Legacy v1 at v1/Hero.astro"
+```
+
+## Versioning Strategy
+
+We use **component-level versioning** instead of package-level breaking changes:
+
+- **MINOR bumps**: New component versions, new features
+- **MAJOR bumps**: Rarely (only for removing 5+ year old versions)
+- **Old sites**: Never break by importing from `v1/`, `v2/` paths
+
+See:
+- [COMPONENT-VERSIONING.md](../COMPONENT-VERSIONING.md) - Full strategy
+- [VERSIONING-QUICK-REF.md](../VERSIONING-QUICK-REF.md) - Quick decision guide
+- [VERSIONING.md](../VERSIONING.md) - Changesets workflow
+
+## Build and Development
+
+```bash
+# Install dependencies
+npm install
+
+# Create new garage site
+npm run garage create garage-name
+
+# Develop a garage site
+cd sites/garage-mueller
+npm run dev
+
+# Build for production
+npm run build
+
+# Create changeset (when editing shared components)
+npm run changeset
+```
+
+## Key Files
+
+- `packages/shared/package.json` - Shared component package
+- `sites/*/astro.config.ts` - Per-site Astro config
+- `sites/*/site.config.ts` - Per-site customization
+- `packages/shared/utils/i18n.ts` - i18n utilities
+- `.changeset/config.json` - Changesets configuration
 
 ## Summary
 
-This is a **constrained, content-driven static site system**. The AI should primarily edit content files and compose pages from the existing component set. The architecture is deliberately simple to remain maintainable and AI-friendly. When in doubt, use what exists rather than creating something new.
+This is a **monorepo for multiple garage sites** that share components but have separate content. The component library uses versioning to ensure old sites never break, even years later. Each garage manages its own content in JSON files alongside their pages.
+
+When working here:
+- **Edit content**: Go to the specific garage site's JSON files
+- **Edit components**: Work in `packages/shared/components/`
+- **Breaking changes**: Create new version, keep old in `v1/`
+- **Always test**: Check that changes don't break existing garage sites

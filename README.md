@@ -114,36 +114,58 @@ npm run build
 ```
 
 Output: `dist/` (static files ready for hosting)
-src/
-pages/ # File-based routing
-layouts/ # Page layouts
-components/ # Reusable components
-site/ # Site shell (Header, Footer, etc.)
-sections/ # Marketing sections
-ui/ # UI primitives
-content/ # Content collections (single source of truth)
-pages/ # Page content
-site/ # Global settings
-shared/ # Shared content blocks
-styles/ # Global styles and tokens
+
+## Project Structure
 
 ```
+packages/
+  shared/              # Shared component library (versioned)
+    components/        # Reusable Astro components
+      sections/        # Hero, ContactBlock, etc. + v1/ versions
+      ui/              # Button, Card, etc.
+      site/            # Header, Footer, Container
+    layouts/           # BaseLayout
+    styles/            # Design tokens, global CSS
+    utils/             # i18n, animations, helpers
+  templates/           # Template variations
+    hero/              # Hero template variants
 
-## Content Editing
+sites/
+  garage-mueller/      # Individual garage site
+    src/
+      pages/           # File-based routing (de/fr/it)
+        de/index.json  # German content
+      i18n/            # i18n utilities
+    astro.config.ts
+    site.config.ts
 
-See [`.github/AGENTS.md`](.github/AGENTS.md) for detailed guidelines on editing content and working with this system.
+tools/
+  cli/                 # Site scaffolding CLI
+```
 
-### Quick Start
+## Content Management
 
-1. **Create a new page**: Add a JSON file to `src/content/pages/`
-2. **Edit existing page**: Modify the relevant content file
-3. **Add testimonials/FAQs**: Edit files in `src/content/shared/`
-4. **Update navigation**: Edit `src/content/site/settings.json`
+Each garage site manages its own content in JSON files alongside pages:
 
-## Available Section Types
+```
+sites/garage-mueller/src/pages/
+  de/
+    index.json        # German content: hero, services, testimonials, etc.
+  fr/
+    index.json        # French content
+  it/
+    index.json        # Italian content
+```
 
-- `hero` - Hero section with headline, CTA
-- `feature-grid` - Grid of features
+No shared content - each garage has unique services, testimonials, and contact info.
+
+See [`.github/AGENTS.md`](.github/AGENTS.md) for detailed guidelines.
+
+## Component Library
+
+Available section components:
+- `hero` - Hero section with headline, CTA, image
+- `feature-grid` - Grid of features (2/3/4 columns)
 - `feature-split` - Side-by-side feature + image
 - `logo-cloud` - Partner/client logos
 - `stats-row` - Statistics counters
@@ -155,9 +177,10 @@ See [`.github/AGENTS.md`](.github/AGENTS.md) for detailed guidelines on editing 
 ## Tech Stack
 
 - **Framework**: Astro 6 (static mode)
-- **Content**: JSON-based content collections
+- **Content**: JSON files per language (i18n)
 - **Styling**: Scoped CSS with design tokens
-- **TypeScript**: Type-safe content schemas
+- **TypeScript**: Type-safe throughout
+- **Versioning**: Component-level versioning (v1/, v2/) for long-running sites
 
 ## License
 
