@@ -164,6 +164,7 @@ See [`.github/AGENTS.md`](.github/AGENTS.md) for detailed guidelines.
 ## Component Library
 
 Available section components:
+
 - `hero` - Hero section with headline, CTA, image
 - `feature-grid` - Grid of features (2/3/4 columns)
 - `feature-split` - Side-by-side feature + image
@@ -185,4 +186,7 @@ Available section components:
 ## License
 
 MIT
+
+```
+
 ```

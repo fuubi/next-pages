@@ -73,11 +73,9 @@ sites/garage-mueller/src/pages/
 ### Latest vs Locked Versions
 
 ```astro
-// New sites - use latest
-import Hero from '@garage-sites/shared/components/sections/Hero.astro';
-
-// Legacy sites - locked to v1
-import Hero from '@garage-sites/shared/components/sections/v1/Hero.astro';
+// New sites - use latest import Hero from '@garage-sites/shared/components/sections/Hero.astro'; //
+Legacy sites - locked to v1 import Hero from
+'@garage-sites/shared/components/sections/v1/Hero.astro';
 ```
 
 See [COMPONENT-VERSIONING.md](../COMPONENT-VERSIONING.md) for details.
@@ -87,6 +85,7 @@ See [COMPONENT-VERSIONING.md](../COMPONENT-VERSIONING.md) for details.
 ### Available in packages/shared/components/
 
 **Section Components:**
+
 - `Hero` - Hero section with headline, CTA, image
 - `ContactBlock` - Contact form and info
 - `CTASection` - Call-to-action banner
@@ -98,6 +97,7 @@ See [COMPONENT-VERSIONING.md](../COMPONENT-VERSIONING.md) for details.
 - `Testimonials` - Customer testimonials
 
 **UI Components:**
+
 - `Button` - Primary/secondary buttons
 - `Card` - Content card
 - `Badge` - Status badge
@@ -106,6 +106,7 @@ See [COMPONENT-VERSIONING.md](../COMPONENT-VERSIONING.md) for details.
 - `Textarea` - Form textarea
 
 **Site Components:**
+
 - `Header` - Site header with navigation
 - `Footer` - Site footer
 - `Container` - Max-width container
@@ -122,6 +123,7 @@ npm run garage create garage-[name]
 ```
 
 This creates:
+
 - Site structure in `sites/garage-[name]/`
 - DE/FR/IT language routes
 - Example JSON content files
@@ -197,6 +199,7 @@ We use **component-level versioning** instead of package-level breaking changes:
 - **Old sites**: Never break by importing from `v1/`, `v2/` paths
 
 See:
+
 - [COMPONENT-VERSIONING.md](../COMPONENT-VERSIONING.md) - Full strategy
 - [VERSIONING-QUICK-REF.md](../VERSIONING-QUICK-REF.md) - Quick decision guide
 - [VERSIONING.md](../VERSIONING.md) - Changesets workflow
@@ -234,6 +237,7 @@ npm run changeset
 This is a **monorepo for multiple garage sites** that share components but have separate content. The component library uses versioning to ensure old sites never break, even years later. Each garage manages its own content in JSON files alongside their pages.
 
 When working here:
+
 - **Edit content**: Go to the specific garage site's JSON files
 - **Edit components**: Work in `packages/shared/components/`
 - **Breaking changes**: Create new version, keep old in `v1/`
