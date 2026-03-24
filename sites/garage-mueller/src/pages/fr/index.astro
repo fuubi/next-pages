@@ -4,16 +4,14 @@ import Hero from '@templates/hero/Classic.astro';
 import { getAlternateLanguageUrls } from '../../i18n/utils.ts';
 import content from './index.json';
 
-const alternateLanguages = getAlternateLanguageUrls('/', 'fr').map((alt: { lang: string; url: string }) => ({
-  lang: alt.lang,
-  url: `https://garage-mueller.ch${alt.url}`
-}));
+const alternateLanguages = getAlternateLanguageUrls('/', 'fr').map(
+  (alt: { lang: string; url: string }) => ({
+    lang: alt.lang,
+    url: `https://garage-mueller.ch${alt.url}`,
+  })
+);
 ---
 
-<BaseLayout 
-  title="Garage Mueller" 
-  lang="fr"
-  alternateLanguages={alternateLanguages}
->
+<BaseLayout title="Garage Mueller" lang="fr" alternateLanguages={alternateLanguages}>
   <Hero {...content.hero} />
 </BaseLayout>
