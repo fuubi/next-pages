@@ -251,10 +251,10 @@ Update your garage CLI to support version locking:
 
 ```bash
 # Create new site with latest components
-npm run cli create my-site
+npm run site create my-site
 
 # Create site locked to v1 components
-npm run cli create my-site --component-version=v1
+npm run site create my-site --component-version=v1
 ```
 
 This could generate imports like:

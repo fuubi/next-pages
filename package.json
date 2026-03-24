@@ -7,8 +7,9 @@
     "node": ">=25.0.0"
   },
   "scripts": {
-    "cli": "cd tools/cli && node --experimental-strip-types --experimental-detect-module src/index.ts",
-    "dev:cli": "cd tools/cli && npm install",
+    "postinstall": "chmod +x tools/cli/src/index.ts && ln -sf tools/cli/src/index.ts cli",
+    "cli": "node --experimental-strip-types --experimental-detect-module tools/cli/src/index.ts",
+    "site": "npm run cli",
     "validate": "npm run cli validate",
     "changeset": "changeset",
     "version": "changeset version",

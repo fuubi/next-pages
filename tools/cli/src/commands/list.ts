@@ -1,10 +1,10 @@
 import { existsSync, readdirSync, statSync, readFileSync } from 'fs';
 import { join } from 'path';
 import chalk from 'chalk';
+import { getWorkspaceRoot } from '../utils/workspace.ts';
 
 export async function listSites() {
-  // Get workspace root (CLI is in tools/cli, so go up 2 levels)
-  const workspaceRoot = join(process.cwd(), '..', '..');
+  const workspaceRoot = getWorkspaceRoot();
   const sitesDir = join(workspaceRoot, 'sites');
 
   if (!existsSync(sitesDir)) {

@@ -1,5 +1,5 @@
 {
-  "name": "Garage Sites Monorepo",
+  "name": "ColombaLink Client Sites",
   "build": {
     "dockerfile": "Dockerfile"
   },
@@ -19,7 +19,7 @@
       }
     }
   },
-  "postCreateCommand": "npm install",
+  "postCreateCommand": "npm install && sudo ln -sf /workspaces/next-pages/cli /usr/local/bin/cli",
   "forwardPorts": [4321],
   "portsAttributes": {
     "4321": {

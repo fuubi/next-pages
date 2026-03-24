@@ -119,7 +119,9 @@ See [COMPONENT-VERSIONING.md](../COMPONENT-VERSIONING.md) for details.
 ### To Create a New Garage Site
 
 ```bash
-npm run cli create garage-[name]
+cli create garage-[name]  # In dev container (globally available)
+# or
+./cli create garage-[name]  # Outside container
 ```
 
 This creates:
@@ -211,7 +213,7 @@ See:
 npm install
 
 # Create new garage site
-npm run cli create garage-name
+cli create garage-name  # In dev container (globally available)
 
 # Develop a garage site
 cd sites/example-client

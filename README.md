@@ -26,23 +26,25 @@ Multi-client website system with shared component library and component-level ve
 npm install
 ```
 
-### 2. Create a new garage site
+### 2. Create a new client site
 
 ```bash
-npm run cli create garage-mueller
+cli create my-site  # In dev container
+# or
+./cli create my-site  # Outside container
 ```
 
 This creates:
 
-- Site structure in `sites/garage-mueller/`
-- TypeScript-only configuration
-- Optimized for Swiss market (DE/FR/IT languages)
+- Site structure in `sites/my-site/`
+- TypeScript configuration
+- Multi-language support (configurable)
 
-### 3. Develop with worktrees (recommended)
+### 3. Develop with worktrees (optional)
 
 ```bash
-npm run cli create garage-mueller -- --worktree
-cd ../garage-mueller-work
+cli create my-site -- --worktree
+cd ../my-site-work
 npm install
 npm run dev
 ```
@@ -78,21 +80,28 @@ npm run release     # Publish packages
 ## CLI Commands
 
 ```bash
-# Create new site
-npm run cli create <name>
+# In dev container (globally available)
+cli create <name>
+cli list
+cli validate [site-name]
 
-# List all sites
-npm run cli list
+# Outside container
+./cli create <name>
+./cli list
+./cli validate [site-name]
+```
 
-# Validate site structure
-npm run cli validate [site-name]
+**Alternative:** Use `npm run cli` if you prefer:
+
+```bash
+npm run cli create my-site
 ```
 
 ## Monorepo Rules
 
 1. **TypeScript only** - No `.js` files allowed
 2. **Node v25+** - Uses native TS support
-3. **Naming convention** - Sites must be `garage-{name}`
+3. **Naming convention** - Sites can use any naming pattern (kebab-case recommended)
 4. **Content-driven** - Sites customize via `site.config.ts` and JSON content
 
 ## Development

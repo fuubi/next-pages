@@ -278,7 +278,7 @@ cd sites/existing-site
 find src -name "*.astro" -exec sed -i 's|/sections/|/sections/v1/|g' {} \;
 
 # Create new site (uses latest by default)
-npm run cli create new-site
+npm run site create new-site
 ```
 
 ## Summary

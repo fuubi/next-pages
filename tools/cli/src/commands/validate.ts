@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 import chalk from 'chalk';
+import { getWorkspaceRoot } from '../utils/workspace.ts';
 
 interface ValidationResult {
   site: string;
@@ -10,8 +11,7 @@ interface ValidationResult {
 }
 
 export async function validateSite(siteName?: string) {
-  // Get workspace root (CLI is in tools/cli, so go up 2 levels)
-  const workspaceRoot = join(process.cwd(), '..', '..');
+  const workspaceRoot = getWorkspaceRoot();
   const sitesDir = join(workspaceRoot, 'sites');
 
   if (!existsSync(sitesDir)) {

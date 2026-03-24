@@ -257,7 +257,7 @@ Create a test site to verify:
 
 ```bash
 # Create test site
-npm run cli create test-deprecation
+npm run site create test-deprecation
 
 cd sites/test-deprecation
 ```

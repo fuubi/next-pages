@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
+import { getWorkspaceRoot } from '../utils/workspace.ts';
 
 interface CreateOptions {
   name?: string;
@@ -22,8 +23,7 @@ export async function createSite(name: string, options: CreateOptions) {
       throw new Error('Site name must follow pattern: garage-{name} (lowercase, hyphens only)');
     }
 
-    // Get workspace root (CLI is in tools/cli, so go up 2 levels)
-    const workspaceRoot = join(process.cwd(), '..', '..');
+    const workspaceRoot = getWorkspaceRoot();
     const sitePath = join(workspaceRoot, 'sites', name);
 
     // Check if site already exists

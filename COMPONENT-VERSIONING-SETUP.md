@@ -305,10 +305,10 @@ Usage:
 
 ```bash
 # Create with latest (default)
-npm run cli create my-site
+npm run site create my-site
 
 # Create locked to v1
-npm run cli create my-site --component-version=v1
+npm run site create my-site --component-version=v1
 ```
 
 ## When to Create a New Version

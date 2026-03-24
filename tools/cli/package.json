@@ -7,10 +7,10 @@
     "node": ">=25.0.0"
   },
   "bin": {
-    "site-cli": "./src/index.ts"
+    "cli": "./src/index.ts"
   },
   "scripts": {
-    "site-cli": "node --experimental-strip-types --experimental-detect-module src/index.ts"
+    "cli": "node --experimental-strip-types --experimental-detect-module src/index.ts"
   },
   "dependencies": {
     "commander": "14.0.3",
