@@ -13,13 +13,13 @@ export async function validateSite(siteName?: string) {
   // Get workspace root (CLI is in tools/cli, so go up 2 levels)
   const workspaceRoot = join(process.cwd(), '..', '..');
   const sitesDir = join(workspaceRoot, 'sites');
-  
+
   if (!existsSync(sitesDir)) {
     console.error(chalk.red('✗ sites/ directory not found. Are you in the monorepo root?'));
     process.exit(1);
   }
 
-  const sitesToValidate = siteName 
+  const sitesToValidate = siteName
     ? [siteName]
     : readdirSync(sitesDir).filter(f => statSync(join(sitesDir, f)).isDirectory());
 
@@ -34,10 +34,10 @@ export async function validateSite(siteName?: string) {
   // Summary
   const validCount = results.filter(r => r.valid).length;
   const totalCount = results.length;
-  
+
   console.log('\n' + chalk.bold('Summary:'));
   console.log(`${validCount}/${totalCount} sites passed validation`);
-  
+
   if (validCount < totalCount) {
     process.exit(1);
   }
@@ -91,7 +91,7 @@ function checkForJsFiles(dir: string): boolean {
     for (const file of files) {
       const fullPath = join(dir, file);
       const stat = statSync(fullPath);
-      
+
       if (stat.isDirectory() && file !== 'node_modules' && file !== 'dist') {
         if (checkForJsFiles(fullPath)) return true;
       } else if (file.endsWith('.js') || file.endsWith('.jsx') || file.endsWith('.mjs')) {
@@ -106,7 +106,7 @@ function checkForJsFiles(dir: string): boolean {
 
 function printValidationResult(result: ValidationResult) {
   console.log('\n' + chalk.bold(`Site: ${result.site}`));
-  
+
   if (result.valid) {
     console.log(chalk.green('✓ All checks passed'));
   } else {

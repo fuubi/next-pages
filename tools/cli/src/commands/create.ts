@@ -25,14 +25,14 @@ export async function createSite(name: string, options: CreateOptions) {
     // Get workspace root (CLI is in tools/cli, so go up 2 levels)
     const workspaceRoot = join(process.cwd(), '..', '..');
     const sitePath = join(workspaceRoot, 'sites', name);
-    
+
     // Check if site already exists
     if (existsSync(sitePath)) {
       throw new Error(`Site ${name} already exists at ${sitePath}`);
     }
 
     spinner.text = 'Gathering site information...';
-    
+
     // Interactive prompts - only ask for missing information
     const answers: any = {
       businessName: options.name,
@@ -42,7 +42,7 @@ export async function createSite(name: string, options: CreateOptions) {
 
     if (!options.name || !options.domain) {
       const prompts = [];
-      
+
       if (!options.name) {
         prompts.push({
           type: 'input',
@@ -51,7 +51,7 @@ export async function createSite(name: string, options: CreateOptions) {
           validate: (input: string) => input.length > 0
         });
       }
-      
+
       if (!options.domain) {
         prompts.push({
           type: 'input',
@@ -60,7 +60,7 @@ export async function createSite(name: string, options: CreateOptions) {
           validate: (input: string) => /^[a-z0-9.-]+\.[a-z]{2,}$/.test(input)
         });
       }
-      
+
       if (!options.language) {
         prompts.push({
           type: 'list',
@@ -70,13 +70,13 @@ export async function createSite(name: string, options: CreateOptions) {
           default: 'de'
         });
       }
-      
+
       const responses = await inquirer.prompt(prompts);
       Object.assign(answers, responses);
     }
 
     spinner.text = 'Creating directory structure...';
-    
+
     // Create site structure
     createSiteStructure(sitePath, name, answers);
 
@@ -86,7 +86,7 @@ export async function createSite(name: string, options: CreateOptions) {
     }
 
     spinner.succeed(chalk.green(`✓ Site ${name} created successfully!`));
-    
+
     console.log('\n' + chalk.bold('Next steps:'));
     if (options.worktree) {
       console.log(chalk.cyan(`  cd ../${name}-work`));
@@ -95,7 +95,7 @@ export async function createSite(name: string, options: CreateOptions) {
     }
     console.log(chalk.cyan('  npm install'));
     console.log(chalk.cyan('  npm run dev'));
-    
+
   } catch (error) {
     spinner.fail(chalk.red('Failed to create site'));
     console.error(error instanceof Error ? error.message : error);
@@ -138,6 +138,11 @@ function createSiteStructure(sitePath: string, name: string, config: any) {
   writeFileSync(
     join(sitePath, 'astro.config.ts'),
     `import { defineConfig } from 'astro/config';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default defineConfig({
   output: 'static',
@@ -145,6 +150,14 @@ export default defineConfig({
   compressHTML: true,
   build: {
     inlineStylesheets: 'auto',
+  },
+  vite: {
+    resolve: {
+      alias: {
+        '@shared': resolve(__dirname, '../../packages/shared'),
+        '@templates': resolve(__dirname, '../../packages/templates'),
+      },
+    },
   },
 });
 `
@@ -159,9 +172,9 @@ export default defineConfig({
       type: 'module',
       private: true,
       scripts: {
-        dev: 'astro dev',
+        dev: 'astro dev --host',
         build: 'astro check && astro build',
-        preview: 'astro preview'
+        preview: 'astro preview --host'
       },
       dependencies: {
         astro: '^6.0.0',
@@ -219,17 +232,17 @@ import content from '../content/home.json';
 
 async function setupWorktree(name: string, sitePath: string) {
   const branchName = `site/${name}`;
-  
+
   // Create branch
   await execa('git', ['branch', branchName]);
-  
+
   // Create worktree
   const worktreePath = join(process.cwd(), '..', `${name}-work`);
   await execa('git', ['worktree', 'add', worktreePath, branchName]);
-  
+
   // Move site files to worktree
   await execa('mv', [sitePath, join(worktreePath, 'sites', name)]);
-  
+
   // Commit initial structure
   await execa('git', ['-C', worktreePath, 'add', '.']);
   await execa('git', ['-C', worktreePath, 'commit', '-m', `Initial setup for ${name}`]);

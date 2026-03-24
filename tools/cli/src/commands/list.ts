@@ -6,7 +6,7 @@ export async function listSites() {
   // Get workspace root (CLI is in tools/cli, so go up 2 levels)
   const workspaceRoot = join(process.cwd(), '..', '..');
   const sitesDir = join(workspaceRoot, 'sites');
-  
+
   if (!existsSync(sitesDir)) {
     console.error(chalk.red('✗ sites/ directory not found'));
     return;
@@ -25,16 +25,16 @@ export async function listSites() {
   for (const site of sites) {
     const configPath = join(sitesDir, site, 'site.config.ts');
     let info = '';
-    
+
     if (existsSync(configPath)) {
       try {
         const content = readFileSync(configPath, 'utf-8');
         const domainMatch = content.match(/domain:\s*['"]([^'"]+)['"]/);
         const languageMatch = content.match(/language:\s*['"]([^'"]+)['"]/);
-        
+
         if (domainMatch) info += chalk.gray(` → ${domainMatch[1]}`);
         if (languageMatch) info += chalk.gray(` (${languageMatch[1]})`);
-      } catch {}
+      } catch { }
     }
 
     console.log(chalk.cyan(`  • ${site}`) + info);
