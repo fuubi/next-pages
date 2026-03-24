@@ -18,9 +18,6 @@
     "garage",
     "automotive"
   ],
-  "peerDependencies": {
-    "@garage-sites/shared": "workspace:*"
-  },
   "exports": {
     "./hero/*": "./hero/*",
     "./features/*": "./features/*",
