@@ -1,0 +1,10 @@
+{
+  "hero": {
+    "title": "Benvenuti al Garage Mueller",
+    "subtitle": "La vostra officina di fiducia",
+    "cta": {
+      "text": "Prenota appuntamento",
+      "href": "/it/contact"
+    }
+  }
+}

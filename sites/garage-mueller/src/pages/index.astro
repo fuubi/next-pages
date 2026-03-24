@@ -1,9 +1,5 @@
 ---
-import BaseLayout from '@shared/layouts/BaseLayout.astro';
-import Hero from '@templates/hero/Classic.astro';
-import content from '../content/home.json';
+// Redirect root to default language
+import { defaultLang } from '../i18n/utils.ts';
+return Astro.redirect(`/${defaultLang}/`);
 ---
-
-<BaseLayout title="Garage Mueller">
-  <Hero {...content.hero} />
-</BaseLayout>

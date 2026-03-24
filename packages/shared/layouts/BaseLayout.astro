@@ -9,6 +9,8 @@ export interface Props {
   description?: string;
   ogImage?: string;
   canonicalURL?: string;
+  lang?: string;
+  alternateLanguages?: Array<{ lang: string; url: string }>;
 }
 
 const {
@@ -16,6 +18,8 @@ const {
   description = 'Modern static marketing site built with Astro',
   ogImage,
   canonicalURL = Astro.url.href,
+  lang = 'en',
+  alternateLanguages = [],
 } = Astro.props;
 
 const siteTitle = title;
@@ -23,7 +27,7 @@ const siteDescription = description;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,11 +42,15 @@ const siteDescription = description;
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
 
+    <!-- Alternate Language URLs (hreflang) -->
+    {alternateLanguages.map((alt) => <link rel="alternate" hreflang={alt.lang} href={alt.url} />)}
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={siteTitle} />
     <meta property="og:description" content={siteDescription} />
+    <meta property="og:locale" content={lang} />
     {ogImage && <meta property="og:image" content={ogImage} />}
 
     <!-- Twitter -->

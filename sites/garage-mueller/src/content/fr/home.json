@@ -1,0 +1,10 @@
+{
+  "hero": {
+    "title": "Bienvenue chez Garage Mueller",
+    "subtitle": "Votre garage de confiance",
+    "cta": {
+      "text": "Prendre rendez-vous",
+      "href": "/fr/contact"
+    }
+  }
+}

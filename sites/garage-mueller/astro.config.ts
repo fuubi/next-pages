@@ -12,6 +12,13 @@ export default defineConfig({
   build: {
     inlineStylesheets: 'auto',
   },
+  i18n: {
+    defaultLocale: 'de',
+    locales: ['de', 'fr', 'it'],
+    routing: {
+      prefixDefaultLocale: true, // /de/ = German, /fr/ = French, /it/ = Italian
+    },
+  },
   vite: {
     resolve: {
       alias: {

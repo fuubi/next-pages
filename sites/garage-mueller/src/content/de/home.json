@@ -1,0 +1,10 @@
+{
+  "hero": {
+    "title": "Willkommen bei Garage Mueller",
+    "subtitle": "Ihre Autowerkstatt des Vertrauens",
+    "cta": {
+      "text": "Termin buchen",
+      "href": "/de/contact"
+    }
+  }
+}

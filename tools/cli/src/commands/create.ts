@@ -106,8 +106,13 @@ export async function createSite(name: string, options: CreateOptions) {
 function createSiteStructure(sitePath: string, name: string, config: any) {
   // Create directories
   mkdirSync(sitePath, { recursive: true });
-  mkdirSync(join(sitePath, 'src/content'), { recursive: true });
-  mkdirSync(join(sitePath, 'src/pages'), { recursive: true });
+  mkdirSync(join(sitePath, 'src/content/de'), { recursive: true });
+  mkdirSync(join(sitePath, 'src/content/fr'), { recursive: true });
+  mkdirSync(join(sitePath, 'src/content/it'), { recursive: true });
+  mkdirSync(join(sitePath, 'src/pages/de'), { recursive: true });
+  mkdirSync(join(sitePath, 'src/pages/fr'), { recursive: true });
+  mkdirSync(join(sitePath, 'src/pages/it'), { recursive: true });
+  mkdirSync(join(sitePath, 'src/i18n'), { recursive: true });
   mkdirSync(join(sitePath, 'public/images'), { recursive: true });
 
   // Create site.config.ts
@@ -150,6 +155,13 @@ export default defineConfig({
   compressHTML: true,
   build: {
     inlineStylesheets: 'auto',
+  },
+  i18n: {
+    defaultLocale: '${config.language}',
+    locales: ['de', 'fr', 'it'],
+    routing: {
+      prefixDefaultLocale: true,
+    },
   },
   vite: {
     resolve: {
@@ -202,28 +214,164 @@ export default defineConfig({
     }, null, 2)
   );
 
-  // Create basic content
+  // Create i18n utils
   writeFileSync(
-    join(sitePath, 'src/content/home.json'),
-    JSON.stringify({
-      hero: {
-        title: `Willkommen bei ${config.businessName}`,
-        subtitle: 'Ihre Autowerkstatt des Vertrauens',
-        cta: { text: 'Termin buchen', href: '/contact' }
-      }
-    }, null, 2)
+    join(sitePath, 'src/i18n/utils.ts'),
+    `import { createI18n } from '@shared/utils/i18n.ts';
+
+export const languages = {
+  de: 'Deutsch',
+  fr: 'Français',
+  it: 'Italiano',
+} as const;
+
+export type Language = keyof typeof languages;
+
+export const defaultLang: Language = '${config.language}';
+
+// Create i18n utilities with site configuration
+const i18n = createI18n(languages, defaultLang);
+
+// Re-export for convenience
+export const { getLangFromUrl, useTranslatedPath, getAlternateLanguageUrls } = i18n;
+
+// Site-specific content loader (must be local to resolve relative imports correctly)
+export async function getContent<T = any>(lang: Language, page: string): Promise<T> {
+  try {
+    const content = await import(\`../content/\${lang}/\${page}.json\`);
+    return content.default || content;
+  } catch (error) {
+    // Fallback to default language
+    if (lang !== defaultLang) {
+      return getContent(defaultLang, page);
+    }
+    throw error;
+  }
+}
+`
   );
 
-  // Create index page
+  // Create content for each language
+  const contentDe = {
+    hero: {
+      title: `Willkommen bei ${config.businessName}`,
+      subtitle: 'Ihre Autowerkstatt des Vertrauens',
+      cta: { text: 'Termin buchen', href: '/de/contact' }
+    }
+  };
+
+  const contentFr = {
+    hero: {
+      title: `Bienvenue chez ${config.businessName}`,
+      subtitle: 'Votre garage de confiance',
+      cta: { text: 'Prendre rendez-vous', href: '/fr/contact' }
+    }
+  };
+
+  const contentIt = {
+    hero: {
+      title: `Benvenuti al ${config.businessName}`,
+      subtitle: 'La vostra officina di fiducia',
+      cta: { text: 'Prenota appuntamento', href: '/it/contact' }
+    }
+  };
+
+  writeFileSync(
+    join(sitePath, 'src/content/de/home.json'),
+    JSON.stringify(contentDe, null, 2)
+  );
+
+  writeFileSync(
+    join(sitePath, 'src/content/fr/home.json'),
+    JSON.stringify(contentFr, null, 2)
+  );
+
+  writeFileSync(
+    join(sitePath, 'src/content/it/home.json'),
+    JSON.stringify(contentIt, null, 2)
+  );
+
+  // Create root index page (redirects to default language)
   writeFileSync(
     join(sitePath, 'src/pages/index.astro'),
     `---
+// Redirect root to default language
+import { defaultLang } from '../i18n/utils.ts';
+return Astro.redirect(\`/\${defaultLang}/\`);
+---
+`
+  );
+
+  // Create German page
+  writeFileSync(
+    join(sitePath, 'src/pages/de/index.astro'),
+    `---
 import BaseLayout from '@shared/layouts/BaseLayout.astro';
 import Hero from '@templates/hero/Classic.astro';
-import content from '../content/home.json';
+import { getContent, getAlternateLanguageUrls } from '../../i18n/utils.ts';
+
+const content = await getContent('de', 'home');
+const alternateLanguages = getAlternateLanguageUrls('/', 'de').map((alt: { lang: string; url: string }) => ({
+  lang: alt.lang,
+  url: \`https://${config.domain}\${alt.url}\`
+}));
 ---
 
-<BaseLayout title="${config.businessName}">
+<BaseLayout 
+  title="${config.businessName}" 
+  lang="de"
+  alternateLanguages={alternateLanguages}
+>
+  <Hero {...content.hero} />
+</BaseLayout>
+`
+  );
+
+  // Create French page
+  writeFileSync(
+    join(sitePath, 'src/pages/fr/index.astro'),
+    `---
+import BaseLayout from '@shared/layouts/BaseLayout.astro';
+import Hero from '@templates/hero/Classic.astro';
+import { getContent, getAlternateLanguageUrls } from '../../i18n/utils.ts';
+
+const content = await getContent('fr', 'home');
+const alternateLanguages = getAlternateLanguageUrls('/', 'fr').map((alt: { lang: string; url: string }) => ({
+  lang: alt.lang,
+  url: \`https://${config.domain}\${alt.url}\`
+}));
+---
+
+<BaseLayout 
+  title="${config.businessName}" 
+  lang="fr"
+  alternateLanguages={alternateLanguages}
+>
+  <Hero {...content.hero} />
+</BaseLayout>
+`
+  );
+
+  // Create Italian page
+  writeFileSync(
+    join(sitePath, 'src/pages/it/index.astro'),
+    `---
+import BaseLayout from '@shared/layouts/BaseLayout.astro';
+import Hero from '@templates/hero/Classic.astro';
+import { getContent, getAlternateLanguageUrls } from '../../i18n/utils.ts';
+
+const content = await getContent('it', 'home');
+const alternateLanguages = getAlternateLanguageUrls('/', 'it').map((alt: { lang: string; url: string }) => ({
+  lang: alt.lang,
+  url: \`https://${config.domain}\${alt.url}\`
+}));
+---
+
+<BaseLayout 
+  title="${config.businessName}" 
+  lang="it"
+  alternateLanguages={alternateLanguages}
+>
   <Hero {...content.hero} />
 </BaseLayout>
 `
