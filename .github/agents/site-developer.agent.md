@@ -61,7 +61,7 @@ Import in `.astro` files:
 ```astro
 ---
 import content from './index.json';
-import Hero from '@shared/components/sections/Hero.astro';
+import Hero from '@shared/components/sections/Hero/v1/Hero.astro';
 ---
 
 <Hero title={content.hero.title} />
@@ -69,17 +69,19 @@ import Hero from '@shared/components/sections/Hero.astro';
 
 ### Using Shared Components
 
-Always import from aliases:
+All components MUST be imported from explicit version folders:
 
 ```astro
-import Hero from '@shared/components/sections/Hero.astro'; import Button from
-'@shared/components/ui/Button.astro'; import BaseLayout from '@shared/layouts/BaseLayout.astro';
+import Hero from '@shared/components/sections/Hero/v1/Hero.astro'; import Button from
+'@shared/components/ui/Button/v1/Button.astro'; import BaseLayout from '@shared/layouts/BaseLayout.astro';
 ```
 
-If a site needs a locked version (to avoid breaking changes):
+**Critical**: There is NO "latest" version - always import from explicit versions (v1/, v2/, etc.) to ensure long-term stability.
+
+If upgrading to a newer version:
 
 ```astro
-import Hero from '@shared/components/sections/v1/Hero.astro';
+import Hero from '@shared/components/sections/Hero/v2/Hero.astro';
 ```
 
 ## Development Workflow

@@ -54,11 +54,18 @@ npm run changeset
 Fixed button hover state in dark mode
 ```
 
-## Example 3: Breaking Change
+## Example 3: Breaking Change (Component Versioning)
 
-Renamed the `Hero` component's `title` prop to `heading`:
+Adding a new version of the `Hero` component with renamed props:
 
 ```bash
+# First, create the new version
+mkdir -p packages/shared/components/sections/Hero/v2
+cp packages/shared/components/sections/Hero/v1/Hero.astro packages/shared/components/sections/Hero/v2/Hero.astro
+
+# Edit v2/Hero.astro with breaking changes
+
+# Then create changeset
 npm run changeset
 ```
 
@@ -66,23 +73,28 @@ npm run changeset
 
 ```
 🦋  What kind of change is this?
-● major (breaking)
-○ minor (feature)
+○ major (breaking)
+● minor (feature)  ← YES, minor! We use component-level versioning
 ○ patch (fix)
 
 🦋  Please enter a summary:
-BREAKING: Renamed Hero component 'title' prop to 'heading'
+Added Hero v2 with renamed props (title→heading). v1 remains at Hero/v1/
 ```
 
 **Generated changeset:**
 
 ```markdown
 ---
-'@colombalink/shared': major
+'@colombalink/shared': minor
 ---
 
-BREAKING: Renamed Hero component 'title' prop to 'heading'. Update all usages from `<Hero title="...">` to `<Hero heading="...">`
+Added Hero v2 with renamed props. Breaking changes: 'title' prop renamed to 'heading'.
+
+v1 remains available at Hero/v1/ for legacy sites.
+Migration: Update imports from Hero/v1/ to Hero/v2/ and change props.
 ```
+
+**Key point**: With component-level versioning, breaking changes to components are MINOR bumps because old versions remain available.
 
 ## Example 4: Multiple Packages
 

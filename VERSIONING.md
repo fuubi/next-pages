@@ -16,17 +16,20 @@ We use **component-level versioning** to support long-running client sites that 
 
 ### Component-Level Versioning (Primary Strategy)
 
-Instead of removing or breaking components, we keep all versions available through versioned import paths:
+Instead of removing or breaking components, we keep all versions available through versioned import paths.
+
+**Critical rule**: There is NO "latest" version - all components exist ONLY in explicit version folders.
 
 ```astro
-// Latest version (actively maintained sites) import Hero from
-'@colombalink/shared/components/sections/Hero.astro'; // Locked version (legacy sites that
-shouldn't be touched) import Hero from '@colombalink/shared/components/sections/v1/Hero.astro';
+// Current version (explicit) import Hero from
+'@colombalink/shared/components/sections/Hero/v1/Hero.astro'; // Newer version (sites opt-in when
+ready) import Hero from '@colombalink/shared/components/sections/Hero/v2/Hero.astro';
 ```
 
 **This means:**
 
 - Old sites **never break** - they import from `v1/`, `v2/`, etc.
+- Sites **explicitly choose** which version to use - no accidental upgrades
 - Most version bumps are **MINOR** (new component versions added)
 - **MAJOR** bumps are rare (only for fundamental package changes)
 

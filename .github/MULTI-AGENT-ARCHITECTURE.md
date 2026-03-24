@@ -198,23 +198,24 @@ Agents cannot directly communicate. Instead, they work through:
 
 ### 1. Shared Dependencies
 
-Sites import components from `@shared`:
+Sites import components from `@shared` with explicit versions:
 
 ```astro
-import Hero from '@shared/components/sections/Hero.astro';
+import Hero from '@shared/components/sections/Hero/v1/Hero.astro';
 ```
 
-When Component Library agent updates `Hero.astro`, sites automatically see changes on next build/refresh.
+When Component Library agent updates a component version, sites using that version automatically see changes on next build/refresh.
 
 ### 2. Versioned Imports
 
-Sites can lock to specific versions:
+All imports MUST specify explicit versions - there is NO "latest" version:
 
 ```astro
-import Hero from '@shared/components/sections/v1/Hero.astro';
+// Current version import Hero from '@shared/components/sections/Hero/v1/Hero.astro'; // Upgrade to
+newer version when ready import Hero from '@shared/components/sections/Hero/v2/Hero.astro';
 ```
 
-This prevents breaking changes from affecting legacy sites.
+This guarantees breaking changes never affect sites until they explicitly opt-in to new versions.
 
 ### 3. File System State
 

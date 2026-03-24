@@ -11,9 +11,9 @@
 └────────────┬────────────────────────────────────────────┘
              │
         ┌────┴────┐
-        │   NO    │  → Edit latest component directly
+        │   NO    │  → Edit component in current version folder
         │         │    Changeset: PATCH or MINOR
-        │         │    Example: Add optional prop, fix bug
+        │         │    Example: Add optional prop, fix bug in v1/
         └─────────┘
              
         ┌────┴────┐
@@ -29,10 +29,10 @@
    └────┬─────┘                               └──────┬──────┘
         │                                            │
         │ CREATE NEW VERSION                         │ TRADITIONAL DEPRECATION
-        │ 1. Keep old in v1/                         │ 1. Mark as @deprecated
-        │ 2. Update latest                           │ 2. Wait 1-2 versions
-        │ 3. Changeset: MINOR                        │ 3. Remove in MAJOR
-        │                                            │ 4. Changeset: varies
+        │ 1. Copy from v1/ to v2/                    │ 1. Mark as @deprecated
+        │ 2. Edit v2/ with changes                   │ 2. Wait 1-2 versions
+        │ 3. v1/ stays frozen                        │ 3. Remove in MAJOR
+        │ 4. Changeset: MINOR                        │ 4. Changeset: varies
         │                                            │
         └────────────────────────────────────────────┘
 ```
@@ -41,27 +41,27 @@
 
 | Change Type | Component | Utility/API | Version Bump |
 |-------------|-----------|-------------|--------------|
-| Add optional prop | Edit latest | Edit in place | MINOR |
-| Fix bug | Edit latest | Edit in place | PATCH |
-| Add new feature | Edit latest | Edit in place | MINOR |
-| Rename prop | Create v2, keep v1 | Deprecate | MINOR (component) / MAJOR (util) |
-| Remove prop | Create v2, keep v1 | Deprecate | MINOR (component) / MAJOR (util) |
-| Change prop type | Create v2, keep v1 | Deprecate | MINOR (component) / MAJOR (util) |
-| Restructure | Create v2, keep v1 | Deprecate | MINOR (component) / MAJOR (util) |
+| Add optional prop | Edit current version | Edit in place | MINOR |
+| Fix bug | Edit current version | Edit in place | PATCH |
+| Add new feature | Edit current version | Edit in place | MINOR |
+| Rename prop | Create new version | Deprecate | MINOR (component) / MAJOR (util) |
+| Remove prop | Create new version | Deprecate | MINOR (component) / MAJOR (util) |
+| Change prop type | Create new version | Deprecate | MINOR (component) / MAJOR (util) |
+| Restructure | Create new version | Deprecate | MINOR (component) / MAJOR (util) |
 
 ## Import Patterns
 
-### For Components
+### For Components (ALL imports MUST specify version)
 
 ```astro
-// ✅ Good: Latest (new/maintained sites)
-import Hero from '@colombalink/shared/components/sections/Hero.astro';
+// ✅ Good: Explicit version (current)
+import Hero from '@colombalink/shared/components/sections/Hero/v1/Hero.astro';
 
-// ✅ Good: Locked version (legacy sites)
-import Hero from '@colombalink/shared/components/sections/v1/Hero.astro';
+// ✅ Good: Explicit newer version (when upgrading)
+import Hero from '@colombalink/shared/components/sections/Hero/v2/Hero.astro';
 
-// ❌ Bad: Don't import from v2, v3 unless specifically needed
-// (Usually just use latest or lock to v1)
+// ❌ Bad: No "latest" exists
+import Hero from '@colombalink/shared/components/sections/Hero/Hero.astro';
 ```
 
 ### For Utilities
@@ -79,22 +79,23 @@ import { formatDate } from '@colombalink/shared/utils/index.ts';
 npm run changeset
 # Type: minor
 # Package: @colombalink/shared
-# Summary: Added optional 'variant' prop to Hero component
+# Summary: Added optional 'variant' prop to Hero v1 component
 ```
 
-No version folder needed - just edit latest.
+Edit the component in its version folder (e.g., v1/Hero.astro) directly.
 
 ### 2. Renaming Prop (Breaking for Components)
 
 ```bash
-# Keep v1/Hero.astro frozen
-# Update Hero.astro with new prop names
+# Keep Hero/v1/Hero.astro frozen
+# Create Hero/v2/ folder
+# Copy v1 to v2 and update with new prop names
 # Add version history comment
 
 npm run changeset
 # Type: minor (yes, minor!)
 # Package: @colombalink/shared
-# Summary: Hero v2: Renamed props from headline/text to heading/description. Legacy API at v1/Hero.astro
+# Summary: Hero v2: Renamed props from headline/text to heading/description. v1 remains at Hero/v1/
 ```
 
 ### 3. Renaming Utility Function (Breaking for Utils)
@@ -125,29 +126,39 @@ npm run changeset
 packages/shared/
   components/
     sections/
-      Hero.astro              # Latest version (actively edited)
-      ContactBlock.astro      # Latest version
-      v1/
-        Hero.astro            # Frozen - NEVER edit
-        ContactBlock.astro    # Frozen - NEVER edit
-      v2/                     # Created as needed
-        Hero.astro            # Frozen after creation
-        ContactBlock.astro    # Frozen after creation
+      Hero/
+        v1/
+          Hero.astro            # Frozen - NEVER edit
+        v2/                     # Created when breaking changes needed
+          Hero.astro            # Frozen after creation
+      ContactBlock/
+        v1/
+          ContactBlock.astro    # Frozen - NEVER edit
+    ui/
+      Button/
+        v1/
+          Button.astro
+    site/
+      Header/
+        v1/
+          Header.astro
   utils/
     index.ts                  # No versioning - use deprecation
     animations.ts             # No versioning - use deprecation
     i18n.ts                   # No versioning - use deprecation
 ```
 
+**Critical**: No component files at the root of component folders. All components ONLY in version folders.
+
 ## Real-World Scenarios
 
 ### Scenario 1: Bug Fix
 
-**Task:** Hero component has wrong padding
+**Task:** Hero v1 component has wrong padding
 
 ```bash
-# Just edit Hero.astro directly
-vim packages/shared/components/sections/Hero.astro
+# Edit v1/Hero.astro directly
+vim packages/shared/components/sections/Hero/v1/Hero.astro
 
 npm run changeset
 # Type: patch
@@ -158,10 +169,10 @@ npm run changeset
 
 ### Scenario 2: New Optional Feature
 
-**Task:** Add optional 'theme' prop to Button
+**Task:** Add optional 'theme' prop to Button v1
 
 ```astro
-<!-- Just edit Button.astro -->
+<!-- Edit Button/v1/Button.astro -->
 export interface Props {
   theme?: 'light' | 'dark';  // New optional prop
   // ... existing props
@@ -171,7 +182,7 @@ export interface Props {
 ```bash
 npm run changeset
 # Type: minor
-# Summary: Added optional theme prop to Button component
+# Summary: Added optional theme prop to Button v1 component
 ```
 
 **Result:** Backward compatible - old code still works
@@ -181,23 +192,25 @@ npm run changeset
 **Task:** Hero needs complete redesign with new props
 
 ```bash
-# Step 1: Ensure v1 exists (if not already)
-mkdir -p packages/shared/components/sections/v1
-cp packages/shared/components/sections/Hero.astro packages/shared/components/sections/v1/
+# Step 1: Create v2 folder
+mkdir -p packages/shared/components/sections/Hero/v2
 
-# Step 2: Update latest Hero.astro with new design
-vim packages/shared/components/sections/Hero.astro
+# Step 2: Copy v1 as starting point
+cp packages/shared/components/sections/Hero/v1/Hero.astro packages/shared/components/sections/Hero/v2/
+
+# Step 3: Update v2/Hero.astro with new design
+vim packages/shared/components/sections/Hero/v2/Hero.astro
 # Add version history comment
 
-# Step 3: Changeset
+# Step 4: Changeset
 npm run changeset
 # Type: minor
-# Summary: Hero v2: Complete redesign with new prop structure. Legacy v1 at v1/Hero.astro
+# Summary: Hero v2: Complete redesign with new prop structure. v1 remains at Hero/v1/
 ```
 
 **Result:** 
 - Old sites using v1 imports: Still work
-- New sites using latest: Get new design
+- New sites can choose v2: Get new design
 - Package version: 1.x.x → 1.y.0 (MINOR)
 
 ### Scenario 4: Breaking Utility Change

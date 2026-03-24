@@ -38,13 +38,17 @@ You manage:
 packages/shared/
   components/
     sections/          # Page sections (Hero, ContactBlock, etc.)
-      Hero.astro       # Latest version (unlocked)
-      v1/              # Locked version 1
-        Hero.astro
+      Hero/
+        v1/            # All components ONLY in version folders
+          Hero.astro
     ui/                # UI primitives (Button, Card, etc.)
-      Button.astro
+      Button/
+        v1/
+          Button.astro
     site/              # Site chrome (Header, Footer, etc.)
-      Header.astro
+      Header/
+        v1/
+          Header.astro
   layouts/
     BaseLayout.astro   # Base HTML structure
   styles/
@@ -61,6 +65,8 @@ packages/shared/
 This project uses **component-level versioning**, NOT package-level versioning.
 
 **Key principle**: Long-running client sites should never break, even years later.
+
+**Critical rule**: There is NO "latest" version - all components MUST exist ONLY in explicit version folders (v1/, v2/, etc.).
 
 #### When to Create a New Version
 
@@ -82,25 +88,27 @@ This project uses **component-level versioning**, NOT package-level versioning.
 
 #### Version Creation Process
 
-1. **Copy component to versioned folder**:
+1. **Create new versioned folder**:
 
    ```bash
-   mkdir -p packages/shared/components/sections/v2
-   cp packages/shared/components/sections/Hero.astro packages/shared/components/sections/v2/Hero.astro
+   mkdir -p packages/shared/components/sections/Hero/v2
+   cp packages/shared/components/sections/Hero/v1/Hero.astro packages/shared/components/sections/Hero/v2/Hero.astro
    ```
 
-2. **Make breaking changes to the latest version** (not the locked version)
+2. **Make breaking changes to the new version** (v2/)
 
-3. **Old sites keep using locked version**:
+3. **Old sites keep using v1**:
 
    ```astro
-   import Hero from '@shared/components/sections/v1/Hero.astro';
+   import Hero from '@shared/components/sections/Hero/v1/Hero.astro';
    ```
 
-4. **New sites use latest**:
+4. **New sites explicitly choose v2**:
    ```astro
-   import Hero from '@shared/components/sections/Hero.astro';
+   import Hero from '@shared/components/sections/Hero/v2/Hero.astro';
    ```
+
+**IMPORTANT**: Never create a component file outside of a version folder. All imports must specify explicit versions.
 
 ### Changesets Workflow
 
@@ -157,9 +165,9 @@ var(--text-xs) --text-sm) --text-base) --text-lg) --text-xl)
 ### Add New Component
 
 ```bash
-# Create component
-cd packages/shared/components/sections
-# Create NewComponent.astro
+# Create component in version folder
+mkdir -p packages/shared/components/sections/NewComponent/v1
+# Create packages/shared/components/sections/NewComponent/v1/NewComponent.astro
 
 # Export in package.json if needed
 # Test in a site
@@ -170,8 +178,8 @@ npm run changeset
 ### Fix Bug in Existing Component
 
 ```bash
-# This is non-breaking, edit in place
-# packages/shared/components/ui/Button.astro
+# This is non-breaking, edit in place within version folder
+# packages/shared/components/ui/Button/v1/Button.astro
 
 # Create patch changeset
 npm run changeset
@@ -181,12 +189,12 @@ npm run changeset
 ### Make Breaking Change
 
 ```bash
-# 1. Create locked version
-mkdir -p packages/shared/components/sections/v2
-cp packages/shared/components/sections/Hero.astro packages/shared/components/sections/v2/Hero.astro
+# 1. Create new version folder
+mkdir -p packages/shared/components/sections/Hero/v2
+cp packages/shared/components/sections/Hero/v1/Hero.astro packages/shared/components/sections/Hero/v2/Hero.astro
 
-# 2. Make breaking changes to latest version
-# Edit packages/shared/components/sections/Hero.astro
+# 2. Make breaking changes to new version (v2/)
+# Edit packages/shared/components/sections/Hero/v2/Hero.astro
 
 # 3. Document migration path
 # Add comments about v1 → v2 changes
@@ -196,6 +204,8 @@ npm run changeset
 # Select: minor (new feature — v2 variant available)
 # Describe: "Added v2 Hero with new prop structure"
 ```
+
+**Critical**: Sites continue using v1 until they explicitly update imports to v2.
 
 ### Update Design Tokens
 

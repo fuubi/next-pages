@@ -1,85 +1,90 @@
 # Component-Level Versioning Strategy
 
-For long-running client sites that you don't want to touch, we use **component-level versioning** instead of package-level breaking changes.
+For long-running client sites that you don't want to touch, we use **component-level versioning** with explicit version folders only.
 
 ## Philosophy
 
-**Never remove or break components.** Old sites stay working forever by importing from versioned paths.
+**Never remove or break components. No "latest" version.** All components exist ONLY in explicit version folders (v1/, v2/, etc.). Sites explicitly choose which version to use, preventing accidental breaking changes.
 
 ## Structure
 
 ```
 packages/shared/components/
   sections/
-    Hero.astro                    # Latest (default)
-    ContactBlock.astro            # Latest
-    v1/
-      Hero.astro                  # Original Hero - never changes
-      ContactBlock.astro          # Original ContactBlock
-    v2/
-      Hero.astro                  # Second iteration
-      ContactBlock.astro
+    Hero/
+      v1/
+        Hero.astro                  # Version 1 - never changes
+      v2/
+        Hero.astro                  # Version 2 - breaking changes from v1
+    ContactBlock/
+      v1/
+        ContactBlock.astro          # Only version, explicitly versioned
 ```
+
+**Critical rule**: No component files at the root of component folders. Only versioned subdirectories exist.
 
 ## Import Patterns
 
-### New Sites (Use Latest)
+### New Sites (Choose Explicit Version)
 
 ```astro
-import Hero from '@colombalink/shared/components/sections/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/Hero/v1/Hero.astro';
 ```
 
-### Lock to Specific Version
+### Upgrade to Newer Version
 
 ```astro
-import Hero from '@colombalink/shared/components/sections/v1/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/Hero/v2/Hero.astro';
 ```
 
-### Old Sites Keep Working
+### Old Sites Keep Working Forever
 
 ```astro
-// Site created in 2024 - still imports v1 import Hero from
-'@colombalink/shared/components/sections/v1/Hero.astro'; // Never breaks, even as we add v2, v3,
-etc.
+// Site created in 2024 - uses v1 import Hero from
+'@colombalink/shared/components/sections/Hero/v1/Hero.astro'; // Never breaks, even as we add v2,
+v3, etc.
 ```
 
 ## Workflow
 
 ### When Creating a Breaking Change
 
-Instead of updating Hero.astro, create a new version:
+Instead of updating Hero/v1/Hero.astro, create a new version:
 
 ```bash
-# Step 1: Move current version to versioned folder (if not already done)
-mkdir -p packages/shared/components/sections/v1
-cp packages/shared/components/sections/Hero.astro packages/shared/components/sections/v1/
+# Step 1: Create new version folder
+mkdir -p packages/shared/components/sections/Hero/v2
 
-# Step 2: Update the main Hero.astro with breaking changes
-# Edit packages/shared/components/sections/Hero.astro
+# Step 2: Copy existing version as starting point
+cp packages/shared/components/sections/Hero/v1/Hero.astro packages/shared/components/sections/Hero/v2/
 
-# Step 3: Add note in main component
+# Step 3: Make breaking changes to v2
+# Edit packages/shared/components/sections/Hero/v2/Hero.astro
+
+# Step 4: Add version documentation
 ```
 
 ```astro
 ---
 /**
- * Hero Component (Latest)
+ * Hero Component v2
  *
- * Version History:
- * - v2 (current): Changed props from headline/text to heading/description
- * - v1: Original version at v1/Hero.astro
+ * Breaking changes from v1:
+ * - Changed props from headline/text to heading/description
+ * - Added new responsive prop
  *
- * For legacy sites, import from:
- * '@colombalink/shared/components/sections/v1/Hero.astro'
+ * For v1, import from:
+ * '@colombalink/shared/components/sections/Hero/v1/Hero.astro'
  */
 
 export interface Props {
-  heading: string; // New prop name
-  description?: string; // New prop name
+  heading: string; // Was 'headline' in v1
+  description?: string; // Was 'text' in v1
+  responsive?: boolean; // New prop
 }
 ---
 
-<!-- packages/shared/components/sections/Hero.astro -->
+<!-- packages/shared/components/sections/Hero/v2/Hero.astro -->
 ```
 
 ### Changesets for This Approach
@@ -89,7 +94,7 @@ export interface Props {
 ```bash
 npm run changeset
 # Type: minor (not major!)
-# Summary: "Added Hero v2 with improved prop names (heading/description). Legacy v1 available at v1/Hero.astro"
+# Summary: "Added Hero v2 with improved prop names (heading/description). v1 remains available."
 ```
 
 **MAJOR bumps only for:**
@@ -105,8 +110,12 @@ npm run changeset
 ```
 v1.0.0
 components/sections/
-  Hero.astro
-  ContactBlock.astro
+  Hero/
+    v1/
+      Hero.astro
+  ContactBlock/
+    v1/
+      ContactBlock.astro
 ```
 
 ### Phase 2: Breaking Change Needed (MINOR!)
@@ -114,11 +123,14 @@ components/sections/
 ```
 v1.5.0  (MINOR, not MAJOR!)
 components/sections/
-  Hero.astro                 # Updated with breaking changes
-  ContactBlock.astro
-  v1/
-    Hero.astro               # Original preserved
-    ContactBlock.astro
+  Hero/
+    v1/
+      Hero.astro               # Original preserved
+    v2/
+      Hero.astro               # New version with breaking changes
+  ContactBlock/
+    v1/
+      ContactBlock.astro
 ```
 
 **Changeset:**
@@ -128,17 +140,17 @@ components/sections/
 '@colombalink/shared': minor
 ---
 
-Added Hero v2 with improved prop names. Original Hero preserved at v1/Hero.astro for legacy sites.
+Added Hero v2 with improved prop names. v1 remains available for legacy sites.
 
-Breaking changes in latest Hero:
+Breaking changes in v2:
 
 - `headline` → `heading`
 - `text` → `description`
 
 Migration:
 
-- New sites: Use default import (gets latest)
-- Existing sites: No action needed (already using v1 path or lock to v1)
+- New sites: Import from v2 path
+- Existing sites: No action needed (continue using v1 path)
 ```
 
 ### Phase 3: Another Breaking Change (Still MINOR!)
@@ -146,11 +158,36 @@ Migration:
 ```
 v1.8.0  (MINOR)
 components/sections/
-  Hero.astro                 # Newest version
-  v1/
-    Hero.astro               # Original
-  v2/
-    Hero.astro               # Previous version moved here
+  Hero/
+    v1/
+      Hero.astro               # Original
+    v2/
+      Hero.astro               # Second iteration
+    v3/
+      Hero.astro               # Latest iteration
+  ContactBlock/
+    v1/
+      ContactBlock.astro
+```
+
+**Changeset:**
+
+```markdown
+---
+'@colombalink/shared': minor
+---
+
+Added Hero v3 with variant support. v1 and v2 remain available.
+
+New features in v3:
+
+- Added `variant` prop (default, centered, split)
+- Improved animations
+
+Migration:
+
+- New sites: Import from v3 path if needed
+- v1/v2 sites: No action needed
 ```
 
 ### Phase 4: Optional Cleanup After Years (MAJOR)
@@ -158,12 +195,12 @@ components/sections/
 ```
 v2.0.0  (MAJOR - but rare!)
 components/sections/
-  Hero.astro                 # Latest (was v3)
-  v2/
-    Hero.astro               # Keep recent versions
-  v3/
-    Hero.astro
-  # Removed v1 after 5+ years and confirmation no sites use it
+  Hero/
+    v2/
+      Hero.astro               # Keep recent versions
+    v3/
+      Hero.astro
+  # Removed v1/ after 5+ years and confirmation no sites use it
 ```
 
 ## Package.json Structure
@@ -173,10 +210,11 @@ components/sections/
   "name": "@colombalink/shared",
   "version": "1.8.5",
   "exports": {
-    "./components/sections/*": "./components/sections/*",
-    "./components/sections/v1/*": "./components/sections/v1/*",
-    "./components/sections/v2/*": "./components/sections/v2/*",
-    "./components/ui/*": "./components/ui/*",
+    "./components/sections/*/v1/*": "./components/sections/*/v1/*",
+    "./components/sections/*/v2/*": "./components/sections/*/v2/*",
+    "./components/sections/*/v3/*": "./components/sections/*/v3/*",
+    "./components/ui/*/v1/*": "./components/ui/*/v1/*",
+    "./components/site/*/v1/*": "./components/site/*/v1/*",
     "./layouts/*": "./layouts/*",
     "./styles/*": "./styles/*",
     "./utils/*": "./utils/*"
@@ -186,50 +224,43 @@ components/sections/
 
 ## Client Site Lock Patterns
 
-### Option 1: Explicit Version Locking (Recommended for Long-Running Sites)
+### Explicit Version Imports (Required for All Sites)
 
 ```astro
 <!-- sites/example-client/src/pages/index.astro -->import Hero from
-'@colombalink/shared/components/sections/v1/Hero.astro'; import ContactBlock from
-'@colombalink/shared/components/sections/v1/ContactBlock.astro';
+'@colombalink/shared/components/sections/Hero/v1/Hero.astro'; import ContactBlock from
+'@colombalink/shared/components/sections/ContactBlock/v1/ContactBlock.astro';
 
 <!-- This site will NEVER break, even 10 years later -->
 <Hero headline="Welcome" text="..." />
 ```
 
-### Option 2: Latest Version (For Actively Maintained Sites)
+### Upgrade to Newer Version When Ready
 
 ```astro
 <!-- sites/another-client/src/pages/index.astro -->import Hero from
-'@colombalink/shared/components/sections/Hero.astro';
+'@colombalink/shared/components/sections/Hero/v2/Hero.astro';
 
-<!-- Gets latest - they actively update their code -->
+<!-- Explicitly upgraded to v2 when ready -->
 <Hero heading="Welcome" description="..." />
 ```
 
-### Option 3: Mixed Approach
+### Mixed Versions (Different Components)
 
 ```astro
-<!-- Use latest for some, locked versions for others -->import Hero from
-'@colombalink/shared/components/sections/Hero.astro'; // Latest import ContactBlock from
-'@colombalink/shared/components/sections/v1/ContactBlock.astro'; // Locked
+<!-- Use different versions for different components -->import Hero from
+'@colombalink/shared/components/sections/Hero/v2/Hero.astro'; import ContactBlock from
+'@colombalink/shared/components/sections/ContactBlock/v1/ContactBlock.astro';
 ```
 
 ## Documentation in Components
 
-Each latest component should document its version history:
+Each component version should document its breaking changes:
 
 ````astro
 ---
 /**
- * Hero Component
- *
- * @version 3 (current)
- *
- * Version History:
- * - v3 (current): Added variant prop, improved animations
- * - v2: Changed prop names (headline→heading, text→description) [at v2/Hero.astro]
- * - v1: Original version [at v1/Hero.astro]
+ * Hero Component v3
  *
  * Breaking Changes from v2:
  * - Added required `variant` prop (default: 'default')
@@ -240,27 +271,29 @@ Each latest component should document its version history:
  * + <Hero heading="..." variant="default" />
  * ```
  *
- * For legacy sites: Import from v1/ or v2/ subdirectories
+ * For previous versions:
+ * - v2: Import from ../v2/Hero.astro
+ * - v1: Import from ../v1/Hero.astro
  */
 ---
 ````
 
 ## CLI Integration
 
-Update your garage CLI to support version locking:
+Update your garage CLI to support version selection:
 
 ```bash
-# Create new site with latest components
+# Create new site with v1 components
 npm run site create my-site
 
-# Create site locked to v1 components
+# Generate imports with explicit versions
 npm run site create my-site --component-version=v1
 ```
 
-This could generate imports like:
+This generates imports like:
 
 ```astro
-import Hero from '@colombalink/shared/components/sections/v1/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/Hero/v1/Hero.astro';
 ```
 
 ## Real-World Example
@@ -270,45 +303,42 @@ import Hero from '@colombalink/shared/components/sections/v1/Hero.astro';
 **Initial setup (2024):**
 
 ```astro
-import Hero from '@colombalink/shared/components/sections/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/Hero/v1/Hero.astro';
 <Hero headline="Welcome" />
 ```
 
 **You add v2 (2025) - Their site keeps working:**
 
 - Package bumps v1.0.0 → v1.5.0 (MINOR)
-- Their imports still work because v1/Hero.astro is preserved
-- Or they were already using the default path, and it still works because Hero.astro is backward compatible initially
+- Their imports still work because they explicitly use v1/Hero.astro
+- v1/Hero.astro is NEVER modified
 
 **You add v3 (2026) - Site still works:**
 
 - Package bumps v1.5.0 → v1.8.0 (MINOR)
-- Hero.astro gets breaking changes
-- v2/Hero.astro has the old version
+- v3/Hero.astro created with breaking changes
+- v2/Hero.astro preserved
 - v1/Hero.astro stays untouched
 - Example Client never breaks
 
 ### Scenario: New Another Client (Created 2026)
 
 ```astro
-import Hero from '@colombalink/shared/components/sections/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/Hero/v3/Hero.astro';
 <Hero heading="Welcome" variant="default" />
 ```
 
-Gets latest by default, but you can lock them:
-
-```astro
-import Hero from '@colombalink/shared/components/sections/v3/Hero.astro';
-```
+Explicitly uses v3, can upgrade to v4 when available by changing import path.
 
 ## Benefits
 
-✅ **Old sites never break** - They import from v1/, v2/, etc.  
-✅ **No forced migrations** - Clients update when ready  
+✅ **Old sites never break** - They import from v1/, v2/, etc. with explicit paths  
+✅ **No forced migrations** - Clients update when ready by changing import path  
+✅ **No accidental upgrades** - All versions are explicit, no "latest" to surprise you  
 ✅ **Mostly MINOR bumps** - Rarely need MAJOR versions  
 ✅ **Easy rollback** - Just change import path  
 ✅ **Clear history** - Version folders document evolution  
-✅ **Gradual adoption** - Mix old and new components
+✅ **Gradual adoption** - Mix old and new component versions
 
 ## Drawbacks & Solutions
 
@@ -338,21 +368,22 @@ Client must update code when upgrading package.
 ### Component-Level Versioning
 
 ```
-v1.0.0: Hero with headline prop
-v1.5.0: Hero with heading prop + v1/Hero preserved
-v1.8.0: Hero with new features + v1/Hero and v2/Hero preserved
+v1.0.0: Hero/v1/Hero.astro with headline prop
+v1.5.0: Hero/v2/Hero.astro with heading prop + Hero/v1/ preserved
+v1.8.0: Hero/v3/Hero.astro with new features + Hero/v1/ and Hero/v2/ preserved
 ```
 
-Client can upgrade package anytime, code never breaks.
+Client can upgrade package anytime, imports never break because they use explicit version paths.
 
 ## Implementation Checklist
 
-- [ ] Update package.json exports to include versioned paths
-- [ ] Create initial v1/ folders for current components
-- [ ] Add version history docs to each component
+- [x] Update package.json exports to include versioned paths
+- [x] Create v1/ folders for all components (only versioned files exist)
+- [x] Remove all "latest" component files from root of component folders
+- [x] Add version history docs to each component
 - [ ] Update CLI to support --component-version flag
-- [ ] Create migration guide showing import path patterns
-- [ ] Update CHANGELOG to explain versioning strategy
+- [x] Create migration guide showing import path patterns
+- [x] Update CHANGELOG to explain versioning strategy
 - [ ] Document which version each client site uses (internal tracking)
 
 ## File Structure After Implementation
@@ -361,10 +392,34 @@ Client can upgrade package anytime, code never breaks.
 packages/shared/
   components/
     sections/
-      Hero.astro                    # Latest (v3)
-      ContactBlock.astro            # Latest (v2)
-      FeatureGrid.astro             # Latest (v1)
-      v1/
+      Hero/
+        v1/
+          Hero.astro
+        v2/
+          Hero.astro
+        v3/
+          Hero.astro
+      ContactBlock/
+        v1/
+          ContactBlock.astro
+        v2/
+          ContactBlock.astro
+      FeatureGrid/
+        v1/
+          FeatureGrid.astro
+    ui/
+      Button/
+        v1/
+          Button.astro
+      Card/
+        v1/
+          Card.astro
+    site/
+      Header/
+        v1/
+          Header.astro
+      Footer/
+        v1/
         Hero.astro                  # Frozen - original
         ContactBlock.astro          # Frozen - original
         FeatureGrid.astro           # Frozen - original
