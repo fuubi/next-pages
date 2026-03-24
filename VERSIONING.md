@@ -2,41 +2,66 @@
 
 This monorepo uses [Changesets](https://github.com/changesets/changesets) for semantic versioning and changelog management.
 
+> **Quick Start:** See [VERSIONING-QUICK-REF.md](VERSIONING-QUICK-REF.md) for a decision tree and examples.
+
 ## Overview
 
 - **@garage-sites/shared** - Core UI components and utilities
 - **@garage-sites/templates** - Template components
 - **Sites** (garage-mueller, etc.) - Consumer applications (not versioned/published)
 
+## Versioning Strategy
+
+We use **component-level versioning** to support long-running client sites that should never break.
+
+### Component-Level Versioning (Primary Strategy)
+
+Instead of removing or breaking components, we keep all versions available through versioned import paths:
+
+```astro
+// Latest version (actively maintained sites) import Hero from
+'@garage-sites/shared/components/sections/Hero.astro'; // Locked version (legacy sites that
+shouldn't be touched) import Hero from '@garage-sites/shared/components/sections/v1/Hero.astro';
+```
+
+**This means:**
+
+- Old sites **never break** - they import from `v1/`, `v2/`, etc.
+- Most version bumps are **MINOR** (new component versions added)
+- **MAJOR** bumps are rare (only for fundamental package changes)
+
+**See [COMPONENT-VERSIONING.md](COMPONENT-VERSIONING.md) for complete details.**
+
 ## Semantic Versioning Rules
 
-Follow [semver](https://semver.org/) principles:
+With component-level versioning, the rules change:
 
-- **MAJOR** (1.0.0 → 2.0.0): Breaking changes that require consumers to update their code
-- **MINOR** (1.0.0 → 1.1.0): New features that are backward compatible
-- **PATCH** (1.0.0 → 1.0.1): Bug fixes and minor improvements
+- **MAJOR** (1.0.0 → 2.0.0): Rare - only for removing very old versions (5+ years), changing build system, or peer dependencies
+- **MINOR** (1.0.0 → 1.1.0): New features, new component versions (even with breaking API changes at component level)
+- **PATCH** (1.0.0 → 1.0.1): Bug fixes to existing components
 
-### Breaking Changes Examples
+### What Triggers Version Bumps
 
-- Removing or renaming a component
-- Changing component prop names or types
-- Removing exported utilities
-- Changing CSS class names that consumers rely on
-- Modifying public API signatures
-
-### New Features Examples
+#### MINOR (Most Common)
 
 - Adding new components
-- Adding new optional props to existing components
-- Adding new utility functions
-- New CSS variables or classes (non-breaking)
+- Creating new version of existing component (even with breaking changes)
+- Adding optional props to existing components
+- New utilities or styles
 
-### Bug Fixes Examples
+#### PATCH
 
-- Fixing component rendering issues
-- Correcting TypeScript types
-- Fixing accessibility issues
-- Performance improvements (non-breaking)
+- Bug fixes in existing components
+- TypeScript type corrections
+- Performance improvements
+- Accessibility fixes
+
+#### MAJOR (Rare)
+
+- Removing versioned component folders after 5+ years
+- Changing peer dependencies (Astro version, etc.)
+- Fundamental build system changes
+- Removing entire feature sets
 
 ## Workflow
 
@@ -221,6 +246,46 @@ npx changeset pre exit
 | `npx changeset status`              | Check which packages have unpublished changes |
 | `npx changeset status --since=main` | Check changes since main branch               |
 
+## Deprecating Components
+
+**IMPORTANT:** With multiple clients using your components, you cannot simply remove or rename components without breaking their sites.
+
+### Safe Deprecation Process
+
+1. **Mark as deprecated (MINOR)** - Add `@deprecated` JSDoc, keep it working
+2. **Wait 1-2 major versions** - Give clients 3-6 months to migrate
+3. **Remove in MAJOR version** - Only after sufficient warning
+
+### Example: Renaming Hero → HeroSection
+
+```astro
+---
+/**
+ * @deprecated Use HeroSection instead. Will be removed in v3.0.0
+ * Migration: Replace title prop with heading
+ */
+import HeroSection from './HeroSection.astro';
+---
+
+<!-- v1.9.0: Deprecate (MINOR) --><!-- Hero.astro -->
+<HeroSection {...Astro.props} />
+```
+
+```bash
+# v1.9.0
+npm run changeset
+# Type: minor
+# Summary: "Deprecated Hero component. Use HeroSection instead. Will be removed in v3.0.0"
+
+# v2.0.0 - Keep both components (no removal yet)
+# v3.0.0 - Remove Hero (MAJOR breaking change)
+npm run changeset
+# Type: major
+# Summary: "BREAKING: Removed deprecated Hero component"
+```
+
+**See [DEPRECATION-GUIDE.md](DEPRECATION-GUIDE.md) for complete strategies and patterns.**
+
 ## Best Practices
 
 1. **Always create changesets** - Don't manually edit package.json versions
@@ -229,6 +294,8 @@ npx changeset pre exit
 4. **Test before publishing** - Use pre-releases for major changes
 5. **Review CHANGELOGs** - Check generated changelogs before publishing
 6. **Coordinate breaking changes** - Communicate major version bumps with clients
+7. **Never remove components immediately** - Always deprecate first (see [DEPRECATION-GUIDE.md](DEPRECATION-GUIDE.md))
+8. **Give migration time** - Wait 3-6 months before removing deprecated features
 
 ## Migration for Existing Clients
 

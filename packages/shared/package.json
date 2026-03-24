@@ -20,6 +20,8 @@
   ],
   "exports": {
     "./components/*": "./components/*",
+    "./components/*/v1/*": "./components/*/v1/*",
+    "./components/*/v2/*": "./components/*/v2/*",
     "./layouts/*": "./layouts/*",
     "./styles/*": "./styles/*",
     "./utils/*": "./utils/*"

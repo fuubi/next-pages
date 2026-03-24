@@ -49,13 +49,28 @@ npm run dev
 
 ## Versioning
 
-This project uses [Changesets](https://github.com/changesets/changesets) for semantic versioning. See [VERSIONING.md](VERSIONING.md) for the complete guide.
+This project uses **component-level versioning** to support long-running client sites that should never break.
+
+Components are available at both latest paths and versioned paths:
+
+```astro
+// Latest (actively maintained sites) import Hero from
+'@garage-sites/shared/components/sections/Hero.astro'; // Locked to v1 (legacy sites) import Hero
+from '@garage-sites/shared/components/sections/v1/Hero.astro';
+```
+
+**Key documents:**
+
+- [VERSIONING-QUICK-REF.md](VERSIONING-QUICK-REF.md) - **Start here!** Quick decision guide
+- [COMPONENT-VERSIONING.md](COMPONENT-VERSIONING.md) - Component versioning strategy
+- [COMPONENT-VERSIONING-SETUP.md](COMPONENT-VERSIONING-SETUP.md) - Implementation guide
+- [VERSIONING.md](VERSIONING.md) - Changesets workflow
 
 **Quick workflow:**
 
 ```bash
 # After making changes to packages
-npm run changeset   # Create a changeset
+npm run changeset   # Create a changeset (most changes are MINOR)
 npm run version     # Bump versions (before release)
 npm run release     # Publish packages
 ```
