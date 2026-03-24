@@ -1,0 +1,14 @@
+{
+  "name": "@garage-sites/templates",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=25.0.0"
+  },
+  "exports": {
+    "./hero/*": "./hero/*",
+    "./features/*": "./features/*",
+    "./contact/*": "./contact/*"
+  }
+}

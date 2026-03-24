@@ -1,53 +1,90 @@
-# Astro Marketing Site
+# Garage Sites Monorepo
 
-An AI-friendly static website system built with Astro for marketing pages.
+Automated website builder for Swiss garages and auto workshops.
 
-## Core Principles
+## Structure
 
-- **Static-first**: All pages prerendered at build time
-- **Content-driven**: Content collections as single source of truth
-- **HTML-first**: Semantic HTML, CSS for responsiveness, minimal JS
-- **Minimal dependencies**: Small, understandable dependency tree
-- **One content source**: Responsive CSS, no mobile/desktop duplication
+```
+├── packages/
+│   ├── shared/       # Core components, layouts, styles
+│   └── templates/    # Reusable template variations
+├── sites/            # Individual garage websites
+├── tools/
+│   └── cli/          # Site scaffolding & validation CLI
+```
 
-## Getting Started
+## Requirements
 
-### Prerequisites
+- **Node.js ≥ 25.0.0**
+- npm 10+
 
-- Node.js 20+
-- npm or your preferred package manager
+## Quick Start
 
-### Installation
+### 1. Install dependencies
 
 ```bash
 npm install
 ```
 
-### Development
+### 2. Create a new garage site
 
 ```bash
+npm run garage create garage-mueller
+```
+
+This creates:
+- Site structure in `sites/garage-mueller/`
+- TypeScript-only configuration
+- Optimized for Swiss market (DE/FR/IT languages)
+
+### 3. Develop with worktrees (recommended)
+
+```bash
+npm run garage create garage-mueller -- --worktree
+cd ../garage-mueller-work
+npm install
 npm run dev
 ```
 
-Visit `http://localhost:4321`
-
-### Build
+## CLI Commands
 
 ```bash
+# Create new site
+npm run garage create <name>
+
+# List all sites
+npm run garage list
+
+# Validate site structure
+npm run garage validate [site-name]
+```
+
+## Monorepo Rules
+
+1. **TypeScript only** - No `.js` files allowed
+2. **Node v25+** - Uses native TS support
+3. **Naming convention** - Sites must be `garage-{name}`
+4. **Content-driven** - Sites customize via `site.config.ts` and JSON content
+
+## Development
+
+Sites use shared packages via TypeScript path aliases:
+
+```typescript
+import Hero from '@shared/layouts/Hero.astro';
+import ClassicHero from '@templates/hero/Classic.astro';
+```
+
+## Deployment
+
+Each site builds independently:
+
+```bash
+cd sites/garage-mueller
 npm run build
 ```
 
-Static files generated to `dist/`
-
-### Preview Build
-
-```bash
-npm run preview
-```
-
-## Project Structure
-
-```
+Output: `dist/` (static files ready for hosting)
 src/
   pages/          # File-based routing
   layouts/        # Page layouts

@@ -1,9 +1,8 @@
 import { defineConfig } from 'astro/config';
 
-// https://astro.build/config
 export default defineConfig({
   output: 'static',
-  site: 'https://example.com', // Update with your actual domain
+  site: 'https://garage-mueller.ch',
   compressHTML: true,
   build: {
     inlineStylesheets: 'auto',

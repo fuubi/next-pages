@@ -1,0 +1,9 @@
+---
+import BaseLayout from '@shared/layouts/BaseLayout.astro';
+import Hero from '@templates/hero/Classic.astro';
+import content from '../content/home.json';
+---
+
+<BaseLayout title="Garage Mueller">
+  <Hero {...content.hero} />
+</BaseLayout>

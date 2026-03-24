@@ -1,10 +1,7 @@
 {
-  "name": "Astro Marketing Site",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
-  "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "22"
-    }
+  "name": "Garage Sites Monorepo",
+  "build": {
+    "dockerfile": "Dockerfile"
   },
   "customizations": {
     "vscode": {
