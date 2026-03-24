@@ -1,6 +1,6 @@
-# Garage Sites Monorepo
+# Client Sites Monorepo
 
-Automated website builder for Swiss garages and auto workshops.
+Multi-client website system with shared component library and component-level versioning.
 
 ## Structure
 
@@ -8,7 +8,7 @@ Automated website builder for Swiss garages and auto workshops.
 ├── packages/
 │   ├── shared/       # Core components, layouts, styles (versioned)
 │   └── templates/    # Reusable template variations (versioned)
-├── sites/            # Individual garage websites
+├── sites/            # Individual client websites
 ├── tools/
 │   └── cli/          # Site scaffolding & validation CLI
 ```
@@ -29,7 +29,7 @@ npm install
 ### 2. Create a new garage site
 
 ```bash
-npm run garage create garage-mueller
+npm run cli create garage-mueller
 ```
 
 This creates:
@@ -41,7 +41,7 @@ This creates:
 ### 3. Develop with worktrees (recommended)
 
 ```bash
-npm run garage create garage-mueller -- --worktree
+npm run cli create garage-mueller -- --worktree
 cd ../garage-mueller-work
 npm install
 npm run dev
@@ -55,8 +55,8 @@ Components are available at both latest paths and versioned paths:
 
 ```astro
 // Latest (actively maintained sites) import Hero from
-'@garage-sites/shared/components/sections/Hero.astro'; // Locked to v1 (legacy sites) import Hero
-from '@garage-sites/shared/components/sections/v1/Hero.astro';
+'@colombalink/shared/components/sections/Hero.astro'; // Locked to v1 (legacy sites) import Hero
+from '@colombalink/shared/components/sections/v1/Hero.astro';
 ```
 
 **Key documents:**
@@ -79,13 +79,13 @@ npm run release     # Publish packages
 
 ```bash
 # Create new site
-npm run garage create <name>
+npm run cli create <name>
 
 # List all sites
-npm run garage list
+npm run cli list
 
 # Validate site structure
-npm run garage validate [site-name]
+npm run cli validate [site-name]
 ```
 
 ## Monorepo Rules

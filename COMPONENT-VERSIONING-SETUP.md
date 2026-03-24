@@ -35,7 +35,7 @@ Update each main component to document its version:
  * - v1 (current): Initial version [also at v1/Hero.astro]
  *
  * For legacy sites that should never change:
- * Import from: '@garage-sites/shared/components/sections/v1/Hero.astro'
+ * Import from: '@colombalink/shared/components/sections/v1/Hero.astro'
  */
 
 export interface Props {
@@ -61,7 +61,7 @@ npm run changeset
 
 ```
 🦋  Which packages would you like to include?
-◉ @garage-sites/shared
+◉ @colombalink/shared
 
 🦋  What kind of change is this?
 ● minor
@@ -120,7 +120,7 @@ export interface Props {
  * - `text` → `description`
  *
  * For sites using v1 API:
- * Import from: '@garage-sites/shared/components/sections/v1/Hero.astro'
+ * Import from: '@colombalink/shared/components/sections/v1/Hero.astro'
  */
 
 export interface Props {
@@ -157,7 +157,7 @@ npm run changeset
 
 ```
 🦋  Which packages would you like to include?
-◉ @garage-sites/shared
+◉ @colombalink/shared
 
 🦋  What kind of change is this?
 ● minor  ← MINOR, because old version still works via v1/
@@ -185,7 +185,7 @@ The generated CHANGELOG will show:
 **New sites:** Use latest import with new prop names:
 
 ```astro
-import Hero from '@garage-sites/shared/components/sections/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/Hero.astro';
 <Hero heading="Welcome" description="Get started" />
 ```
 ````
@@ -193,7 +193,7 @@ import Hero from '@garage-sites/shared/components/sections/Hero.astro';
 **Existing sites:** Lock to v1 to avoid changes:
 
 ```astro
-import Hero from '@garage-sites/shared/components/sections/v1/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/v1/Hero.astro';
 <Hero headline="Welcome" text="Get started" />
 ```
 
@@ -205,8 +205,8 @@ Use latest imports - you'll actively maintain these:
 
 ```astro
 <!-- sites/garage-new/src/pages/index.astro -->import Hero from
-'@garage-sites/shared/components/sections/Hero.astro'; import ContactBlock from
-'@garage-sites/shared/components/sections/ContactBlock.astro';
+'@colombalink/shared/components/sections/Hero.astro'; import ContactBlock from
+'@colombalink/shared/components/sections/ContactBlock.astro';
 
 <Hero heading="Welcome to Our Garage" description="..." />
 <ContactBlock />
@@ -218,9 +218,9 @@ Lock all imports to v1 - these will never break:
 
 ```astro
 <!-- sites/garage-mueller/src/pages/index.astro -->import Hero from
-'@garage-sites/shared/components/sections/v1/Hero.astro'; import ContactBlock from
-'@garage-sites/shared/components/sections/v1/ContactBlock.astro'; import Button from
-'@garage-sites/shared/components/ui/v1/Button.astro';
+'@colombalink/shared/components/sections/v1/Hero.astro'; import ContactBlock from
+'@colombalink/shared/components/sections/v1/ContactBlock.astro'; import Button from
+'@colombalink/shared/components/ui/v1/Button.astro';
 
 <!-- Uses original API forever -->
 <Hero headline="Welcome" text="..." />
@@ -257,8 +257,8 @@ async function lockToV1(dir) {
 
       // Replace imports to use v1
       content = content.replace(
-        /from ['"]@garage-sites\/shared\/components\/(sections|ui)\//g,
-        "from '@garage-sites/shared/components/$1/v1/"
+        /from ['"]@colombalink\/shared\/components\/(sections|ui)\//g,
+        "from '@colombalink/shared/components/$1/v1/"
       );
 
       await writeFile(path, content);
@@ -294,8 +294,8 @@ async function create(siteName: string, options: CreateOptions) {
   // Generate imports based on version
   const importPath =
     options.componentVersion === 'latest'
-      ? '@garage-sites/shared/components/sections'
-      : `@garage-sites/shared/components/sections/${options.componentVersion}`;
+      ? '@colombalink/shared/components/sections'
+      : `@colombalink/shared/components/sections/${options.componentVersion}`;
 
   // Use in templates...
 }
@@ -305,10 +305,10 @@ Usage:
 
 ```bash
 # Create with latest (default)
-npm run garage create my-site
+npm run cli create my-site
 
 # Create locked to v1
-npm run garage create my-site --component-version=v1
+npm run cli create my-site --component-version=v1
 ```
 
 ## When to Create a New Version

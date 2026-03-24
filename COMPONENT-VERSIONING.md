@@ -26,20 +26,20 @@ packages/shared/components/
 ### New Sites (Use Latest)
 
 ```astro
-import Hero from '@garage-sites/shared/components/sections/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/Hero.astro';
 ```
 
 ### Lock to Specific Version
 
 ```astro
-import Hero from '@garage-sites/shared/components/sections/v1/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/v1/Hero.astro';
 ```
 
 ### Old Sites Keep Working
 
 ```astro
 // Site created in 2024 - still imports v1 import Hero from
-'@garage-sites/shared/components/sections/v1/Hero.astro'; // Never breaks, even as we add v2, v3,
+'@colombalink/shared/components/sections/v1/Hero.astro'; // Never breaks, even as we add v2, v3,
 etc.
 ```
 
@@ -70,7 +70,7 @@ cp packages/shared/components/sections/Hero.astro packages/shared/components/sec
  * - v1: Original version at v1/Hero.astro
  *
  * For legacy sites, import from:
- * '@garage-sites/shared/components/sections/v1/Hero.astro'
+ * '@colombalink/shared/components/sections/v1/Hero.astro'
  */
 
 export interface Props {
@@ -125,7 +125,7 @@ components/sections/
 
 ```markdown
 ---
-'@garage-sites/shared': minor
+'@colombalink/shared': minor
 ---
 
 Added Hero v2 with improved prop names. Original Hero preserved at v1/Hero.astro for legacy sites.
@@ -170,7 +170,7 @@ components/sections/
 
 ```json
 {
-  "name": "@garage-sites/shared",
+  "name": "@colombalink/shared",
   "version": "1.8.5",
   "exports": {
     "./components/sections/*": "./components/sections/*",
@@ -189,9 +189,9 @@ components/sections/
 ### Option 1: Explicit Version Locking (Recommended for Long-Running Sites)
 
 ```astro
-<!-- sites/garage-mueller/src/pages/index.astro -->import Hero from
-'@garage-sites/shared/components/sections/v1/Hero.astro'; import ContactBlock from
-'@garage-sites/shared/components/sections/v1/ContactBlock.astro';
+<!-- sites/example-client/src/pages/index.astro -->import Hero from
+'@colombalink/shared/components/sections/v1/Hero.astro'; import ContactBlock from
+'@colombalink/shared/components/sections/v1/ContactBlock.astro';
 
 <!-- This site will NEVER break, even 10 years later -->
 <Hero headline="Welcome" text="..." />
@@ -200,8 +200,8 @@ components/sections/
 ### Option 2: Latest Version (For Actively Maintained Sites)
 
 ```astro
-<!-- sites/garage-schmidt/src/pages/index.astro -->import Hero from
-'@garage-sites/shared/components/sections/Hero.astro';
+<!-- sites/another-client/src/pages/index.astro -->import Hero from
+'@colombalink/shared/components/sections/Hero.astro';
 
 <!-- Gets latest - they actively update their code -->
 <Hero heading="Welcome" description="..." />
@@ -211,8 +211,8 @@ components/sections/
 
 ```astro
 <!-- Use latest for some, locked versions for others -->import Hero from
-'@garage-sites/shared/components/sections/Hero.astro'; // Latest import ContactBlock from
-'@garage-sites/shared/components/sections/v1/ContactBlock.astro'; // Locked
+'@colombalink/shared/components/sections/Hero.astro'; // Latest import ContactBlock from
+'@colombalink/shared/components/sections/v1/ContactBlock.astro'; // Locked
 ```
 
 ## Documentation in Components
@@ -251,26 +251,26 @@ Update your garage CLI to support version locking:
 
 ```bash
 # Create new site with latest components
-npm run garage create my-site
+npm run cli create my-site
 
 # Create site locked to v1 components
-npm run garage create my-site --component-version=v1
+npm run cli create my-site --component-version=v1
 ```
 
 This could generate imports like:
 
 ```astro
-import Hero from '@garage-sites/shared/components/sections/v1/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/v1/Hero.astro';
 ```
 
 ## Real-World Example
 
-### Scenario: Garage Mueller (Created 2024)
+### Scenario: Example Client (Created 2024)
 
 **Initial setup (2024):**
 
 ```astro
-import Hero from '@garage-sites/shared/components/sections/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/Hero.astro';
 <Hero headline="Welcome" />
 ```
 
@@ -286,19 +286,19 @@ import Hero from '@garage-sites/shared/components/sections/Hero.astro';
 - Hero.astro gets breaking changes
 - v2/Hero.astro has the old version
 - v1/Hero.astro stays untouched
-- Garage Mueller never breaks
+- Example Client never breaks
 
-### Scenario: New Garage Schmidt (Created 2026)
+### Scenario: New Another Client (Created 2026)
 
 ```astro
-import Hero from '@garage-sites/shared/components/sections/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/Hero.astro';
 <Hero heading="Welcome" variant="default" />
 ```
 
 Gets latest by default, but you can lock them:
 
 ```astro
-import Hero from '@garage-sites/shared/components/sections/v3/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/v3/Hero.astro';
 ```
 
 ## Benefits

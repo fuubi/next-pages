@@ -1,5 +1,5 @@
 {
-  "name": "@garage-sites/templates",
+  "name": "@colombalink/templates",
   "version": "1.0.0",
   "description": "Template component variations for Garage Sites",
   "type": "module",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/garage-sites.git",
+    "url": "https://github.com/colombalink/client-sites.git",
     "directory": "packages/templates"
   },
   "keywords": [
     "astro",
     "templates",
     "components",
-    "garage",
-    "automotive"
+    "website",
+    "client-sites"
   ],
   "exports": {
     "./hero/*": "./hero/*",

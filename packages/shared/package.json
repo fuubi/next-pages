@@ -1,5 +1,5 @@
 {
-  "name": "@garage-sites/shared",
+  "name": "@colombalink/shared",
   "version": "1.0.0",
   "description": "Core UI components, layouts, and utilities for Garage Sites",
   "type": "module",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/garage-sites.git",
+    "url": "https://github.com/colombalink/client-sites.git",
     "directory": "packages/shared"
   },
   "keywords": [
     "astro",
     "components",
     "ui",
-    "garage",
-    "automotive"
+    "website",
+    "client-sites"
   ],
   "exports": {
     "./components/*": "./components/*",

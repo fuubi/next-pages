@@ -1,5 +1,5 @@
 {
-  "name": "@garage-sites/monorepo",
+  "name": "@colombalink/monorepo",
   "version": "1.0.0",
   "type": "module",
   "private": true,
@@ -7,9 +7,9 @@
     "node": ">=25.0.0"
   },
   "scripts": {
-    "garage": "cd tools/cli && node --experimental-strip-types --experimental-detect-module src/index.ts",
+    "cli": "cd tools/cli && node --experimental-strip-types --experimental-detect-module src/index.ts",
     "dev:cli": "cd tools/cli && npm install",
-    "validate": "npm run garage validate",
+    "validate": "npm run cli validate",
     "changeset": "changeset",
     "version": "changeset version",
     "release": "npm run build && changeset publish",

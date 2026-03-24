@@ -1,14 +1,14 @@
-# Garage Sites Agent
+# Client Sites Agent
 
-This workspace contains a **multi-client website system** for Swiss garages using Astro and component-level versioning.
+This workspace contains a **multi-client website system** using Astro and component-level versioning.
 
 ## Core Principles
 
 1. **Component library approach**: Shared components in `packages/shared`, each site has its own content
-2. **Multi-language support**: All garage sites support DE/FR/IT with i18n
+2. **Multi-language support**: Sites can support multiple languages with i18n
 3. **Component-level versioning**: Breaking changes create new versions (v1/, v2/) instead of breaking old sites
 4. **Static-first**: All pages prerendered at build time as static HTML
-5. **Long-running sites**: Old garage sites should never break, even years later
+5. **Long-running sites**: Old client sites should never break, even years later
 
 ## Architecture Overview
 
@@ -29,7 +29,7 @@ packages/
     utils/             # Utility functions, i18n helpers
 
 sites/
-  garage-mueller/      # Individual garage site
+  example-client/      # Individual garage site
     src/
       pages/           # File-based routing
         index.astro    # Redirects to /de/
@@ -50,7 +50,7 @@ sites/
 Content is stored in JSON files alongside pages, **NOT** in a central content collection:
 
 ```
-sites/garage-mueller/src/pages/
+sites/example-client/src/pages/
   de/
     index.astro       # Loads index.json
     index.json        # German content: services, testimonials, contact info
@@ -73,9 +73,9 @@ sites/garage-mueller/src/pages/
 ### Latest vs Locked Versions
 
 ```astro
-// New sites - use latest import Hero from '@garage-sites/shared/components/sections/Hero.astro'; //
+// New sites - use latest import Hero from '@colombalink/shared/components/sections/Hero.astro'; //
 Legacy sites - locked to v1 import Hero from
-'@garage-sites/shared/components/sections/v1/Hero.astro';
+'@colombalink/shared/components/sections/v1/Hero.astro';
 ```
 
 See [COMPONENT-VERSIONING.md](../COMPONENT-VERSIONING.md) for details.
@@ -119,7 +119,7 @@ See [COMPONENT-VERSIONING.md](../COMPONENT-VERSIONING.md) for details.
 ### To Create a New Garage Site
 
 ```bash
-npm run garage create garage-[name]
+npm run cli create garage-[name]
 ```
 
 This creates:
@@ -131,7 +131,7 @@ This creates:
 
 ### To Edit Content for a Garage
 
-1. Find the site: `sites/garage-mueller/`
+1. Find the site: `sites/example-client/`
 2. Edit content: `src/pages/de/index.json` (or fr/it)
 3. Update text, testimonials, services, contact info
 4. No need to touch components
@@ -147,11 +147,11 @@ This creates:
 
 ## Common Tasks
 
-### Update Hero Text for Garage Mueller
+### Update Hero Text for Example Client
 
 ```bash
 # Edit German content
-vim sites/garage-mueller/src/pages/de/index.json
+vim sites/example-client/src/pages/de/index.json
 
 # Change the hero section content
 {
@@ -172,7 +172,7 @@ vim packages/shared/components/sections/NewSection.astro
 vim packages/shared/package.json
 
 # Use in any garage site
-import NewSection from '@garage-sites/shared/components/sections/NewSection.astro';
+import NewSection from '@colombalink/shared/components/sections/NewSection.astro';
 ```
 
 ### Make Breaking Change to Component
@@ -211,10 +211,10 @@ See:
 npm install
 
 # Create new garage site
-npm run garage create garage-name
+npm run cli create garage-name
 
 # Develop a garage site
-cd sites/garage-mueller
+cd sites/example-client
 npm run dev
 
 # Build for production

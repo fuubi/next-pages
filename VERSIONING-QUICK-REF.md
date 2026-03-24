@@ -55,10 +55,10 @@
 
 ```astro
 // ✅ Good: Latest (new/maintained sites)
-import Hero from '@garage-sites/shared/components/sections/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/Hero.astro';
 
 // ✅ Good: Locked version (legacy sites)
-import Hero from '@garage-sites/shared/components/sections/v1/Hero.astro';
+import Hero from '@colombalink/shared/components/sections/v1/Hero.astro';
 
 // ❌ Bad: Don't import from v2, v3 unless specifically needed
 // (Usually just use latest or lock to v1)
@@ -68,7 +68,7 @@ import Hero from '@garage-sites/shared/components/sections/v1/Hero.astro';
 
 ```typescript
 // Latest only - no versioning
-import { formatDate } from '@garage-sites/shared/utils/index.ts';
+import { formatDate } from '@colombalink/shared/utils/index.ts';
 ```
 
 ## Changeset Examples
@@ -78,7 +78,7 @@ import { formatDate } from '@garage-sites/shared/utils/index.ts';
 ```bash
 npm run changeset
 # Type: minor
-# Package: @garage-sites/shared
+# Package: @colombalink/shared
 # Summary: Added optional 'variant' prop to Hero component
 ```
 
@@ -93,7 +93,7 @@ No version folder needed - just edit latest.
 
 npm run changeset
 # Type: minor (yes, minor!)
-# Package: @garage-sites/shared
+# Package: @colombalink/shared
 # Summary: Hero v2: Renamed props from headline/text to heading/description. Legacy API at v1/Hero.astro
 ```
 
@@ -105,7 +105,7 @@ npm run changeset
 
 npm run changeset
 # Type: minor
-# Package: @garage-sites/shared
+# Package: @colombalink/shared
 # Summary: Deprecated formatDate(), use formatDateTime() instead. Will remove in v3.0.0
 ```
 
@@ -115,7 +115,7 @@ Later:
 
 npm run changeset
 # Type: major
-# Package: @garage-sites/shared
+# Package: @colombalink/shared
 # Summary: BREAKING: Removed deprecated formatDate() function
 ```
 
@@ -256,8 +256,8 @@ A: No, they're harder to version at file level. Use traditional @deprecated appr
 **Q: What if a site uses both v1 and latest?**  
 A: That's fine! Mix and match as needed:
 ```astro
-import Hero from '@garage-sites/shared/components/sections/v1/Hero.astro';
-import Button from '@garage-sites/shared/components/ui/Button.astro';  // latest
+import Hero from '@colombalink/shared/components/sections/v1/Hero.astro';
+import Button from '@colombalink/shared/components/ui/Button.astro';  // latest
 ```
 
 ## Cheat Sheet
@@ -278,7 +278,7 @@ cd sites/existing-site
 find src -name "*.astro" -exec sed -i 's|/sections/|/sections/v1/|g' {} \;
 
 # Create new site (uses latest by default)
-npm run garage create new-site
+npm run cli create new-site
 ```
 
 ## Summary

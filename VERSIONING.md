@@ -6,8 +6,8 @@ This monorepo uses [Changesets](https://github.com/changesets/changesets) for se
 
 ## Overview
 
-- **@garage-sites/shared** - Core UI components and utilities
-- **@garage-sites/templates** - Template components
+- **@colombalink/shared** - Core UI components and utilities
+- **@colombalink/templates** - Template components
 - **Sites** (garage-mueller, etc.) - Consumer applications (not versioned/published)
 
 ## Versioning Strategy
@@ -20,8 +20,8 @@ Instead of removing or breaking components, we keep all versions available throu
 
 ```astro
 // Latest version (actively maintained sites) import Hero from
-'@garage-sites/shared/components/sections/Hero.astro'; // Locked version (legacy sites that
-shouldn't be touched) import Hero from '@garage-sites/shared/components/sections/v1/Hero.astro';
+'@colombalink/shared/components/sections/Hero.astro'; // Locked version (legacy sites that
+shouldn't be touched) import Hero from '@colombalink/shared/components/sections/v1/Hero.astro';
 ```
 
 **This means:**
@@ -67,7 +67,7 @@ With component-level versioning, the rules change:
 
 ### 1. Making Changes
 
-When you make changes to `@garage-sites/shared` or `@garage-sites/templates`:
+When you make changes to `@colombalink/shared` or `@colombalink/templates`:
 
 ```bash
 # Make your code changes first
@@ -87,7 +87,7 @@ A changeset file is created in `.changeset/` with your changes:
 
 ```md
 ---
-'@garage-sites/shared': minor
+'@colombalink/shared': minor
 ---
 
 Added new ContactForm component with validation
@@ -133,7 +133,7 @@ npm run release
 # 2. Create a changeset
 npm run changeset
 
-# Select: @garage-sites/shared
+# Select: @colombalink/shared
 # Type: minor
 # Summary: "Added new Button component with primary and secondary variants"
 ```
@@ -145,7 +145,7 @@ npm run changeset
 # 2. Create a changeset
 npm run changeset
 
-# Select: @garage-sites/shared
+# Select: @colombalink/shared
 # Type: major
 # Summary: "BREAKING: Renamed Hero component 'title' prop to 'heading'"
 ```
@@ -157,7 +157,7 @@ npm run changeset
 # 2. Create a changeset
 npm run changeset
 
-# Select: @garage-sites/shared
+# Select: @colombalink/shared
 # Type: patch
 # Summary: "Fixed keyboard navigation in Footer component"
 ```
@@ -199,7 +199,7 @@ Client sites use the workspace protocol during development:
 ```json
 {
   "dependencies": {
-    "@garage-sites/shared": "workspace:*"
+    "@colombalink/shared": "workspace:*"
   }
 }
 ```
@@ -209,7 +209,7 @@ When published, this automatically resolves to the correct version:
 ```json
 {
   "dependencies": {
-    "@garage-sites/shared": "^1.2.0"
+    "@colombalink/shared": "^1.2.0"
   }
 }
 ```
@@ -303,8 +303,8 @@ When clients migrate from workspace protocol to actual versions:
 
 ```bash
 # In client site
-npm install @garage-sites/shared@latest
-npm install @garage-sites/templates@latest
+npm install @colombalink/shared@latest
+npm install @colombalink/templates@latest
 ```
 
 ## Tips

@@ -226,7 +226,7 @@ Changeset:
 
 ```markdown
 ---
-'@garage-sites/shared': minor
+'@colombalink/shared': minor
 ---
 
 Added new HeroSection component with improved API. Hero component is deprecated and will be removed in v3.0.0. See migration guide in docs.
@@ -244,7 +244,7 @@ Changeset:
 
 ```markdown
 ---
-'@garage-sites/shared': major
+'@colombalink/shared': major
 ---
 
 BREAKING: Removed deprecated ContactForm component. Other deprecated components (Hero) remain for one more major version.
@@ -261,7 +261,7 @@ Changeset:
 
 ```markdown
 ---
-'@garage-sites/shared': major
+'@colombalink/shared': major
 ---
 
 BREAKING: Removed deprecated Hero component. Use HeroSection instead. Clients should have migrated in v1.9.0.

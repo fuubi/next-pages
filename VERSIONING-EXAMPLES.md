@@ -4,7 +4,7 @@ This document shows practical examples of creating changesets for different scen
 
 ## Example 1: Adding a New Component
 
-Let's say you've just added a new `Card` component to `@garage-sites/shared`:
+Let's say you've just added a new `Card` component to `@colombalink/shared`:
 
 ```bash
 npm run changeset
@@ -14,10 +14,10 @@ npm run changeset
 
 ```
 🦋  Which packages would you like to include?
-◉ @garage-sites/shared
-◯ @garage-sites/templates
+◉ @colombalink/shared
+◯ @colombalink/templates
 
-🦋  What kind of change is this for @garage-sites/shared?
+🦋  What kind of change is this for @colombalink/shared?
 ○ major (breaking)
 ● minor (feature)
 ○ patch (fix)
@@ -30,7 +30,7 @@ Added Card component with light and dark variants
 
 ```markdown
 ---
-'@garage-sites/shared': minor
+'@colombalink/shared': minor
 ---
 
 Added Card component with light and dark variants
@@ -48,7 +48,7 @@ npm run changeset
 
 ```markdown
 ---
-'@garage-sites/shared': patch
+'@colombalink/shared': patch
 ---
 
 Fixed button hover state in dark mode
@@ -78,7 +78,7 @@ BREAKING: Renamed Hero component 'title' prop to 'heading'
 
 ```markdown
 ---
-'@garage-sites/shared': major
+'@colombalink/shared': major
 ---
 
 BREAKING: Renamed Hero component 'title' prop to 'heading'. Update all usages from `<Hero title="...">` to `<Hero heading="...">`
@@ -96,13 +96,13 @@ npm run changeset
 
 ```
 🦋  Which packages would you like to include?
-◉ @garage-sites/shared
-◉ @garage-sites/templates
+◉ @colombalink/shared
+◉ @colombalink/templates
 
-🦋  What kind of change is this for @garage-sites/shared?
+🦋  What kind of change is this for @colombalink/shared?
 ● patch
 
-🦋  What kind of change is this for @garage-sites/templates?
+🦋  What kind of change is this for @colombalink/templates?
 ● minor
 ```
 
@@ -110,8 +110,8 @@ npm run changeset
 
 ```markdown
 ---
-'@garage-sites/shared': patch
-'@garage-sites/templates': minor
+'@colombalink/shared': patch
+'@colombalink/templates': minor
 ---
 
 Added SplitHero template with improved mobile layout
@@ -216,7 +216,7 @@ Let's walk through a complete feature addition:
 ```bash
 npm run changeset
 
-# Select: @garage-sites/shared
+# Select: @colombalink/shared
 # Type: minor
 # Summary: "Added ContactForm component with email validation and reCAPTCHA support"
 ```
@@ -253,7 +253,7 @@ npm run release
 Clients can now update:
 
 ```bash
-npm install @garage-sites/shared@latest
+npm install @colombalink/shared@latest
 ```
 
 ## Common Mistakes to Avoid

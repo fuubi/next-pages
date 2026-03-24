@@ -80,9 +80,9 @@ npm run changeset
 
 ```
 🦋  Which packages would you like to include?
-◉ @garage-sites/shared
+◉ @colombalink/shared
 
-🦋  What kind of change is this for @garage-sites/shared?
+🦋  What kind of change is this for @colombalink/shared?
 ● minor
 
 🦋  Please enter a summary:
@@ -145,8 +145,8 @@ export interface Props {
  *
  * Migration:
  * ```diff
- * - import Hero from '@garage-sites/shared/components/sections/Hero.astro';
- * + import Hero from '@garage-sites/shared/components/sections/HeroV2.astro';
+ * - import Hero from '@colombalink/shared/components/sections/Hero.astro';
+ * + import Hero from '@colombalink/shared/components/sections/HeroV2.astro';
  *
  * - <Hero headline="..." text="..." />
  * + <Hero heading="..." description="..." />
@@ -166,7 +166,7 @@ const newProps = {
 if (import.meta.env.DEV) {
   console.warn(
     'Hero component is deprecated. Use HeroV2 instead. ' +
-      'See migration guide: https://github.com/your-org/garage-sites/blob/main/docs/migrations/hero-to-herov2.md'
+      'See migration guide: https://github.com/your-org/client-sites/blob/main/docs/migrations/hero-to-herov2.md'
   );
 }
 ---
@@ -193,7 +193,7 @@ Hero.astro supports both `headline` (deprecated) and `heading` (new)
 
 ```markdown
 ---
-'@garage-sites/shared': minor
+'@colombalink/shared': minor
 ---
 
 Deprecated Hero component's "headline" prop. Use "heading" instead. Both work in this version for backward compatibility. "headline" will be removed in v2.0.0
@@ -209,7 +209,7 @@ Hero.astro only supports `heading`
 
 ```markdown
 ---
-'@garage-sites/shared': major
+'@colombalink/shared': major
 ---
 
 BREAKING: Removed deprecated "headline" prop from Hero component. Use "heading" instead. This was deprecated in v1.1.0
@@ -257,7 +257,7 @@ Create a test site to verify:
 
 ```bash
 # Create test site
-npm run garage create test-deprecation
+npm run cli create test-deprecation
 
 cd sites/test-deprecation
 ```
