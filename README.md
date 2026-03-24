@@ -6,8 +6,8 @@ Automated website builder for Swiss garages and auto workshops.
 
 ```
 ├── packages/
-│   ├── shared/       # Core components, layouts, styles
-│   └── templates/    # Reusable template variations
+│   ├── shared/       # Core components, layouts, styles (versioned)
+│   └── templates/    # Reusable template variations (versioned)
 ├── sites/            # Individual garage websites
 ├── tools/
 │   └── cli/          # Site scaffolding & validation CLI
@@ -33,6 +33,7 @@ npm run garage create garage-mueller
 ```
 
 This creates:
+
 - Site structure in `sites/garage-mueller/`
 - TypeScript-only configuration
 - Optimized for Swiss market (DE/FR/IT languages)
@@ -44,6 +45,19 @@ npm run garage create garage-mueller -- --worktree
 cd ../garage-mueller-work
 npm install
 npm run dev
+```
+
+## Versioning
+
+This project uses [Changesets](https://github.com/changesets/changesets) for semantic versioning. See [VERSIONING.md](VERSIONING.md) for the complete guide.
+
+**Quick workflow:**
+
+```bash
+# After making changes to packages
+npm run changeset   # Create a changeset
+npm run version     # Bump versions (before release)
+npm run release     # Publish packages
 ```
 
 ## CLI Commands
@@ -86,17 +100,18 @@ npm run build
 
 Output: `dist/` (static files ready for hosting)
 src/
-  pages/          # File-based routing
-  layouts/        # Page layouts
-  components/     # Reusable components
-    site/         # Site shell (Header, Footer, etc.)
-    sections/     # Marketing sections
-    ui/           # UI primitives
-  content/        # Content collections (single source of truth)
-    pages/        # Page content
-    site/         # Global settings
-    shared/       # Shared content blocks
-  styles/         # Global styles and tokens
+pages/ # File-based routing
+layouts/ # Page layouts
+components/ # Reusable components
+site/ # Site shell (Header, Footer, etc.)
+sections/ # Marketing sections
+ui/ # UI primitives
+content/ # Content collections (single source of truth)
+pages/ # Page content
+site/ # Global settings
+shared/ # Shared content blocks
+styles/ # Global styles and tokens
+
 ```
 
 ## Content Editing
@@ -132,3 +147,4 @@ See [`.github/AGENTS.md`](.github/AGENTS.md) for detailed guidelines on editing 
 ## License
 
 MIT
+```

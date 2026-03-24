@@ -1,10 +1,25 @@
 {
   "name": "@garage-sites/templates",
   "version": "1.0.0",
+  "description": "Template component variations for Garage Sites",
   "type": "module",
-  "private": true,
   "engines": {
     "node": ">=25.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/garage-sites.git",
+    "directory": "packages/templates"
+  },
+  "keywords": [
+    "astro",
+    "templates",
+    "components",
+    "garage",
+    "automotive"
+  ],
+  "peerDependencies": {
+    "@garage-sites/shared": "workspace:*"
   },
   "exports": {
     "./hero/*": "./hero/*",

@@ -9,6 +9,8 @@
     "preview": "astro preview --host"
   },
   "dependencies": {
+    "@garage-sites/shared": "workspace:*",
+    "@garage-sites/templates": "workspace:*",
     "astro": "^6.0.0",
     "motion": "^10.16.0"
   },

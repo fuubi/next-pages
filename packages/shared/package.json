@@ -1,11 +1,23 @@
 {
   "name": "@garage-sites/shared",
   "version": "1.0.0",
+  "description": "Core UI components, layouts, and utilities for Garage Sites",
   "type": "module",
-  "private": true,
   "engines": {
     "node": ">=25.0.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/garage-sites.git",
+    "directory": "packages/shared"
+  },
+  "keywords": [
+    "astro",
+    "components",
+    "ui",
+    "garage",
+    "automotive"
+  ],
   "exports": {
     "./components/*": "./components/*",
     "./layouts/*": "./layouts/*",

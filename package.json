@@ -9,7 +9,11 @@
   "scripts": {
     "garage": "cd tools/cli && node --experimental-strip-types --experimental-detect-module src/index.ts",
     "dev:cli": "cd tools/cli && npm install",
-    "validate": "npm run garage validate"
+    "validate": "npm run garage validate",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "npm run build && changeset publish",
+    "build": "echo 'Build step - add your build command here'"
   },
   "workspaces": [
     "packages/*",
@@ -17,9 +21,10 @@
     "tools/*"
   ],
   "devDependencies": {
+    "@changesets/cli": "^2.30.0",
     "astro": "^6.0.0",
-    "typescript": "^5.6.0",
     "prettier": "^3.3.0",
-    "prettier-plugin-astro": "^0.14.0"
+    "prettier-plugin-astro": "^0.14.0",
+    "typescript": "^5.6.0"
   }
 }
