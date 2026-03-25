@@ -11,6 +11,7 @@ This repository uses a **coordinator pattern** with **orphan branches**:
 - **`shared/components` branch**: Versioned component library (tags: v1.0.0, v1.1.0...)
 
 **Benefits:**
+
 - Complete client isolation
 - Multiple clients checked out simultaneously
 - Flexible versioning per client
@@ -108,6 +109,7 @@ git push
 ```
 
 **Key points:**
+
 - Each client can use a different version
 - Components are extracted at checkout (not a git worktree)
 - Upgrade with `cli upgrade-shared`
@@ -190,11 +192,13 @@ Each client can customize their brand colors, typography, and styling while usin
 ### Setup
 
 1. **Create site-specific styles:**
+
    ```bash
    mkdir -p sites/{client}/src/styles
    ```
 
 2. **Create `tokens.css`** with brand colors:
+
    ```css
    :root {
      --color-primary: #your-brand-color;
@@ -230,11 +234,13 @@ See [sites/garage-mueller/THEME-CUSTOMIZATION.md](sites/garage-mueller/THEME-CUS
 ## Documentation
 
 **Essential:**
+
 - [GIT-WORKFLOW.md](GIT-WORKFLOW.md) — Git workflow & architecture
 - [COMPONENT-VERSIONING.md](COMPONENT-VERSIONING.md) — Component versioning
 - [clients.json](clients.json) — Client registry
 
 **Reference:**
+
 - [docs/](docs/) — Migration guides, versioning details, examples
 
 ---
@@ -242,17 +248,20 @@ See [sites/garage-mueller/THEME-CUSTOMIZATION.md](sites/garage-mueller/THEME-CUS
 ## Troubleshooting
 
 **Client won't checkout:**
+
 ```bash
 cat clients.json          # Check registry
 git branch --all          # Verify branch exists
 ```
 
 **Version not found:**
+
 ```bash
 git tag -l | grep ^v      # List available versions
 ```
 
 **Uncommitted changes:**
+
 ```bash
 cd sites/garage-mueller
 git status
