@@ -137,7 +137,9 @@ export async function upgradeSharedLib(clientName: string, newVersion: string) {
 
     // Extract the new version using git archive
     spinner.text = `Extracting ${newVersion}...`;
-    const archiveProcess = execa('git', [
+
+    // Get the archive as stdout
+    const { stdout: archive } = await execa('git', [
       'archive',
       '--format=tar',
       newVersion,
@@ -145,9 +147,10 @@ export async function upgradeSharedLib(clientName: string, newVersion: string) {
       cwd: workspaceRoot,
     });
 
+    // Extract the tar archive
     await execa('tar', ['-x', '-C', sharedLibPath], {
       cwd: workspaceRoot,
-      stdin: archiveProcess.stdout,
+      input: archive,
     });
 
     // Update the registry

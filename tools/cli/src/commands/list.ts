@@ -5,7 +5,7 @@ import {
     getWorkspaceRoot,
     getClientsRegistry,
     getCheckedOutClients,
-} from '../utils/workspace.js';
+} from '../utils/workspace.ts';
 
 interface ListOptions {
     checkedOutOnly?: boolean;
@@ -24,7 +24,7 @@ export async function listSites(options: ListOptions = {}) {
 
         // Filter based on options
         let clientsToShow = registry.clients;
-        
+
         if (options.checkedOutOnly) {
             clientsToShow = registry.clients.filter(c => checkedOut.includes(c.name));
         } else if (options.availableOnly) {
@@ -34,11 +34,11 @@ export async function listSites(options: ListOptions = {}) {
         // Show checked out clients section
         if (!options.availableOnly) {
             const checkedOutClients = registry.clients.filter(c => checkedOut.includes(c.name));
-            
+
             if (checkedOutClients.length > 0) {
                 console.log(chalk.bold.green('\n✓ Checked Out Clients') + chalk.gray(` (${checkedOutClients.length})`));
                 console.log('');
-                
+
                 for (const client of checkedOutClients) {
                     console.log(chalk.cyan(`  • ${client.name}`));
                     if (client.domain) {
@@ -60,11 +60,11 @@ export async function listSites(options: ListOptions = {}) {
         // Show available (not checked out) clients section
         if (!options.checkedOutOnly) {
             const availableClients = registry.clients.filter(c => !checkedOut.includes(c.name));
-            
+
             if (availableClients.length > 0) {
                 console.log(chalk.bold.blue('\n○ Available Clients') + chalk.gray(` (${availableClients.length})`));
                 console.log('');
-                
+
                 for (const client of availableClients) {
                     console.log(chalk.cyan(`  • ${client.name}`));
                     if (client.domain) {
