@@ -178,6 +178,66 @@
   --z-modal: 1050;
   --z-popover: 1060;
   --z-tooltip: 1070;
+
+  /* ========================================
+     Garage/Workshop Industrial-Clean Palette
+     ======================================== */
+
+  /* Industrial Charcoal - Primary Dark */
+  --color-garage-charcoal: #2c3539;
+  --color-garage-charcoal-light: #3a4247;
+  --color-garage-charcoal-dark: #1a2024;
+
+  /* Warm Grays - Neutral Tones */
+  --color-garage-gray: #6b7278;
+  --color-garage-gray-light: #9ca1a7;
+  --color-garage-gray-lighter: #d4d7da;
+
+  /* Accent Colors for Garage */
+  --color-garage-orange: #ff6b35;
+  --color-garage-orange-hover: #e55a2e;
+  --color-garage-blue: #1976d2;
+  --color-garage-blue-hover: #1565c0;
+  --color-garage-yellow: #ffc107;
+
+  /* Trust Indicators */
+  --color-trust-green: #4caf50;
+  --color-trust-badge-bg: rgba(107, 165, 67, 0.08);
+
+  /* ========================================
+     Mobile-First Button Touch Targets
+     ======================================== */
+
+  /* Mobile button heights (48px min for touch) */
+  --button-height-mobile: 3rem; /* 48px */
+  --button-height-mobile-lg: 3.25rem; /* 52px */
+
+  /* Desktop button heights (can be slightly smaller) */
+  --button-height-desktop: 2.5rem; /* 40px */
+  --button-height-desktop-lg: 2.75rem; /* 44px */
+
+  /* ========================================
+     Card & Component Sizing
+     ======================================== */
+
+  /* Card border radius tokens */
+  --card-radius-tight: 0.75rem; /* 12px - garage cards */
+  --card-radius-comfortable: 1rem; /* 16px - feature cards */
+
+  /* Service card min heights */
+  --service-card-min-height-mobile: 140px;
+  --service-card-min-height-desktop: 180px;
+
+  /* Icon Sizes */
+  --icon-xs: 1rem; /* 16px */
+  --icon-sm: 1.25rem; /* 20px */
+  --icon-md: 1.5rem; /* 24px */
+  --icon-lg: 3rem; /* 48px */
+  --icon-xl: 4rem; /* 64px */
+
+  /* Utility Bar Sizing */
+  --utility-bar-height-mobile: 2.5rem; /* 40px */
+  --utility-bar-height-desktop: 3rem; /* 48px */
 }
 
 /* Dark Mode - Coonnect Theme */

@@ -3,6 +3,13 @@ import Section from '../../site/Section/Section.astro';
 import Container from '../../site/Container/Container.astro';
 import Button from '../../ui/Button/Button.astro';
 
+export interface TrustIndicator {
+  type: string; // e.g., 'years', 'customers', 'rating'
+  value: string; // e.g., '25+', '1000+', '4.9'
+  label: string; // e.g., 'Years Experience', 'Happy Customers'
+  icon?: string; // Optional icon HTML or emoji
+}
+
 export interface Props {
   headline: string;
   text?: string;
@@ -15,10 +22,12 @@ export interface Props {
     href: string;
   };
   image?: string;
-  variant?: 'default' | 'centered';
+  variant?: 'default' | 'centered' | 'garage';
+  trustIndicators?: TrustIndicator[];
 }
 
-const { headline, text, cta, secondaryCta, image, variant = 'default' } = Astro.props;
+const { headline, text, cta, secondaryCta, image, variant = 'default', trustIndicators } =
+  Astro.props;
 ---
 
 <Section variant="default" spacing="xl">
@@ -41,6 +50,24 @@ const { headline, text, cta, secondaryCta, image, variant = 'default' } = Astro.
                   {secondaryCta.text}
                 </Button>
               )}
+            </div>
+          )
+        }
+
+        {
+          trustIndicators && trustIndicators.length > 0 && (
+            <div class="hero-trust-indicators">
+              {trustIndicators.map((indicator) => (
+                <div class="trust-indicator">
+                  {indicator.icon && (
+                    <div class="trust-icon" set:html={indicator.icon} />
+                  )}
+                  <div class="trust-content">
+                    <div class="trust-value">{indicator.value}</div>
+                    <div class="trust-label">{indicator.label}</div>
+                  </div>
+                </div>
+              ))}
             </div>
           )
         }
@@ -79,8 +106,19 @@ const { headline, text, cta, secondaryCta, image, variant = 'default' } = Astro.
     justify-content: center;
   }
 
+  .variant-garage .hero-headline {
+    background: none;
+    -webkit-text-fill-color: var(--color-garage-charcoal);
+    color: var(--color-garage-charcoal);
+    animation: none;
+  }
+
   @media (min-width: 768px) {
     .variant-default {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .variant-garage {
       grid-template-columns: 1fr 1fr;
     }
   }
@@ -147,6 +185,75 @@ const { headline, text, cta, secondaryCta, image, variant = 'default' } = Astro.
     opacity: 0.1;
     z-index: -1;
     transition: opacity var(--duration-normal) var(--ease-out);
+  }
+
+  /* Trust Indicators Styling */
+  .hero-trust-indicators {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+
+  @media (min-width: 768px) {
+    .hero-trust-indicators {
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: var(--space-6);
+    }
+  }
+
+  .trust-indicator {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background-color: var(--color-trust-badge-bg);
+    border-radius: var(--card-radius-tight);
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+
+  .trust-indicator:hover {
+    background-color: rgba(107, 165, 67, 0.12);
+    transform: translateY(-2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .trust-indicator:hover {
+      transform: none;
+    }
+  }
+
+  .trust-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    flex-shrink: 0;
+    color: var(--color-trust-green);
+  }
+
+  .trust-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .trust-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .trust-value {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    color: var(--color-text);
+  }
+
+  .trust-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.2;
   }
 
   .hero-image:hover::before {

@@ -1,0 +1,193 @@
+---
+export interface Props {
+  phone?: string;
+  hours?: string;
+  location?: string;
+  emergencyAvailable?: boolean;
+}
+
+const { phone, hours, location, emergencyAvailable = false } = Astro.props;
+
+// Format phone for tel: link (remove spaces and special chars)
+const phoneLink = phone ? `tel:${phone.replace(/[\s\-()]/g, '')}` : undefined;
+---
+
+<div class="utility-bar">
+  <div class="utility-bar-container">
+    {
+      hours && (
+        <div class="utility-item utility-hours">
+          <svg
+            class="utility-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span class="utility-text">{hours}</span>
+        </div>
+      )
+    }
+
+    {
+      location && (
+        <div class="utility-item utility-location">
+          <svg
+            class="utility-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span class="utility-text">{location}</span>
+        </div>
+      )
+    }
+
+    {
+      phone && (
+        <a href={phoneLink} class="utility-item utility-phone" aria-label={`Call us at ${phone}`}>
+          <svg
+            class="utility-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+          </svg>
+          <span class="utility-text">{phone}</span>
+          {emergencyAvailable && <span class="emergency-badge">24/7</span>}
+        </a>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .utility-bar {
+    background-color: var(--color-garage-charcoal);
+    color: var(--color-garage-gray-lighter);
+    border-bottom: 1px solid var(--color-garage-charcoal-light);
+    height: var(--utility-bar-height-mobile);
+    display: flex;
+    align-items: center;
+  }
+
+  .utility-bar-container {
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .utility-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .utility-item.utility-phone {
+    color: var(--color-garage-gray-lighter);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+    font-weight: var(--font-weight-semibold);
+    position: relative;
+  }
+
+  .utility-item.utility-phone:hover {
+    color: white;
+  }
+
+  .utility-item.utility-phone:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--border-radius-sm);
+  }
+
+  .utility-icon {
+    width: var(--icon-xs);
+    height: var(--icon-xs);
+    flex-shrink: 0;
+  }
+
+  .utility-text {
+    display: inline;
+  }
+
+  .emergency-badge {
+    background-color: var(--color-garage-orange);
+    color: white;
+    padding: 0.125rem 0.375rem;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.625rem; /* 10px */
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* Mobile: Hide location on smallest screens */
+  @media (max-width: 639px) {
+    .utility-location {
+      display: none;
+    }
+  }
+
+  /* Desktop: Adjust layout and sizing */
+  @media (min-width: 768px) {
+    .utility-bar {
+      height: var(--utility-bar-height-desktop);
+    }
+
+    .utility-bar-container {
+      justify-content: space-between;
+    }
+
+    .utility-item {
+      font-size: var(--font-size-base);
+    }
+
+    /* Desktop: Hours left, Location center, Phone right */
+    .utility-hours {
+      order: 1;
+    }
+
+    .utility-location {
+      order: 2;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .utility-phone {
+      order: 3;
+    }
+  }
+
+  /* Tablet: Show all items */
+  @media (min-width: 640px) and (max-width: 767px) {
+    .utility-bar-container {
+      justify-content: space-around;
+    }
+  }
+</style>

@@ -1,0 +1,229 @@
+---
+import Section from '../../site/Section/Section.astro';
+import Container from '../../site/Container/Container.astro';
+import Card from '../../ui/Card/Card.astro';
+
+export interface Service {
+  icon?: string; // HTML string or emoji for icon
+  title: string;
+  description: string;
+  link?: {
+    href: string;
+    text?: string;
+  };
+}
+
+export interface Props {
+  headline: string;
+  subheadline?: string;
+  services: Service[];
+  columns?: 2 | 3 | 4;
+}
+
+const { headline, subheadline, services, columns = 3 } = Astro.props;
+---
+
+<Section variant="default" spacing="lg">
+  <Container>
+    <div class="service-grid-header">
+      <h2 class="service-grid-headline">{headline}</h2>
+      {subheadline && <p class="service-grid-subheadline">{subheadline}</p>}
+    </div>
+
+    <div class:list={['service-grid', `columns-${columns}`]}>
+      {
+        services.map((service, index) => (
+          <Card variant="hover" padding="lg">
+            <div
+              class="service-card"
+              data-animate="fade"
+              style={`animation-delay: ${index * 100}ms`}
+            >
+              {service.icon && (
+                <div class="service-icon" set:html={service.icon} />
+              )}
+
+              <h3 class="service-title">{service.title}</h3>
+
+              <p class="service-description">{service.description}</p>
+
+              {service.link && (
+                <a href={service.link.href} class="service-link">
+                  {service.link.text || 'Learn more'}
+                  <svg
+                    class="service-link-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </a>
+              )}
+            </div>
+          </Card>
+        ))
+      }
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .service-grid-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto var(--space-12);
+  }
+
+  .service-grid-headline {
+    font-size: clamp(var(--font-size-3xl), 4vw, var(--font-size-4xl));
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text);
+    margin-bottom: var(--space-4);
+  }
+
+  .service-grid-subheadline {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  /* Grid Layout - Mobile First */
+  .service-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  /* Tablet: 2 columns */
+  @media (min-width: 640px) {
+    .service-grid.columns-3,
+    .service-grid.columns-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .service-grid.columns-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Desktop: Full column count */
+  @media (min-width: 1024px) {
+    .service-grid {
+      gap: var(--space-8);
+    }
+
+    .service-grid.columns-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .service-grid.columns-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .service-grid.columns-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Service Card Styles */
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: var(--service-card-min-height-mobile);
+  }
+
+  @media (min-width: 1024px) {
+    .service-card {
+      min-height: var(--service-card-min-height-desktop);
+    }
+  }
+
+  .service-icon {
+    width: var(--icon-lg);
+    height: var(--icon-lg);
+    margin-bottom: var(--space-4);
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .service-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* If icon is emoji or text */
+  .service-icon:not(:has(svg)) {
+    font-size: var(--icon-lg);
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .service-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text);
+    margin-bottom: var(--space-3);
+  }
+
+  .service-description {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-4);
+    flex-grow: 1;
+  }
+
+  .service-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-primary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    transition: all var(--duration-fast) var(--ease-out);
+    margin-top: auto;
+  }
+
+  .service-link:hover {
+    color: var(--color-primary-hover);
+    gap: var(--space-3);
+  }
+
+  .service-link:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--border-radius-sm);
+  }
+
+  .service-link-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .service-link:hover .service-link-icon {
+    transform: translateX(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .service-link:hover {
+      gap: var(--space-2);
+    }
+
+    .service-link:hover .service-link-icon {
+      transform: none;
+    }
+  }
+</style>
