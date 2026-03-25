@@ -1,0 +1,86 @@
+---
+import Section from '../../../site/Section/Section.astro';
+import Container from '../../../site/Container/Container.astro';
+import SectionHeader from '../../../site/SectionHeader/SectionHeader.astro';
+
+export interface Props {
+  headline?: string;
+  text?: string;
+  logos: Array<{
+    name: string;
+    logo: string;
+    url?: string;
+  }>;
+}
+
+const { headline, text, logos } = Astro.props;
+---
+
+<Section variant="surface" spacing="md">
+  <Container>
+    <SectionHeader headline={headline} text={text} />
+    
+    <div class="logo-grid">
+      {
+        logos.map((item) =>
+          item.url ? (
+            <a href={item.url} class="logo-item" target="_blank" rel="noopener noreferrer">
+              <img src={item.logo} alt={item.name} />
+            </a>
+          ) : (
+            <div class="logo-item">
+              <img src={item.logo} alt={item.name} />
+            </div>
+          )
+        )
+      }
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+    align-items: center;
+  }
+
+  @media (min-width: 640px) {
+    .logo-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .logo-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  .logo-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+    opacity: 0.6;
+    transition: opacity var(--transition-fast);
+    text-decoration: none;
+  }
+
+  .logo-item:hover {
+    opacity: 1;
+  }
+
+  .logo-item img {
+    max-width: 100%;
+    max-height: 3rem;
+    height: auto;
+    filter: grayscale(100%);
+    transition: filter var(--transition-fast);
+  }
+
+  .logo-item:hover img {
+    filter: grayscale(0%);
+  }
+</style>

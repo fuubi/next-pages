@@ -1,0 +1,59 @@
+---
+export interface Props {
+  headline?: string;
+  text?: string;
+  align?: 'left' | 'center';
+}
+
+const { headline, text, align = 'center' } = Astro.props;
+---
+
+{
+  (headline || text) && (
+    <div class:list={['section-header', `align-${align}`]}>
+      {headline && <h2 class="headline">{headline}</h2>}
+      {text && <p class="text">{text}</p>}
+    </div>
+  )
+}
+
+<style>
+  .section-header {
+    margin-bottom: var(--space-12);
+  }
+
+  .align-left {
+    text-align: left;
+  }
+
+  .align-center {
+    text-align: center;
+    max-width: 768px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .headline {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    margin-bottom: var(--space-4);
+  }
+
+  .text {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: 0;
+  }
+
+  @media (min-width: 768px) {
+    .headline {
+      font-size: var(--font-size-4xl);
+    }
+
+    .text {
+      font-size: var(--font-size-xl);
+    }
+  }
+</style>

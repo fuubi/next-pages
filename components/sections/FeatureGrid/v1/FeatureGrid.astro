@@ -1,0 +1,110 @@
+---
+import Section from '../../../site/Section/Section.astro';
+import Container from '../../../site/Container/Container.astro';
+import SectionHeader from '../../../site/SectionHeader/SectionHeader.astro';
+import Card from '../../../ui/Card/Card.astro';
+
+export interface Props {
+  headline?: string;
+  text?: string;
+  items: Array<{
+    title: string;
+    description: string;
+    icon?: string;
+  }>;
+  variant?: 'two-column' | 'three-column' | 'four-column';
+}
+
+const { headline, text, items, variant = 'three-column' } = Astro.props;
+
+const columns = {
+  'two-column': 2,
+  'three-column': 3,
+  'four-column': 4,
+}[variant];
+---
+
+<Section variant="surface" spacing="lg">
+  <Container>
+    <SectionHeader headline={headline} text={text} />
+
+    <div
+      class:list={['feature-grid', `columns-${columns}`]}
+      id="feature-grid"
+      data-animate="stagger"
+    >
+      {
+        items.map((item) => (
+          <Card variant="hover" padding="lg">
+            {item.icon && (
+              <div class="feature-icon">
+                <span class="icon-text">{item.icon}</span>
+              </div>
+            )}
+            <h3 class="feature-title">{item.title}</h3>
+            <p class="feature-description">{item.description}</p>
+          </Card>
+        ))
+      }
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .feature-grid {
+    display: grid;
+    gap: var(--space-8);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .columns-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .columns-3 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .columns-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .columns-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .columns-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .feature-icon {
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary-light);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--space-4);
+  }
+
+  .icon-text {
+    font-size: var(--font-size-2xl);
+  }
+
+  .feature-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-3);
+  }
+
+  .feature-description {
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: 0;
+  }
+</style>

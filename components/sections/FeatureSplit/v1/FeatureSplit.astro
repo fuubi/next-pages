@@ -1,0 +1,83 @@
+---
+import Section from '../../../site/Section/Section.astro';
+import Container from '../../../site/Container/Container.astro';
+import Button from '../../../ui/Button/Button.astro';
+
+export interface Props {
+  headline: string;
+  text: string;
+  image: string;
+  cta?: {
+    text: string;
+    href: string;
+  };
+  imagePosition?: 'left' | 'right';
+}
+
+const { headline, text, image, cta, imagePosition = 'right' } = Astro.props;
+---
+
+<Section variant="default" spacing="lg">
+  <Container>
+    <div class:list={['feature-split', `image-${imagePosition}`]}>
+      <div class="feature-content">
+        <h2 class="feature-headline">{headline}</h2>
+        <p class="feature-text">{text}</p>
+        {
+          cta && (
+            <Button href={cta.href} variant="primary">
+              {cta.text}
+            </Button>
+          )
+        }
+      </div>
+      
+      <div class="feature-image">
+        <img src={image} alt={headline} />
+      </div>
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .feature-split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .feature-split {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .image-left .feature-content {
+      order: 2;
+    }
+
+    .image-left .feature-image {
+      order: 1;
+    }
+  }
+
+  .feature-headline {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    margin-bottom: var(--space-4);
+  }
+
+  .feature-text {
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-6);
+  }
+
+  .feature-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-lg);
+  }
+</style>

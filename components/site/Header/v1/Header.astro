@@ -1,0 +1,209 @@
+---
+import Container from '../../Container/Container.astro';
+import { getEntry } from 'astro:content';
+
+export interface Props {
+  variant?: 'default' | 'transparent' | 'minimal';
+}
+
+const { variant = 'default' } = Astro.props;
+const settings = await getEntry('site', 'settings');
+const { siteName, navigation } = settings.data;
+---
+
+<header class:list={['header', `variant-${variant}`]} id="main-header">
+  <Container>
+    <nav class="nav">
+      <a href="/" class="logo" aria-label="Home">
+        <span class="logo-text">{siteName}</span>
+      </a>
+
+      <div class="nav-links">
+        {
+          navigation.map((item) => (
+            <a href={item.href} class="nav-link">
+              {item.label}
+            </a>
+          ))
+        }
+      </div>
+
+      <div class="nav-actions">
+        <a href="/contact" class="cta-button">Get Started</a>
+      </div>
+    </nav>
+  </Container>
+</header>
+
+<script>
+  // Smooth header behavior on scroll
+  let lastScroll = 0;
+  const header = document.getElementById('main-header');
+
+  function handleScroll() {
+    const currentScroll = window.pageYOffset;
+
+    // Add shadow when scrolled
+    if (currentScroll > 10) {
+      header?.classList.add('scrolled');
+    } else {
+      header?.classList.remove('scrolled');
+    }
+
+    // Hide/show header on scroll (optional)
+    // Uncomment to enable auto-hide behavior
+    /*
+    if (currentScroll > lastScroll && currentScroll > 80) {
+      header?.classList.add('hidden');
+    } else {
+      header?.classList.remove('hidden');
+    }
+    */
+
+    lastScroll = currentScroll;
+  }
+
+  // Throttle scroll events for better performance
+  let ticking = false;
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    },
+    { passive: true }
+  );
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    width: 100%;
+    border-bottom: var(--border-width) solid var(--color-border);
+    background-color: var(--color-background);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all var(--duration-normal) var(--ease-out);
+  }
+
+  .header.scrolled {
+    box-shadow: var(--shadow-md);
+    background-color: var(--color-background);
+  }
+
+  .header.hidden {
+    transform: translateY(-100%);
+  }
+
+  .variant-transparent {
+    background-color: var(--color-background);
+    border-bottom-color: var(--color-border-soft);
+  }
+
+  .variant-transparent.scrolled {
+    background-color: var(--color-background);
+    border-bottom-color: var(--color-border);
+    box-shadow: var(--shadow-md);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4rem;
+    gap: var(--space-8);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .logo-text {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .logo:hover .logo-text {
+    color: var(--color-primary);
+  }
+
+  .nav-links {
+    display: none;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .nav-links {
+      display: flex;
+    }
+  }
+
+  .nav-link {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+    position: relative;
+  }
+
+  /* Underline effect */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-primary);
+    transition: width var(--duration-normal) var(--ease-out);
+  }
+
+  .nav-link:hover {
+    color: var(--color-primary);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .nav-actions {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-2) var(--space-6);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: white;
+    background-color: var(--color-primary);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    transition: all var(--duration-fast) var(--ease-out);
+    box-shadow: 0 2px 8px rgba(107, 165, 67, 0.3);
+  }
+
+  .cta-button:hover {
+    background-color: var(--color-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(107, 165, 67, 0.4);
+  }
+
+  .cta-button:active {
+    transform: translateY(0);
+  }
+</style>

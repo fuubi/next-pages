@@ -1,0 +1,97 @@
+---
+import Section from '../../../site/Section/Section.astro';
+import Container from '../../../site/Container/Container.astro';
+import Button from '../../../ui/Button/Button.astro';
+
+export interface Props {
+  headline: string;
+  text?: string;
+  cta: {
+    text: string;
+    href: string;
+  };
+  secondaryCta?: {
+    text: string;
+    href: string;
+  };
+  variant?: 'primary' | 'secondary';
+}
+
+const { headline, text, cta, secondaryCta, variant = 'primary' } = Astro.props;
+---
+
+<Section variant={variant === 'primary' ? 'dark' : 'surface'} spacing="lg">
+  <Container>
+    <div class="cta-content">
+      <div class="cta-text">
+        <h2 class="cta-headline">{headline}</h2>
+        {text && <p class="cta-description">{text}</p>}
+      </div>
+      
+      <div class="cta-actions">
+        <Button href={cta.href} variant="primary" size="lg">
+          {cta.text}
+        </Button>
+        {
+          secondaryCta && (
+            <Button href={secondaryCta.href} variant="outline" size="lg">
+              {secondaryCta.text}
+            </Button>
+          )
+        }
+      </div>
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .cta-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-8);
+  }
+
+  .cta-text {
+    max-width: 42rem;
+  }
+
+  .cta-headline {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    margin-bottom: var(--space-4);
+  }
+
+  .cta-description {
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-relaxed);
+    opacity: 0.9;
+    margin-bottom: 0;
+  }
+
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .cta-content {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+
+    .cta-text {
+      flex: 1;
+    }
+
+    .cta-actions {
+      flex-shrink: 0;
+      justify-content: flex-start;
+    }
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+export interface Props {
+  variant?: 'default' | 'surface' | 'dark';
+  spacing?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+  id?: string;
+}
+
+const { variant = 'default', spacing = 'lg', id } = Astro.props;
+---
+
+<section class:list={['section', `variant-${variant}`, `spacing-${spacing}`]} id={id}>
+  <slot />
+</section>
+
+<style>
+  .section {
+    width: 100%;
+  }
+
+  /* Variants */
+  .variant-default {
+    background-color: var(--color-background);
+  }
+
+  .variant-surface {
+    background-color: var(--color-surface);
+  }
+
+  .variant-dark {
+    background-color: var(--color-text);
+    color: var(--color-background);
+  }
+
+  /* Spacing */
+  .spacing-none {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .spacing-sm {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+  }
+
+  .spacing-md {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  .spacing-lg {
+    padding-top: var(--space-20);
+    padding-bottom: var(--space-20);
+  }
+
+  .spacing-xl {
+    padding-top: var(--space-32);
+    padding-bottom: var(--space-32);
+  }
+
+  @media (min-width: 768px) {
+    .spacing-sm {
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+
+    .spacing-md {
+      padding-top: var(--space-20);
+      padding-bottom: var(--space-20);
+    }
+
+    .spacing-lg {
+      padding-top: var(--space-24);
+      padding-bottom: var(--space-24);
+    }
+
+    .spacing-xl {
+      padding-top: var(--space-32);
+      padding-bottom: var(--space-32);
+    }
+  }
+</style>
