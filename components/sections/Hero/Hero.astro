@@ -26,8 +26,15 @@ export interface Props {
   trustIndicators?: TrustIndicator[];
 }
 
-const { headline, text, cta, secondaryCta, image, variant = 'default', trustIndicators } =
-  Astro.props;
+const {
+  headline,
+  text,
+  cta,
+  secondaryCta,
+  image,
+  variant = 'default',
+  trustIndicators,
+} = Astro.props;
 ---
 
 <Section variant="default" spacing="xl">
@@ -59,9 +66,7 @@ const { headline, text, cta, secondaryCta, image, variant = 'default', trustIndi
             <div class="hero-trust-indicators">
               {trustIndicators.map((indicator) => (
                 <div class="trust-indicator">
-                  {indicator.icon && (
-                    <div class="trust-icon" set:html={indicator.icon} />
-                  )}
+                  {indicator.icon && <div class="trust-icon" set:html={indicator.icon} />}
                   <div class="trust-content">
                     <div class="trust-value">{indicator.value}</div>
                     <div class="trust-label">{indicator.label}</div>
