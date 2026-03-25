@@ -35,5 +35,5 @@ workspaces/
 packages/shared/
 
 # Centralized git repository storage for shared components
-# Used by CLI to create nested worktrees
+# Used by CLI to checkout client worktrees and extracted shared components
 .git-repos/

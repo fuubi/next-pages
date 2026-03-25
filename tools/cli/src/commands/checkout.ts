@@ -20,7 +20,7 @@ interface ClientsRegistry {
 }
 
 /**
- * Checkout a client site as nested worktrees (client + shared lib)
+ * Checkout a client site as a worktree with extracted shared components
  * Supports multiple clients checked out simultaneously
  */
 export async function checkoutClient(clientName: string) {
@@ -78,32 +78,39 @@ export async function checkoutClient(clientName: string) {
     });
     spinner.succeed(`Created client worktree at ${clientPath}`);
 
-    // Step 2: Create nested worktree for shared lib
+    // Step 2: Checkout shared lib at specific version (regular checkout, not worktree)
     spinner.start(`Checking out shared lib ${client.sharedLibVersion}...`);
 
-    // First, ensure the shared lib repo is available as a remote
+    // Create src/shared directory
+    await execa('mkdir', ['-p', sharedLibPath], { cwd: workspaceRoot });
+
+    // Use git archive to extract the shared components at the specific tag
+    // This is cleaner than nested worktrees and follows git best practices
+    const sharedBranch = 'shared/components';
+
     try {
-      await execa('git', ['remote', 'add', 'shared-lib', client.sharedLibRepo], {
-        cwd: clientPath,
+      // Fetch the shared/components branch if needed
+      await execa('git', ['fetch', 'origin', sharedBranch], {
+        cwd: workspaceRoot,
       });
-    } catch (error) {
-      // Remote might already exist
-      console.log(chalk.dim('Shared lib remote already exists'));
+
+      // Extract files from the tag/branch to the target directory
+      const { stdout: archive } = await execa(
+        'git',
+        ['archive', '--format=tar', client.sharedLibVersion],
+        { cwd: workspaceRoot }
+      );
+
+      // Extract the archive to src/shared
+      await execa('tar', ['-x', '-C', sharedLibPath], {
+        cwd: workspaceRoot,
+        input: archive,
+      });
+
+    } catch (error: any) {
+      spinner.fail(`Failed to checkout shared lib`);
+      throw new Error(`Could not extract shared components at ${client.sharedLibVersion}: ${error.message}`);
     }
-
-    // Fetch the shared lib repo
-    await execa('git', ['fetch', 'shared-lib', '--tags'], {
-      cwd: clientPath,
-    });
-
-    // Create the nested worktree for the shared lib at the pinned version
-    await execa(
-      'git',
-      ['worktree', 'add', sharedLibPath, client.sharedLibVersion],
-      {
-        cwd: clientPath,
-      }
-    );
 
     spinner.succeed(
       chalk.green(

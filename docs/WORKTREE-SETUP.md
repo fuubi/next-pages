@@ -1,4 +1,24 @@
-# Git Hook Setup
+# Git Worktree Management
+
+## Overview
+
+This project uses git worktrees in two places:
+
+1. **`packages/shared/`** - Development worktree for shared components (linked to `shared/components` branch)
+2. **`sites/<client>/`** - One worktree per client site (linked to `client/<name>` branch)
+
+**Note**: `sites/<client>/src/shared/` is NOT a worktree - it contains extracted files from a specific version tag.
+
+## Worktree vs Extracted Files
+
+### Worktrees
+- **`packages/shared/`**: Full git worktree, can switch branches/tags, commit changes
+- **`sites/<client>/`**: Full git worktree for client branch
+
+### Extracted Files (Not Worktrees)
+- **`sites/<client>/src/shared/`**: Snapshot extracted from a specific version tag
+- Cannot switch versions directly (not a git repository)
+- Update using `cli upgrade <client> <version>`
 
 ## Post-Checkout Hook
 

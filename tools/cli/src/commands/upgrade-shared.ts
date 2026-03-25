@@ -1,7 +1,7 @@
 import { execa } from 'execa';
 import ora from 'ora';
 import chalk from 'chalk';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync, rmSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { getWorkspaceRoot } from '../utils/workspace.ts';
 
@@ -21,7 +21,7 @@ interface ClientsRegistry {
 
 /**
  * Upgrade the shared library version for a specific client
- * Updates both the worktree and the clients.json registry
+ * Re-extracts shared components at the new version and updates clients.json
  */
 export async function upgradeSharedLib(clientName: string, newVersion: string) {
   const spinner = ora(`Upgrading shared library for ${clientName}...`).start();
@@ -85,56 +85,37 @@ export async function upgradeSharedLib(clientName: string, newVersion: string) {
       return;
     }
 
-    // Check if shared lib worktree exists
+    // Check if shared lib directory exists
     if (!existsSync(sharedLibPath)) {
       throw new Error(
-        `Shared library worktree not found at ${sharedLibPath}. The client checkout may be incomplete.`
+        `Shared library not found at ${sharedLibPath}. The client checkout may be incomplete.`
       );
     }
 
-    // Check for uncommitted changes in shared lib
-    spinner.text = 'Checking for uncommitted changes in shared library...';
-    try {
-      const { stdout: status } = await execa('git', ['status', '--porcelain'], {
-        cwd: sharedLibPath,
-      });
-
-      if (status.trim()) {
-        throw new Error(
-          'Uncommitted changes detected in shared library. Shared lib should be read-only. Please discard changes first.'
-        );
-      }
-    } catch (error: any) {
-      if (error.message.includes('Uncommitted changes')) {
-        throw error;
-      }
-      console.log(chalk.dim('Unable to check git status, continuing...'));
-    }
-
-    // Fetch latest tags from shared lib repo
-    spinner.text = 'Fetching latest versions from shared library...';
-    await execa('git', ['fetch', 'shared-lib', '--tags'], {
-      cwd: clientPath,
+    // Fetch latest tags from shared components branch
+    spinner.text = 'Fetching latest versions from shared components...';
+    await execa('git', ['fetch', 'origin', 'shared/components', '--tags'], {
+      cwd: workspaceRoot,
     });
 
     // Check if the new version tag exists
     try {
-      await execa('git', ['rev-parse', `tags/${newVersion}`], {
-        cwd: clientPath,
+      await execa('git', ['rev-parse', `${newVersion}`], {
+        cwd: workspaceRoot,
       });
     } catch (error) {
       throw new Error(
-        `Version tag ${newVersion} not found in shared library repository. Available versions: run 'git tag -l' in shared lib repo.`
+        `Version tag ${newVersion} not found. Available versions: run 'git tag -l' to see all tags.`
       );
     }
 
-    // Show what changed between versions
+    // Show what changed between versions (if possible)
     spinner.text = 'Analyzing changes...';
     try {
       const { stdout: diff } = await execa(
         'git',
-        ['log', '--oneline', `${oldVersion}..${newVersion}`],
-        { cwd: sharedLibPath }
+        ['log', '--oneline', `${oldVersion}..${newVersion}`, 'shared/components'],
+        { cwd: workspaceRoot }
       );
 
       if (diff.trim()) {
@@ -147,10 +128,26 @@ export async function upgradeSharedLib(clientName: string, newVersion: string) {
       console.log(chalk.dim('Unable to show version diff'));
     }
 
-    // Update the shared lib worktree to the new version
-    spinner.text = `Switching to ${newVersion}...`;
-    await execa('git', ['checkout', newVersion], {
-      cwd: sharedLibPath,
+    // Remove old shared library directory
+    spinner.text = 'Removing old shared library...';
+    rmSync(sharedLibPath, { recursive: true, force: true });
+
+    // Re-create the directory
+    mkdirSync(sharedLibPath, { recursive: true });
+
+    // Extract the new version using git archive
+    spinner.text = `Extracting ${newVersion}...`;
+    const archiveProcess = execa('git', [
+      'archive',
+      '--format=tar',
+      newVersion,
+    ], {
+      cwd: workspaceRoot,
+    });
+
+    await execa('tar', ['-x', '-C', sharedLibPath], {
+      cwd: workspaceRoot,
+      stdin: archiveProcess.stdout,
     });
 
     // Update the registry
@@ -165,7 +162,7 @@ export async function upgradeSharedLib(clientName: string, newVersion: string) {
 
     console.log();
     console.log(chalk.bold('Updated:'));
-    console.log(chalk.cyan(`  Worktree: ${sharedLibPath}`));
+    console.log(chalk.cyan(`  Files: ${sharedLibPath}`));
     console.log(chalk.cyan(`  Registry: ${clientsJsonPath}`));
     console.log();
     console.log(chalk.dim('Test your client site to ensure compatibility.'));

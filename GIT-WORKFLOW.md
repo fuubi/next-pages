@@ -1,6 +1,6 @@
-# Git Workflow: Orphan Branch + Nested Worktrees
+# Git Workflow: Orphan Branch + Worktree Checkout
 
-This repository uses a **coordinator pattern** with **orphan branches per client** and **nested git worktrees** to isolate client development while maintaining a shared component library.
+This repository uses a **coordinator pattern** with **orphan branches per client** and **git worktrees** to isolate client development while maintaining a shared component library.
 
 ## Table of Contents
 
@@ -26,7 +26,7 @@ colombalink/client-sites (this repo)
 ├── client/garage-mueller (orphan branch)
 │   └── Full client site structure
 │
-└── client/garage-other (orphan branch)
+├── client/garage-other (orphan branch)
 │   └── Full client site structure
 │
 └── shared/components (orphan branch)
@@ -38,7 +38,7 @@ colombalink/client-sites (this repo)
 1. **Coordinator branch (`main`)**: Contains CLI, documentation, and client registry
 2. **Client branches (`client/*`)**: Independent orphan branches with no shared history
 3. **Shared library (`shared/components`)**: Orphan branch with semantic versioning via git tags
-4. **Worktrees**: Clients and shared lib checked out simultaneously as nested directories
+4. **Worktrees**: Clients checked out as worktrees for parallel development; shared components extracted at specific versions
 
 ---
 
@@ -73,21 +73,25 @@ git log --oneline --all --graph --decorate
 
 ## Worktree Structure
 
-When you checkout a client, you get **nested worktrees**:
+When you checkout a client, the structure looks like:
 
 ```
 /workspaces/next-pages/              # Coordinator repo root
 ├── clients.json                     # Registry
 ├── tools/cli/                       # CLI tools
+├── packages/                        
+│   └── shared/                      # Development worktree ← shared/components branch
+│       ├── components/              # For working on shared components
+│       ├── layouts/                 #
+│       └── styles/                  #
+│
 ├── sites/                           # Worktree checkout directory (gitignored)
 │   ├── garage-mueller/              # Client worktree ← client/garage-mueller branch
 │   │   ├── src/                     # Client source code
 │   │   │   ├── pages/               #
 │   │   │   ├── i18n/                #
-│   │   │   └── shared/              # Nested worktree ← shared/components@v1.0.0
-│   │   │       ├── sections/        #
-│   │   │       ├── site/            #
-│   │   │       ├── ui/              #
+│   │   │   └── shared/              # Extracted files from shared/components@v1.0.0
+│   │   │       ├── components/      # (Not a worktree - regular files)
 │   │   │       ├── layouts/         #
 │   │   │       └── styles/          #
 │   │   ├── public/                  #
@@ -101,11 +105,16 @@ When you checkout a client, you get **nested worktrees**:
 └── .git/                            # Main git directory
 ```
 
+**Key distinctions:**
+- **`packages/shared/`**: Worktree for developing shared components (linked to `shared/components` branch)
+- **`sites/<client>/`**: Worktree per client (one per client branch)
+- **`sites/<client>/src/shared/`**: Extracted snapshot at a specific version tag (not a worktree)
+
 **Multiple clients checked out simultaneously:**
 - Each client in its own `sites/<client-name>/` directory
-- Each has its own nested shared lib at its own pinned version
+- Each has its own version of shared components extracted at the version specified in `clients.json`
 - Work on multiple clients without switching branches
-- No cleanup required to switch between clients
+- Update to newer shared component versions with `cli upgrade`
 
 ---
 
@@ -120,8 +129,8 @@ cli checkout garage-mueller
 
 **What happens:**
 1. Creates worktree at `sites/garage-mueller/` on branch `client/garage-mueller`
-2. Creates nested worktree at `sites/garage-mueller/src/shared/` on tag `v1.0.0` from `shared/components` branch
-3. Both are ready for development
+2. Extracts shared components at the specified version (e.g., `v1.0.0`) into `sites/garage-mueller/src/shared/`
+3. Client is ready for development
 
 **Result:**
 ```
@@ -130,9 +139,9 @@ cli checkout garage-mueller
 Client workspace:
   /workspaces/next-pages/sites/garage-mueller
 
-Shared library:
+Shared components:
   /workspaces/next-pages/sites/garage-mueller/src/shared
-  Version: v1.0.0
+  Version: v1.0.0 (extracted snapshot)
 ```
 
 ### 2. Work on the Client
@@ -150,7 +159,7 @@ git commit -m "feat: add contact page"
 git push origin client/garage-mueller
 ```
 
-**The shared library is read-only** — do not modify files in `src/shared/`.
+**The shared components in `src/shared/` are version-locked** — they're a snapshot at a specific tag. To update to a newer version, use `cli upgrade`.
 
 ### 3. View All Clients
 
@@ -191,7 +200,7 @@ cli upgrade-shared garage-mueller v1.1.0
 **What happens:**
 1. Fetches latest tags from `shared/components` branch
 2. Shows diff of changes between old and new version
-3. Updates nested worktree to new version
+3. Removes old shared components and extracts new version
 4. Updates `clients.json` registry
 5. You test the changes and commit if all works
 

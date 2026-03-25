@@ -179,7 +179,7 @@ git push origin client/garage-mueller-v1.0.0
 
 #### 2.2. Update Client Configuration
 
-Update the client's `astro.config.ts` to reference shared lib from nested worktree:
+Update the client's `astro.config.ts` to reference shared components from src/shared/:
 
 ```typescript
 // astro.config.ts
@@ -188,7 +188,7 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        // Shared lib will be mounted at src/shared/ as nested worktree
+        // Shared components are extracted at src/shared/
         '@shared': resolve(__dirname, 'src/shared'),
         '@templates': resolve(__dirname, '../../packages/templates'),
       },
@@ -313,7 +313,7 @@ ls -la sites/garage-mueller/
 # Should show complete client structure
 
 ls -la sites/garage-mueller/src/shared/
-# Should show shared components (nested worktree)
+# Should show extracted shared components at the version specified in clients.json
 ```
 
 #### 5.3. Test Development

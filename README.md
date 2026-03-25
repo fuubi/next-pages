@@ -187,7 +187,7 @@ cli upgrade-shared garage-mueller v1.1.0
 
 **What happens:**
 1. Shows diff between current and target version
-2. Checks out new version in nested worktree
+2. Extracts new version into src/shared/
 3. Updates `clients.json` with new pinned version
 
 **Test, then commit:**
@@ -274,9 +274,10 @@ cli validate [client-name]
    - Roll out to other clients gradually
    - Keep legacy clients on older versions if needed
 
-5. **Don't modify `src/shared/`:**
-   - It's a read-only nested worktree
-   - Changes go to the upstream shared-components repo
+5. **Don't modify `src/shared/` directly:**
+   - It contains version-locked shared components
+   - To update, use `cli upgrade-shared <client> <version>`
+   - Changes to shared components go to `packages/shared/` (the development worktree)
 
 ---
 
@@ -361,7 +362,7 @@ sites/garage-mueller/          # Client worktree (client/garage-mueller branch)
 
 **Key points:**
 - `src/` contains client-specific code
-- `src/shared/` is a **read-only** nested worktree from the shared-components repo
+- `src/shared/` contains extracted shared components at a specific version
 - Client has its own `node_modules/` and dependencies
 
 ---
@@ -440,7 +441,7 @@ The shared component library (checked out from `colombalink/shared-components`) 
 - **Content:** JSON files per language (i18n)
 - **Styling:** Scoped CSS with design tokens
 - **TypeScript:** Type-safe throughout
-- **Git:** Orphan branches + nested worktrees
+- **Git:** Orphan branches + worktrees for parallel development
 - **Shared Library:** Semantic versioning with git tags
 
 ---

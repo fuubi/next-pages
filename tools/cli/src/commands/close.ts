@@ -6,8 +6,8 @@ import { join } from 'path';
 import { getWorkspaceRoot } from '../utils/workspace.ts';
 
 /**
- * Close (remove) a client's worktrees
- * This removes both the client worktree and its nested shared lib worktree
+ * Close (remove) a client's worktree
+ * Note: src/shared/ is a regular checkout, not a worktree, so it's removed with the client
  */
 export async function closeClient(clientName: string) {
   const spinner = ora(`Closing ${clientName}...`).start();
@@ -15,7 +15,6 @@ export async function closeClient(clientName: string) {
   try {
     const workspaceRoot = getWorkspaceRoot();
     const clientPath = join(workspaceRoot, 'sites', clientName);
-    const sharedLibPath = join(clientPath, 'src', 'shared');
 
     // Check if client is checked out
     if (!existsSync(clientPath)) {
@@ -45,34 +44,7 @@ export async function closeClient(clientName: string) {
       console.log(chalk.dim('Unable to check git status, continuing...'));
     }
 
-    // Check for uncommitted changes in shared lib worktree (if it exists)
-    if (existsSync(sharedLibPath)) {
-      try {
-        const { stdout: sharedStatus } = await execa('git', ['status', '--porcelain'], {
-          cwd: sharedLibPath,
-        });
-
-        if (sharedStatus.trim()) {
-          spinner.fail(chalk.red('Cannot close: uncommitted changes in shared lib'));
-          console.log();
-          console.log(chalk.yellow('Uncommitted changes in shared library:'));
-          console.log(sharedStatus);
-          console.log();
-          console.log(chalk.dim('Note: Shared library should be read-only. Consider discarding changes.'));
-          process.exit(1);
-        }
-      } catch (error) {
-        console.log(chalk.dim('Unable to check shared lib status, continuing...'));
-      }
-
-      // Remove nested shared lib worktree first
-      spinner.text = 'Removing shared library worktree...';
-      await execa('git', ['worktree', 'remove', sharedLibPath], {
-        cwd: clientPath,
-      });
-    }
-
-    // Remove client worktree
+    // Remove client worktree (this will remove src/shared/ as well since it's just files)
     spinner.text = 'Removing client worktree...';
     await execa('git', ['worktree', 'remove', clientPath], {
       cwd: workspaceRoot,
@@ -80,7 +52,7 @@ export async function closeClient(clientName: string) {
 
     spinner.succeed(chalk.green(`✓ Successfully closed ${clientName}`));
     console.log();
-    console.log(chalk.dim(`Worktrees removed: ${clientPath}`));
+    console.log(chalk.dim(`Worktree removed: ${clientPath}`));
   } catch (error: any) {
     spinner.fail(chalk.red(`Failed to close ${clientName}`));
     console.error(chalk.red(error.message));
