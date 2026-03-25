@@ -24,7 +24,7 @@ const { headline, text, email, phone, address, showForm = true } = Astro.props;
       <div class="contact-info">
         <h2 class="contact-headline">{headline}</h2>
         {text && <p class="contact-text">{text}</p>}
-        
+
         <div class="contact-details">
           {
             email && (
@@ -52,7 +52,7 @@ const { headline, text, email, phone, address, showForm = true } = Astro.props;
           }
         </div>
       </div>
-      
+
       {
         showForm && (
           <Card padding="lg">
@@ -63,21 +63,21 @@ const { headline, text, email, phone, address, showForm = true } = Astro.props;
                 </label>
                 <Input type="text" name="name" id="name" required />
               </div>
-              
+
               <div class="form-group">
                 <label for="email" class="form-label">
                   Email
                 </label>
                 <Input type="email" name="email" id="email" required />
               </div>
-              
+
               <div class="form-group">
                 <label for="message" class="form-label">
                   Message
                 </label>
                 <Textarea name="message" id="message" rows={5} required />
               </div>
-              
+
               <Button type="submit" variant="primary" size="lg">
                 Send Message
               </Button>

@@ -20,7 +20,7 @@ const { headline, text, faqs } = Astro.props;
 <Section variant="surface" spacing="lg">
   <Container maxWidth="md">
     <SectionHeader headline={headline} text={text} />
-    
+
     <div class="faq-list">
       {faqs.map((faq) => <Accordion id={faq.id} question={faq.question} answer={faq.answer} />)}
     </div>

@@ -27,7 +27,7 @@ const { headline, text, cta, secondaryCta, variant = 'primary' } = Astro.props;
         <h2 class="cta-headline">{headline}</h2>
         {text && <p class="cta-description">{text}</p>}
       </div>
-      
+
       <div class="cta-actions">
         <Button href={cta.href} variant="primary" size="lg">
           {cta.text}
