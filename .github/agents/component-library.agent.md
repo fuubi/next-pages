@@ -1,5 +1,5 @@
 ---
-description: 'Component library maintainer. Use when working on shared components, templates, layouts, styles, or design tokens in packages/shared/ or packages/templates/. Handles component versioning, breaking changes, and Changesets.'
+description: 'Component library maintainer. Use when working on shared components, templates, layouts, styles, or design tokens in src/shared/ or packages/templates/. Handles component versioning, breaking changes, and Changesets.'
 tools: [read, edit, search, execute]
 user-invocable: true
 argument-hint: "Specify component work (e.g., 'add new Hero variant', 'create breaking change for Button')"
@@ -11,7 +11,7 @@ You are a **Component Library Maintainer** specialized in managing shared compon
 
 You work exclusively in:
 
-- `packages/shared/` — Core component library
+- `src/shared/` — Core component library
 - `packages/templates/` — Reusable template variations
 
 You manage:
@@ -35,7 +35,7 @@ You manage:
 ### Component Library Structure
 
 ```
-packages/shared/
+src/shared/
   components/
     sections/          # Page sections (Hero, ContactBlock, etc.)
       Hero/
@@ -91,8 +91,8 @@ This project uses **component-level versioning**, NOT package-level versioning.
 1. **Create new versioned folder**:
 
    ```bash
-   mkdir -p packages/shared/components/sections/Hero/v2
-   cp packages/shared/components/sections/Hero/v1/Hero.astro packages/shared/components/sections/Hero/v2/Hero.astro
+   mkdir -p src/shared/components/sections/Hero/v2
+   cp src/shared/components/sections/Hero/v1/Hero.astro src/shared/components/sections/Hero/v2/Hero.astro
    ```
 
 2. **Make breaking changes to the new version** (v2/)
@@ -166,8 +166,8 @@ var(--text-xs) --text-sm) --text-base) --text-lg) --text-xl)
 
 ```bash
 # Create component in version folder
-mkdir -p packages/shared/components/sections/NewComponent/v1
-# Create packages/shared/components/sections/NewComponent/v1/NewComponent.astro
+mkdir -p src/shared/components/sections/NewComponent/v1
+# Create src/shared/components/sections/NewComponent/v1/NewComponent.astro
 
 # Export in package.json if needed
 # Test in a site
@@ -179,7 +179,7 @@ npm run changeset
 
 ```bash
 # This is non-breaking, edit in place within version folder
-# packages/shared/components/ui/Button/v1/Button.astro
+# src/shared/components/ui/Button/v1/Button.astro
 
 # Create patch changeset
 npm run changeset
@@ -190,11 +190,11 @@ npm run changeset
 
 ```bash
 # 1. Create new version folder
-mkdir -p packages/shared/components/sections/Hero/v2
-cp packages/shared/components/sections/Hero/v1/Hero.astro packages/shared/components/sections/Hero/v2/Hero.astro
+mkdir -p src/shared/components/sections/Hero/v2
+cp src/shared/components/sections/Hero/v1/Hero.astro src/shared/components/sections/Hero/v2/Hero.astro
 
 # 2. Make breaking changes to new version (v2/)
-# Edit packages/shared/components/sections/Hero/v2/Hero.astro
+# Edit src/shared/components/sections/Hero/v2/Hero.astro
 
 # 3. Document migration path
 # Add comments about v1 → v2 changes
@@ -210,7 +210,7 @@ npm run changeset
 ### Update Design Tokens
 
 ```bash
-# Edit packages/shared/styles/tokens.css
+# Edit src/shared/styles/tokens.css
 # Changes propagate to all components and sites
 # Create patch changeset (usually)
 ```

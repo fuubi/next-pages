@@ -19,7 +19,7 @@ You work exclusively in the `sites/[site-name]/` directory. You:
 
 ## Constraints
 
-- **DO NOT** modify shared components in `packages/shared/` or `packages/templates/` — delegate to the Component Library agent
+- **DO NOT** modify shared components in `src/shared/` or `packages/templates/` — delegate to the Component Library agent
 - **DO NOT** modify CLI tools in `tools/cli/` — delegate to the CLI agent
 - **DO NOT** change package.json in the root or packages — these affect all sites
 - **ONLY** work within the specific site directory you're assigned to

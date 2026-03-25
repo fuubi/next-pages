@@ -1,44 +1,104 @@
 import { existsSync, readdirSync, statSync, readFileSync } from 'fs';
 import { join } from 'path';
 import chalk from 'chalk';
-import { getWorkspaceRoot } from '../utils/workspace.ts';
+import {
+    getWorkspaceRoot,
+    getClientsRegistry,
+    getCheckedOutClients,
+} from '../utils/workspace.js';
 
-export async function listSites() {
-  const workspaceRoot = getWorkspaceRoot();
-  const sitesDir = join(workspaceRoot, 'sites');
+interface ListOptions {
+    checkedOutOnly?: boolean;
+    availableOnly?: boolean;
+}
 
-  if (!existsSync(sitesDir)) {
-    console.error(chalk.red('✗ sites/ directory not found'));
-    return;
-  }
+export async function listSites(options: ListOptions = {}) {
+    try {
+        const registry = getClientsRegistry();
+        const checkedOut = getCheckedOutClients();
 
-  const sites = readdirSync(sitesDir)
-    .filter(f => statSync(join(sitesDir, f)).isDirectory());
+        if (registry.clients.length === 0) {
+            console.log(chalk.yellow('No clients registered. Create one with: cli create <name>'));
+            return;
+        }
 
-  if (sites.length === 0) {
-    console.log(chalk.yellow('No sites found. Create one with: garage create <name>'));
-    return;
-  }
+        // Filter based on options
+        let clientsToShow = registry.clients;
+        
+        if (options.checkedOutOnly) {
+            clientsToShow = registry.clients.filter(c => checkedOut.includes(c.name));
+        } else if (options.availableOnly) {
+            clientsToShow = registry.clients.filter(c => !checkedOut.includes(c.name));
+        }
 
-  console.log(chalk.bold(`\nFound ${sites.length} site(s):\n`));
+        // Show checked out clients section
+        if (!options.availableOnly) {
+            const checkedOutClients = registry.clients.filter(c => checkedOut.includes(c.name));
+            
+            if (checkedOutClients.length > 0) {
+                console.log(chalk.bold.green('\n✓ Checked Out Clients') + chalk.gray(` (${checkedOutClients.length})`));
+                console.log('');
+                
+                for (const client of checkedOutClients) {
+                    console.log(chalk.cyan(`  • ${client.name}`));
+                    if (client.domain) {
+                        console.log(chalk.gray(`    Domain: ${client.domain}`));
+                    }
+                    if (client.language) {
+                        console.log(chalk.gray(`    Language: ${client.language}`));
+                    }
+                    console.log(chalk.gray(`    Shared lib: ${client.sharedLibVersion}`));
+                    console.log(chalk.gray(`    Branch: ${client.branch}`));
+                    const workspaceRoot = getWorkspaceRoot();
+                    const clientPath = join(workspaceRoot, 'sites', client.name);
+                    console.log(chalk.dim(`    Path: ${clientPath}`));
+                    console.log('');
+                }
+            }
+        }
 
-  for (const site of sites) {
-    const configPath = join(sitesDir, site, 'site.config.ts');
-    let info = '';
+        // Show available (not checked out) clients section
+        if (!options.checkedOutOnly) {
+            const availableClients = registry.clients.filter(c => !checkedOut.includes(c.name));
+            
+            if (availableClients.length > 0) {
+                console.log(chalk.bold.blue('\n○ Available Clients') + chalk.gray(` (${availableClients.length})`));
+                console.log('');
+                
+                for (const client of availableClients) {
+                    console.log(chalk.cyan(`  • ${client.name}`));
+                    if (client.domain) {
+                        console.log(chalk.gray(`    Domain: ${client.domain}`));
+                    }
+                    if (client.language) {
+                        console.log(chalk.gray(`    Language: ${client.language}`));
+                    }
+                    console.log(chalk.gray(`    Shared lib: ${client.sharedLibVersion}`));
+                    console.log(chalk.gray(`    Branch: ${client.branch}`));
+                    console.log(chalk.dim(`    Run: cli checkout ${client.name}`));
+                    console.log('');
+                }
+            }
+        }
 
-    if (existsSync(configPath)) {
-      try {
-        const content = readFileSync(configPath, 'utf-8');
-        const domainMatch = content.match(/domain:\s*['"]([^'"]+)['"]/);
-        const languageMatch = content.match(/language:\s*['"]([^'"]+)['"]/);
+        // Summary
+        console.log(chalk.bold('Summary'));
+        console.log(chalk.gray(`  Total clients: ${registry.clients.length}`));
+        console.log(chalk.gray(`  Checked out: ${checkedOut.length}`));
+        console.log(chalk.gray(`  Available: ${registry.clients.length - checkedOut.length}`));
+        console.log('');
 
-        if (domainMatch) info += chalk.gray(` → ${domainMatch[1]}`);
-        if (languageMatch) info += chalk.gray(` (${languageMatch[1]})`);
-      } catch { }
+        // Tips
+        if (checkedOut.length > 0) {
+            console.log(chalk.dim('Tip: You can work on multiple clients simultaneously.'));
+            console.log(chalk.dim('     Each client is isolated in its own worktree.'));
+        } else {
+            console.log(chalk.dim('Tip: Check out a client with: cli checkout <name>'));
+        }
+        console.log('');
+
+    } catch (error: any) {
+        console.error(chalk.red('Error listing clients:'), error.message);
+        process.exit(1);
     }
-
-    console.log(chalk.cyan(`  • ${site}`) + info);
-  }
-
-  console.log('');
 }

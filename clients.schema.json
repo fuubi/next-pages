@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Client Sites Registry",
+  "description": "Registry of all client sites with their git branches and shared library version pins",
+  "type": "object",
+  "required": ["clients"],
+  "properties": {
+    "clients": {
+      "type": "array",
+      "description": "List of all client sites in the repository",
+      "items": {
+        "type": "object",
+        "required": ["name", "branch", "sharedLibVersion", "sharedLibRepo"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Client site name (e.g., 'garage-mueller')",
+            "pattern": "^garage-[a-z0-9-]+$"
+          },
+          "branch": {
+            "type": "string",
+            "description": "Git branch name for this client (orphan branch)",
+            "pattern": "^client/[a-z0-9-]+$"
+          },
+          "sharedLibVersion": {
+            "type": "string",
+            "description": "Pinned version tag of shared component library (e.g., 'v1.0.0')",
+            "pattern": "^v\\d+\\.\\d+\\.\\d+(-[a-z0-9.-]+)?$"
+          },
+          "sharedLibRepo": {
+            "type": "string",
+            "description": "Git repository URL for shared component library",
+            "format": "uri"
+          },
+          "domain": {
+            "type": "string",
+            "description": "Primary domain for this client site"
+          },
+          "language": {
+            "type": "string",
+            "description": "Primary language code (e.g., 'de', 'fr', 'en')",
+            "pattern": "^[a-z]{2}$"
+          },
+          "created": {
+            "type": "string",
+            "description": "Creation date (ISO 8601 format)",
+            "format": "date"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Optional notes about this client"
+          }
+        }
+      }
+    }
+  }
+}

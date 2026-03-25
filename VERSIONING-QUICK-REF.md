@@ -123,7 +123,7 @@ npm run changeset
 ## File Structure
 
 ```
-packages/shared/
+src/shared/
   components/
     sections/
       Hero/
@@ -158,7 +158,7 @@ packages/shared/
 
 ```bash
 # Edit v1/Hero.astro directly
-vim packages/shared/components/sections/Hero/v1/Hero.astro
+vim src/shared/components/sections/Hero/v1/Hero.astro
 
 npm run changeset
 # Type: patch
@@ -193,13 +193,13 @@ npm run changeset
 
 ```bash
 # Step 1: Create v2 folder
-mkdir -p packages/shared/components/sections/Hero/v2
+mkdir -p src/shared/components/sections/Hero/v2
 
 # Step 2: Copy v1 as starting point
-cp packages/shared/components/sections/Hero/v1/Hero.astro packages/shared/components/sections/Hero/v2/
+cp src/shared/components/sections/Hero/v1/Hero.astro src/shared/components/sections/Hero/v2/
 
 # Step 3: Update v2/Hero.astro with new design
-vim packages/shared/components/sections/Hero/v2/Hero.astro
+vim src/shared/components/sections/Hero/v2/Hero.astro
 # Add version history comment
 
 # Step 4: Changeset
@@ -277,13 +277,13 @@ import Button from '@colombalink/shared/components/ui/Button.astro';  // latest
 
 ```bash
 # Create initial versioned baseline
-mkdir -p packages/shared/components/{sections,ui}/v1
-cp packages/shared/components/sections/*.astro packages/shared/components/sections/v1/
-cp packages/shared/components/ui/*.astro packages/shared/components/ui/v1/
+mkdir -p src/shared/components/{sections,ui}/v1
+cp src/shared/components/sections/*.astro src/shared/components/sections/v1/
+cp src/shared/components/ui/*.astro src/shared/components/ui/v1/
 
 # Make a breaking component change
-cp packages/shared/components/sections/Hero.astro packages/shared/components/sections/v1/
-vim packages/shared/components/sections/Hero.astro  # Make breaking changes
+cp src/shared/components/sections/Hero.astro src/shared/components/sections/v1/
+vim src/shared/components/sections/Hero.astro  # Make breaking changes
 npm run changeset  # Select: minor
 
 # Lock existing site to v1

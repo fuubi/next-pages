@@ -14,7 +14,7 @@ This workspace uses **specialized agents** for parallel and focused work:
    - **Parallelizable**: Multiple Site Developer agents can work on different sites simultaneously
 
 2. **Component Library** (`@component-library`) — Maintains shared components
-   - Scope: `packages/shared/`, `packages/templates/`
+   - Scope: `src/shared/`, `packages/templates/`
    - Tasks: Components, layouts, styles, versioning, Changesets
    - **Single-threaded**: Only one agent should modify shared components at a time
 
@@ -36,7 +36,7 @@ This workspace uses **specialized agents** for parallel and focused work:
 ```
 Agent 1: @site-developer → sites/garage-mueller/
 Agent 2: @site-developer → sites/client-abc/
-Agent 3: @component-library → packages/shared/
+Agent 3: @component-library → src/shared/
 ```
 
 Sites are independent, so multiple Site Developer agents can work simultaneously without conflicts.
@@ -47,15 +47,15 @@ Each agent has strict scope constraints to avoid conflicts:
 
 | Agent             | Can Modify                                | Cannot Modify                      |
 | ----------------- | ----------------------------------------- | ---------------------------------- |
-| Site Developer    | `sites/[specific-site]/`                  | `packages/`, `tools/`, other sites |
-| Component Library | `packages/shared/`, `packages/templates/` | `sites/`, `tools/`                 |
-| CLI Developer     | `tools/cli/`                              | `sites/`, `packages/`              |
+| Site Developer    | `sites/[specific-site]/`                  | `src/shared/`, `tools/`, other sites |
+| Component Library | `src/shared/`, `packages/templates/` | `sites/`, `tools/`                 |
+| CLI Developer     | `tools/cli/`                              | `sites/`, `src/shared/`                |
 
 This ensures clean separation and enables safe parallel work.
 
 ## Core Principles
 
-1. **Component library approach**: Shared components in `packages/shared`, each site has its own content
+1. **Component library approach**: Shared components in `src/shared`, each site has its own content
 2. **Multi-language support**: Sites can support multiple languages with i18n
 3. **Component-level versioning**: Breaking changes create new versions (v1/, v2/) instead of breaking old sites
 4. **Static-first**: All pages prerendered at build time as static HTML
@@ -66,7 +66,7 @@ This ensures clean separation and enables safe parallel work.
 ### Monorepo Structure
 
 ```
-packages/
+src/
   shared/              # Shared component library (versioned)
     components/
       sections/        # Hero, ContactBlock, etc.
@@ -133,7 +133,7 @@ See [COMPONENT-VERSIONING.md](../COMPONENT-VERSIONING.md) for details.
 
 ## Component Library
 
-### Available in packages/shared/components/
+### Available in src/shared/components/
 
 **Section Components:**
 
@@ -191,7 +191,7 @@ This creates:
 
 ### To Add/Modify Components
 
-1. Edit in `packages/shared/components/`
+1. Edit in `src/shared/components/`
 2. For breaking changes:
    - Keep old version in `v1/` folder
    - Update latest version
@@ -219,10 +219,10 @@ vim sites/example-client/src/pages/de/index.json
 
 ```bash
 # Create component
-vim packages/shared/components/sections/NewSection.astro
+vim src/shared/components/sections/NewSection.astro
 
 # Update shared package exports if needed
-vim packages/shared/package.json
+vim src/shared/package.json
 
 # Use in any garage site
 import NewSection from '@colombalink/shared/components/sections/NewSection.astro';
@@ -232,10 +232,10 @@ import NewSection from '@colombalink/shared/components/sections/NewSection.astro
 
 ```bash
 # Copy current to v1
-cp packages/shared/components/sections/Hero.astro packages/shared/components/sections/v1/
+cp src/shared/components/sections/Hero.astro src/shared/components/sections/v1/
 
 # Update latest with breaking changes
-vim packages/shared/components/sections/Hero.astro
+vim src/shared/components/sections/Hero.astro
 
 # Create changeset (MINOR, not MAJOR!)
 npm run changeset
@@ -279,10 +279,10 @@ npm run changeset
 
 ## Key Files
 
-- `packages/shared/package.json` - Shared component package
+- `src/shared/package.json` - Shared component package
 - `sites/*/astro.config.ts` - Per-site Astro config
 - `sites/*/site.config.ts` - Per-site customization
-- `packages/shared/utils/i18n.ts` - i18n utilities
+- `src/shared/utils/i18n.ts` - i18n utilities
 - `.changeset/config.json` - Changesets configuration
 
 ## Summary
@@ -291,7 +291,7 @@ This is a **multi-agent monorepo** for client websites that share components but
 
 ### Architecture
 
-- **Shared components** (`packages/shared/`) with component-level versioning
+- **Shared components** (`src/shared/`) with component-level versioning
 - **Independent sites** (`sites/`) with their own content and configuration
 - **CLI tooling** (`tools/cli/`) for site management
 

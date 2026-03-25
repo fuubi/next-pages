@@ -60,8 +60,8 @@ Adding a new version of the `Hero` component with renamed props:
 
 ```bash
 # First, create the new version
-mkdir -p packages/shared/components/sections/Hero/v2
-cp packages/shared/components/sections/Hero/v1/Hero.astro packages/shared/components/sections/Hero/v2/Hero.astro
+mkdir -p src/shared/components/sections/Hero/v2
+cp src/shared/components/sections/Hero/v1/Hero.astro src/shared/components/sections/Hero/v2/Hero.astro
 
 # Edit v2/Hero.astro with breaking changes
 
@@ -220,7 +220,7 @@ Let's walk through a complete feature addition:
 
 ```bash
 # Create new ContactForm component
-# Edit packages/shared/components/ui/ContactForm.astro
+# Edit src/shared/components/ui/ContactForm.astro
 ```
 
 ### 2. Create Changeset

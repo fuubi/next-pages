@@ -11,7 +11,7 @@ The monorepo uses **three specialized agents** with clear boundaries to enable s
 │                    Monorepo Root                         │
 ├─────────────────────────────────────────────────────────┤
 │                                                          │
-│  📦 packages/shared/          ← @component-library       │
+│  📦 src/shared/               ← @component-library       │
 │  📦 packages/templates/       ← @component-library       │
 │                                                          │
 │  🌐 sites/garage-mueller/     ← @site-developer (1)     │
@@ -68,10 +68,10 @@ Single-threaded: ⚠️  Component Library, CLI Developer
 
 **Scope**:
 
-- `packages/shared/components/`
-- `packages/shared/layouts/`
-- `packages/shared/styles/`
-- `packages/shared/utils/`
+- `src/shared/components/`
+- `src/shared/layouts/`
+- `src/shared/styles/`
+- `src/shared/utils/`
 - `packages/templates/`
 
 **Responsibilities**:
@@ -157,7 +157,7 @@ Working in: sites/another-site/
 ```
 Step 1: @component-library
 Task: "Create new PricingTable component"
-Working in: packages/shared/components/sections/
+Working in: src/shared/components/sections/
 Creates: PricingTable.astro + Changeset
 
 Step 2: @site-developer
@@ -175,7 +175,7 @@ Imports: @shared/components/sections/PricingTable.astro
 ```
 Thread 1: @component-library
 Task: "Fix Button component hover state"
-Working in: packages/shared/components/ui/Button.astro
+Working in: src/shared/components/ui/Button.astro
 
 Thread 2: @site-developer (garage-mueller)
 Task: "Update homepage content"
@@ -349,7 +349,7 @@ To use this architecture:
 - Highlight recommended tier
 ```
 
-**Agent works in**: `packages/shared/components/sections/PricingTable.astro`
+**Agent works in**: `src/shared/components/sections/PricingTable.astro`
 **Creates changeset**: MINOR bump (new feature)
 **Other agents**: Must wait (components are single-threaded)
 
@@ -378,7 +378,7 @@ Site: another-site
 **Task**: Add newsletter signup component and use it
 
 ```
-Step 1: @component-library
+Agent 1: @component-library
 Create Newsletter component with email input and subscribe button
 
 Step 2: @site-developer

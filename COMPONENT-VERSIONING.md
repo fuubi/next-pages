@@ -9,7 +9,7 @@ For long-running client sites that you don't want to touch, we use **component-l
 ## Structure
 
 ```
-packages/shared/components/
+src/shared/components/
   sections/
     Hero/
       v1/
@@ -53,13 +53,13 @@ Instead of updating Hero/v1/Hero.astro, create a new version:
 
 ```bash
 # Step 1: Create new version folder
-mkdir -p packages/shared/components/sections/Hero/v2
+mkdir -p src/shared/components/sections/Hero/v2
 
 # Step 2: Copy existing version as starting point
-cp packages/shared/components/sections/Hero/v1/Hero.astro packages/shared/components/sections/Hero/v2/
+cp src/shared/components/sections/Hero/v1/Hero.astro src/shared/components/sections/Hero/v2/
 
 # Step 3: Make breaking changes to v2
-# Edit packages/shared/components/sections/Hero/v2/Hero.astro
+# Edit src/shared/components/sections/Hero/v2/Hero.astro
 
 # Step 4: Add version documentation
 ```
@@ -84,7 +84,7 @@ export interface Props {
 }
 ---
 
-<!-- packages/shared/components/sections/Hero/v2/Hero.astro -->
+<!-- src/shared/components/sections/Hero/v2/Hero.astro -->
 ```
 
 ### Changesets for This Approach
@@ -389,7 +389,7 @@ Client can upgrade package anytime, imports never break because they use explici
 ## File Structure After Implementation
 
 ```
-packages/shared/
+src/shared/
   components/
     sections/
       Hero/

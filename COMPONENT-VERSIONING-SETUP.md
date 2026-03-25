@@ -9,7 +9,7 @@ This guide shows how to implement component-level versioning in your project.
 For the first implementation, copy current components to v1/ to establish the baseline:
 
 ```bash
-cd /workspaces/next-pages/packages/shared/components
+cd /workspaces/next-pages/src/shared/components
 
 # Create v1 directories
 mkdir -p sections/v1
@@ -50,7 +50,7 @@ export interface Props {
 const { headline, text, cta, secondaryCta, image, variant = 'default' } = Astro.props;
 ---
 
-<!-- packages/shared/components/sections/Hero.astro --><!-- Component implementation -->
+<!-- src/shared/components/sections/Hero.astro --><!-- Component implementation -->
 ```
 
 ### Step 3: Create Changeset
@@ -99,7 +99,7 @@ export interface Props {
 }
 ---
 
-<!-- packages/shared/components/sections/v1/Hero.astro -->
+<!-- src/shared/components/sections/v1/Hero.astro -->
 ```
 
 ### Step 2: Update Main Component with Breaking Changes
@@ -135,7 +135,7 @@ export interface Props {
 const { heading, description, cta, secondaryCta, image, variant = 'default' } = Astro.props;
 ---
 
-<!-- packages/shared/components/sections/Hero.astro -->
+<!-- src/shared/components/sections/Hero.astro -->
 <Section variant="default" spacing="xl">
   <Container>
     <div class:list={['hero', `variant-${variant}`]}>
@@ -340,7 +340,7 @@ Q: Does this change break existing usage?
 ## Folder Structure After Setup
 
 ```
-packages/shared/
+src/shared/
   components/
     sections/
       Hero.astro                    # Latest (v2 or v3...)
@@ -381,10 +381,10 @@ packages/shared/
 
 ```bash
 # Create initial v1 structure
-mkdir -p packages/shared/components/sections/v1
-mkdir -p packages/shared/components/ui/v1
-cp packages/shared/components/sections/*.astro packages/shared/components/sections/v1/
-cp packages/shared/components/ui/*.astro packages/shared/components/ui/v1/
+mkdir -p src/shared/components/sections/v1
+mkdir -p src/shared/components/ui/v1
+cp src/shared/components/sections/*.astro src/shared/components/sections/v1/
+cp src/shared/components/ui/*.astro src/shared/components/ui/v1/
 
 # Lock existing site to v1
 cd sites/your-site

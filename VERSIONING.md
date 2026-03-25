@@ -132,7 +132,7 @@ npm run release
 ### Example 1: Adding a New Component
 
 ```bash
-# 1. Create the new Button component in packages/shared/components/ui/
+# 1. Create the new Button component in src/shared/components/ui/
 # 2. Create a changeset
 npm run changeset
 

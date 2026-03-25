@@ -100,7 +100,7 @@ import NewHero from './NewHero.astro';
 const props = Astro.props;
 ---
 
-<!-- packages/shared/components/sections/Hero.astro -->
+<!-- src/shared/components/sections/Hero.astro -->
 <NewHero {...props} />
 ```
 
@@ -136,7 +136,7 @@ if (import.meta.env.DEV) {
 }
 ---
 
-<!-- packages/shared/components/sections/Hero.astro -->
+<!-- src/shared/components/sections/Hero.astro -->
 <section>
   <h1>{heading}</h1>
   <p>{description}</p>
@@ -174,7 +174,7 @@ if (layout === 'split') {
 }
 ---
 
-<!-- Old: packages/shared/components/sections/Feature.astro -->
+<!-- Old: src/shared/components/sections/Feature.astro -->
 ```
 
 ### Pattern 4: Removing Unused/Dangerous Components
@@ -293,7 +293,7 @@ When you deprecate, the CHANGELOG should clearly state:
 Add a migration guide file:
 
 ````markdown
-<!-- packages/shared/docs/migrations/hero-to-herosection.md -->
+<!-- src/shared/docs/migrations/hero-to-herosection.md -->
 
 # Migrating from Hero to HeroSection
 
@@ -333,7 +333,7 @@ When you deprecate something:
 Add proper TypeScript deprecation warnings:
 
 ```typescript
-// packages/shared/components/sections/Hero.astro
+// src/shared/components/sections/Hero.astro
 ---
 export interface Props {
   /**

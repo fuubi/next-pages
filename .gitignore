@@ -24,3 +24,13 @@ pnpm-debug.log*
 # jetbrains setting folders
 .idea/
 /cli
+
+# worktree directories (coordinator pattern)
+# Client worktrees are checked out in sites/ directory
+# They should not be committed to the coordinator branch
+sites/
+workspaces/
+
+# Centralized git repository storage for shared components
+# Used by CLI to create nested worktrees
+.git-repos/

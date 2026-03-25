@@ -123,7 +123,7 @@ Questions? Reply to this email.
 
 If the change is more complex, keep the old component entirely:
 
-### Create New Component (packages/shared/components/sections/HeroV2.astro)
+### Create New Component (src/shared/components/sections/HeroV2.astro)
 
 ```astro
 ---
@@ -171,7 +171,7 @@ if (import.meta.env.DEV) {
 }
 ---
 
-<!-- packages/shared/components/sections/Hero.astro -->
+<!-- src/shared/components/sections/Hero.astro -->
 <HeroV2 {...newProps} />
 ````
 

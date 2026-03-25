@@ -22,7 +22,7 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        '@shared': resolve(__dirname, '../../packages/shared'),
+        '@shared': resolve(__dirname, 'src/shared'),
         '@templates': resolve(__dirname, '../../packages/templates'),
       },
     },
