@@ -523,34 +523,46 @@ cli upgrade-shared ${name} <new-version>
 \`\`\`
 `
   );
-}
-site: 'https://${config.domain}',
+
+  // Create astro.config.ts
+  writeFileSync(
+    join(rootPath, 'astro.config.ts'),
+    `import { defineConfig } from 'astro/config';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+export default defineConfig({
+  output: 'static',
+  site: 'https://${config.domain}',
   compressHTML: true,
-    build: {
-  inlineStylesheets: 'auto',
+  build: {
+    inlineStylesheets: 'auto',
   },
-i18n: {
-  defaultLocale: '${config.language}',
+  i18n: {
+    defaultLocale: '${config.language}',
     locales: ['de', 'fr', 'it'],
-      routing: {
-    prefixDefaultLocale: true,
+    routing: {
+      prefixDefaultLocale: true,
     },
-},
-vite: {
-  resolve: {
-    alias: {
-      '@shared': resolve(__dirname, '../shared'),
+  },
+  vite: {
+    resolve: {
+      alias: {
+        '@shared': resolve(__dirname, 'src/shared'),
         '@templates': resolve(__dirname, '../../packages/templates'),
       },
+    },
   },
-},
 });
 `
   );
 
   // Create package.json
   writeFileSync(
-    join(sitePath, 'package.json'),
+    join(rootPath, 'package.json'),
     JSON.stringify({
       name: name,
       version: '1.0.0',
