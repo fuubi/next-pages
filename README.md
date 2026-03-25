@@ -1,34 +1,22 @@
 # Client Sites — Coordinator Repository
 
-Multi-client website system with isolated git branches and shared component library management.
+Multi-client website system with isolated git branches and shared component library.
 
-## Architecture Overview
+## Architecture
 
-This repository uses a **coordinator pattern** with **orphan branches per client** and **nested git worktrees**:
+This repository uses a **coordinator pattern** with **orphan branches**:
 
-- **Coordinator branch (`main`):** CLI tooling, documentation, client registry
-- **Client branches (`client/*`):** Independent orphan branches (no shared history)
-- **Shared library:** Separate repository ([colombalink/shared-components](https://github.com/colombalink/shared-components)) with semantic versioning
+- **`main` branch**: CLI tooling, documentation, client registry
+- **`client/*` branches**: Isolated client sites (no shared git history)
+- **`shared/components` branch**: Versioned component library (tags: v1.0.0, v1.1.0...)
 
 **Benefits:**
-- Complete client isolation (separate git history)
+- Complete client isolation
 - Multiple clients checked out simultaneously
-- Flexible shared library versioning per client
-- Simplified deployment (one branch = one client)
+- Flexible versioning per client
+- One branch = one deployment
 
-See [GIT-WORKFLOW.md](GIT-WORKFLOW.md) for detailed architecture documentation.
-
----
-
-## Multi-Agent Architecture
-
-This workspace uses **specialized agents** for parallel work:
-
-- **@site-developer** — Works on individual client sites (parallelizable)
-- **@component-library** — Maintains shared components in separate repo (single-threaded)
-- **@cli-developer** — Builds CLI tooling (single-threaded)
-
-See [Multi-Agent Quick Reference](.github/MULTI-AGENT-QUICK-REF.md) for usage guide.
+📖 Read [GIT-WORKFLOW.md](GIT-WORKFLOW.md) for detailed architecture.
 
 ---
 
@@ -38,271 +26,111 @@ See [Multi-Agent Quick Reference](.github/MULTI-AGENT-QUICK-REF.md) for usage gu
 /workspaces/next-pages/           # Coordinator repository
 ├── clients.json                  # Registry of all clients
 ├── tools/cli/                    # Client management CLI
-├── GIT-WORKFLOW.md              # Git workflow documentation
-├── MIGRATION-GUIDE.md           # Migration guide
-└── sites/                        # Worktree checkout location (gitignored)
-    ├── garage-mueller/           # Client worktree (when checked out)
-    │   ├── src/                  # Client source code
-    │   │   └── shared/           # Nested shared library worktree
-    │   └── ...
-    └── garage-other/             # Another client (parallel checkout)
-        └── src/
-            └── shared/           # Shared lib (possibly different version)
+└── sites/                        # Client checkouts (when working)
+    ├── garage-mueller/           # Client worktree
+    │   ├── src/
+    │   │   ├── pages/            # Client pages & content
+    │   │   └── shared/           # Shared components (v1.0.0)
+    │   └── package.json
+    └── garage-other/             # Another client (different version possible)
+        └── src/shared/           # Shared components (v1.1.0)
 ```
-
-**Separate Repository:**
-- [colombalink/shared-components](https://github.com/colombalink/shared-components) — Versioned component library (tags: v1.0.0, v1.1.0, ...)
-
----
-
-## Requirements
-
-- **Node.js ≥ 25.0.0**
-- **Git ≥ 2.35** (for worktree support)
-- npm 10+
 
 ---
 
 ## Quick Start
 
-### 1. Install Dependencies
-
-From the coordinator branch:
-
 ```bash
+# 1. Install CLI
 npm install
-```
 
-### 2. List Available Clients
-
-```bash
+# 2. List clients
 cli list
-```
 
-Shows:
-- ✓ **Checked Out Clients** — Currently available as worktrees
-- ○ **Available Clients** — Registered but not checked out
-
-### 3. Checkout a Client
-
-```bash
+# 3. Checkout a client
 cli checkout garage-mueller
-```
 
-This creates:
-- Client worktree at `sites/garage-mueller/` (from `client/garage-mueller` branch)
-- Nested shared library worktree at `sites/garage-mueller/src/shared/` (pinned version)
-
-### 4. Work on the Client
-
-```bash
+# 4. Work on it
 cd sites/garage-mueller
 npm install
 npm run dev
-```
 
-The shared library is available at `src/shared/` within the client worktree.
-
-### 5. Close the Client (When Done)
-
-```bash
+# 5. Close when done
 cli close garage-mueller
 ```
 
-Removes both worktrees (client + nested shared library).
-
 ---
 
-## Creating a New Client
+## CLI Commands
 
 ```bash
-cli create garage-neue-name
-```
+# Create new client
+cli create <name> [options]
 
-**Interactive prompts:**
-- Business name
-- Domain (e.g., `garage-neue-name.ch`)
-- Primary language (`de`, `fr`, `it`, `en`)
-- Shared library version (e.g., `v1.0.0`)
-
-**What happens:**
-1. Creates orphan branch `client/garage-neue-name`
-2. Scaffolds site structure on that branch
-3. Registers client in `clients.json`
-4. Automatically checks out the client (use `--no-checkout` to skip)
-
-**Non-interactive:**
-```bash
-cli create garage-example \
-  --name "Garage Example" \
-  --domain "garage-example.ch" \
-  --language "de" \
-  --shared-version "v1.0.0"
-```
-
----
-
-## Working with Multiple Clients
-
-**Checkout multiple clients simultaneously:**
-
-```bash
-cli checkout garage-mueller
-cli checkout garage-other
-cli checkout garage-third
-```
-
-All three are now available in `sites/`:
-
-```bash
-cd sites/garage-mueller
-npm run dev  # Port 4321
-
-# In another terminal
-cd sites/garage-other
-npm run dev  # Port 4322
-```
-
-No need to close one client to work on another!
-
----
-
-## Shared Library Management
-
-### Check Current Version
-
-```bash
-cd sites/garage-mueller
-cat ../clients.json | grep -A5 garage-mueller
-# Or
-cd src/shared
-git describe --tags
-```
-
-### Upgrade Shared Library
-
-```bash
-cli upgrade-shared garage-mueller v1.1.0
-```
-
-**What happens:**
-1. Shows diff between current and target version
-2. Extracts new version into src/shared/
-3. Updates `clients.json` with new pinned version
-
-**Test, then commit:**
-```bash
-cd sites/garage-mueller
-npm run build      # Test build with new version
-git add .
-git commit -m "Upgrade shared library to v1.1.0"
-git push origin client/garage-mueller
-```
-
-### Rollback if Needed
-
-```bash
-cli upgrade-shared garage-mueller v1.0.0
-```
-
-### Different Versions per Client
-
-Each client can use a different shared library version:
-
-```json
-{
-  "clients": [
-    { "name": "garage-mueller", "sharedLibVersion": "v1.0.0" },
-    { "name": "garage-other", "sharedLibVersion": "v1.2.0" },
-    { "name": "garage-legacy", "sharedLibVersion": "v0.9.0" }
-  ]
-}
-```
-
-This is safe because clients are completely isolated.
-
----
-## CLI Commands Reference
-
-All commands run from the coordinator branch root:
-
-```bash
-# Create new client (orphan branch + checkout)
-cli create <name>
-
-# Checkout existing client
+# Checkout client for work
 cli checkout <name>
 
-# Close (remove) client worktrees
+# Close (remove) client
 cli close <name>
 cli close --all
 
-# Upgrade shared library version
-cli upgrade-shared <client> <version-tag>
+# Upgrade shared components version
+cli upgrade-shared <client> <version>
 
-# List all clients (checked out + available)
+# List all clients
 cli list
-cli list --checked-out-only
-cli list --available-only
 
-# Validate client structure
-cli validate [client-name]
+# Validate structure
+cli validate [client]
 ```
 
----
-
-##  Workflow Best Practices
-
-1. **Create once, checkout many times:**
-   - `cli create` sets up the orphan branch
-   - `cli checkout` creates temporary worktrees
-
-2. **Work on multiple clients in parallel:**
-   - No need to switch branches or close clients
-   - Each client gets its own `sites/<name>/` directory
-
-3. **Commit client changes directly in worktrees:**
-   ```bash
-   cd sites/garage-mueller
-   git add .
-   git commit -m "Update homepage"
-   git push origin client/garage-mueller
-   ```
-
-4. **Upgrade shared library strategically:**
-   - Test in one client first
-   - Roll out to other clients gradually
-   - Keep legacy clients on older versions if needed
-
-5. **Don't modify `src/shared/` directly:**
-   - It contains version-locked shared components
-   - To update, use `cli upgrade-shared <client> <version>`
-   - Changes to shared components go to `packages/shared/` (the development worktree)
+Use `cli <command> --help` for details.
 
 ---
 
-## Development
+## Shared Components
 
-### Client Development
+Each client uses a specific version of shared components from the `shared/components` branch:
 
-Each client is checked out with the shared library nested inside:
+```bash
+# Check current version
+cd sites/garage-mueller
+cat ../../clients.json | grep -A3 garage-mueller
+
+# Upgrade to new version
+cli upgrade-shared garage-mueller v1.1.0
+
+# Test and commit
+npm run build
+git add .
+git commit -m "Upgrade to v1.1.0"
+git push
+```
+
+**Key points:**
+- Each client can use a different version
+- Components are extracted at checkout (not a git worktree)
+- Upgrade with `cli upgrade-shared`
+- Test thoroughly before committing upgrades
+
+---
+
+## Working with Clients
+
+### Development
 
 ```bash
 cd sites/garage-mueller
-
-# Shared library is available at:
-ls src/shared/components/
-ls src/shared/layouts/
-ls src/shared/styles/
+npm run dev     # Dev server
+npm run build   # Production build
 ```
 
-Import shared components in client pages:
+Import shared components in pages:
 
 ```astro
 ---
 import BaseLayout from '@shared/layouts/BaseLayout.astro';
 import Hero from '@shared/components/sections/Hero/v1/Hero.astro';
-import Button from '@shared/components/ui/Button/v1/Button.astro';
 ---
 
 <BaseLayout title="Home">
@@ -310,193 +138,81 @@ import Button from '@shared/components/ui/Button/v1/Button.astro';
 </BaseLayout>
 ```
 
-### Running Dev Server
+### Content Structure
 
-```bash
-cd sites/garage-mueller
-npm run dev  # http://localhost:4321
-```
-
-### Building for Production
-
-```bash
-cd sites/garage-mueller
-npm run build  # Output: dist/
-```
-
----
-
-## Project Structure (Checked Out Client)
-
-When a client is checked out, the structure looks like:
+Content lives in JSON files next to pages:
 
 ```
-sites/garage-mueller/          # Client worktree (client/garage-mueller branch)
-├── src/
-│   ├── pages/                 # File-based routing
-│   │   ├── index.astro        # Redirects to default language
-│   │   ├── de/                # German pages
-│   │   │   ├── index.astro
-│   │   │   └── index.json     # German content (colocated)
-│   │   ├── fr/                # French pages
-│   │   └── it/                # Italian pages
-│   └── i18n/
-│       └── utils.ts           # i18n utilities (per-client config)
-├── public/
-│   └── images/                # Client-specific images
-├── src/
-│   └── shared/                # Shared library (pinned version)
-│       ├── components/        # Versioned components (v1/, v2/)
-│       │   ├── sections/      # Hero, ContactBlock, etc.
-│       │   ├── ui/            # Button, Card, Input, etc.
-│       │   └── site/          # Header, Footer, Container
-│       ├── layouts/           # BaseLayout.astro
-│       ├── styles/            # Global CSS, tokens
-│       └── utils/             # i18n, animations
-├── astro.config.ts            # Astro configuration
-├── site.config.ts             # Client-specific config
-├── package.json               # Client dependencies
-├── tsconfig.json              # TypeScript config
-└── README.md                  #  Client docs
-```
-
-**Key points:**
-- `src/` contains client-specific code
-- `src/shared/` contains extracted shared components at a specific version
-- Client has its own `node_modules/` and dependencies
-
----
-
-## Content Management
-
-Each client manages content in JSON files colocated with pages:
-
-```
-sites/garage-mueller/src/pages/
+src/pages/
   de/
+    index.astro       # German page
     index.json        # German content
-    index.astro       # Imports ./index.json
   fr/
+    index.astro       # French page
     index.json        # French content
-    index.astro       
-
-    index.astro       # Imports ./index.json
-  it/
-    index.json        # Italian content
-    index.astro
 ```
 
-**Example content file (`src/pages/de/index.json`):**
+Each client has completely independent content.
 
-```json
-{
-  "hero": {
-    "title": "Willkommen bei Garage Mueller",
-    "subtitle": "Ihre Autowerkstatt des Vertrauens",
-    "cta": { "text": "Termin buchen", "href": "/de/contact" }
-  },
-  "services": [...],
-  "testimonials": [...]
-}
+### Committing Changes
+
+```bash
+cd sites/garage-mueller
+git add .
+git commit -m "Add new feature"
+git push origin client/garage-mueller
 ```
-
-Each client has **unique content** — no shared content across clients.
 
 ---
 
-## Component Library
+## Available Components
 
-The shared component library (checked out from `colombalink/shared-components`) provides:
+The shared component library (`shared/components` branch) provides:
 
-**Section Components:**
-- `Hero` - Hero section with headline, CTA, image
-- `FeatureGrid` - Grid of features (2/3/4 columns)
-- `FeatureSplit` - Side-by-side feature + image
-- `LogoCloud` - Partner/client logos
-- `StatsRow` - Statistics counters
-- `Testimonials` - Customer testimonials
-- `FAQ` - Accordion FAQ
-- `CTASection` - Call-to-action banner
-- `ContactBlock` - Contact form/info
+**Sections:** Hero, FeatureGrid, FeatureSplit, LogoCloud, StatsRow, Testimonials, FAQ, CTASection, ContactBlock
 
-**Site Components:**
-- `Header`, `Footer`, `Container`, `Section`
+**Site:** Header, Footer, Container, Section, SectionHeader, LanguageSwitcher
 
-**UI Components:**
-- `Button`, `Card`, `Badge`, `Input`, `Textarea`, `Accordion`
+**UI:** Button, Card, Badge, Input, Textarea, Accordion
 
-**Layouts:**
-- `BaseLayout` - Base page layout with metadata, i18n support
+**Layouts:** BaseLayout
 
-**Versioning:**
-- Components use explicit version folders (`v1/`, `v2/`)
-- Old versions never removed (prevents breaks)
-- See [COMPONENT-VERSIONING.md](COMPONENT-VERSIONING.md)
+**Utilities:** i18n, animations, design tokens
 
----
-
-## Tech Stack
-
-- **Framework:** Astro 6 (static site generation)
-- **Content:** JSON files per language (i18n)
-- **Styling:** Scoped CSS with design tokens
-- **TypeScript:** Type-safe throughout
-- **Git:** Orphan branches + worktrees for parallel development
-- **Shared Library:** Semantic versioning with git tags
+Components use version folders (`v1/`, `v2/`) so old versions remain available.
 
 ---
 
 ## Documentation
 
-### Essential Reading
-- **[GIT-WORKFLOW.md](GIT-WORKFLOW.md)** — Git workflow with orphan branches and worktrees
-- **[MIGRATION-GUIDE.md](MIGRATION-GUIDE.md)** — Migrating from old monorepo structure
-- **[clients.json](clients.json)** — Client registry
+**Essential:**
+- [GIT-WORKFLOW.md](GIT-WORKFLOW.md) — Git workflow & architecture
+- [COMPONENT-VERSIONING.md](COMPONENT-VERSIONING.md) — Component versioning
+- [clients.json](clients.json) — Client registry
 
-### Component Library & Versioning
-- [COMPONENT-VERSIONING.md](COMPONENT-VERSIONING.md) — Component versioning strategy
-- [VERSIONING.md](VERSIONING.md) — Semantic versioning (shared library repo)
-- [VERSIONING-QUICK-REF.md](VERSIONING-QUICK-REF.md) — Quick decision guide
-- [DEPRECATION-GUIDE.md](DEPRECATION-GUIDE.md) — Deprecation strategy
-
-### Multi-Agent Workflow
-- [.github/AGENTS.md](.github/AGENTS.md) — Agent roles and guidelines
-- [.github/MULTI-AGENT-QUICK-REF.md](.github/MULTI-AGENT-QUICK-REF.md) — Quick reference
+**Reference:**
+- [docs/](docs/) — Migration guides, versioning details, examples
 
 ---
 
 ## Troubleshooting
 
-### Client won't checkout
+**Client won't checkout:**
 ```bash
-# Check clients.json for typos
-cat clients.json
-
-# Verify branch exists
-git branch --all | grep client/
-
-# Force re-checkout
-cli checkout garage-mueller --force
+cat clients.json          # Check registry
+git branch --all          # Verify branch exists
 ```
 
-### Shared library version not found
+**Version not found:**
 ```bash
-cd sites/garage-mueller/src/shared
-git fetch --tags
-git tag -l | grep ^v
-# Use an existing tag
+git tag -l | grep ^v      # List available versions
 ```
 
-### Uncommitted changes blocking operations
+**Uncommitted changes:**
 ```bash
 cd sites/garage-mueller
 git status
-
-# Commit or discard changes
-git add .
-git commit -m "WIP"
-# OR
-git reset --hard HEAD
+git add . && git commit -m "WIP"
 ```
 
 See [GIT-WORKFLOW.md](GIT-WORKFLOW.md) for more troubleshooting.

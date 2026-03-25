@@ -1,351 +1,191 @@
-# Git Workflow: Orphan Branch + Worktree Checkout
+# Git Workflow Guide
 
-This repository uses a **coordinator pattern** with **orphan branches per client** and **git worktrees** to isolate client development while maintaining a shared component library.
+This repository uses **orphan branches** to isolate client sites while sharing a versioned component library.
 
-## Table of Contents
+## Overview
 
-- [Architecture Overview](#architecture-overview)
-- [Branching Model](#branching-model)
-- [Worktree Structure](#worktree-structure)
-- [Daily Workflows](#daily-workflows)
-- [Common Tasks](#common-tasks)
-- [Best Practices](#best-practices)
-- [Troubleshooting](#troubleshooting)
+```
+repo (Colombian/client-sites)
+├── main                      # Coordinator: CLI, docs, registry
+├── client/garage-mueller     # Client A →  isolated history
+├── client/garage-other       # Client B → isolated history  
+└── shared/components         # Shared components (v1.0.0, v1.1.0...)
+```
+
+**Three types of branches, all independent:**
+- `main` - Coordinator tools and documentation
+- `client/*` - Orphan branches (no shared history between clients)
+- `shared/components` - Component library with version tags
 
 ---
 
-## Architecture Overview
+## Daily Workflow
 
-```
-colombalink/client-sites (this repo)
-├── main branch (coordinator)
-│   ├── tools/cli/          # CLI tooling
-│   ├── clients.json        # Client registry
-│   └── docs/               # Documentation
-│
-├── client/garage-mueller (orphan branch)
-│   └── Full client site structure
-│
-├── client/garage-other (orphan branch)
-│   └── Full client site structure
-│
-└── shared/components (orphan branch)
-    ├── tags: v1.0.0, v1.1.0, v1.2.0...
-    └── Shared component library
-```
-
-**Key principles:**
-1. **Coordinator branch (`main`)**: Contains CLI, documentation, and client registry
-2. **Client branches (`client/*`)**: Independent orphan branches with no shared history
-3. **Shared library (`shared/components`)**: Orphan branch with semantic versioning via git tags
-4. **Worktrees**: Clients checked out as worktrees for parallel development; shared components extracted at specific versions
-
----
-
-## Branching Model
-
-### Branch Types
-
-| Branch Pattern | Purpose | Example |
-|---|---|---|
-| `main` | Coordinator: CLI, docs, registry | `main` |
-| `client/<name>` | Client site (orphan branch) | `client/garage-mueller` |
-| `shared/components` | Shared component library (orphan branch) | `shared/components` |
-
-### Orphan Branches
-
-Client branches are **orphan branches** — they have **no shared git history** with the coordinator or other clients.
-
-**Why orphan branches?**
-- **Complete isolation**: Changes in one client never affect others
-- **Clean history**: Each client's git log shows only that client's commits
-- **No merge conflicts**: No shared ancestor means no cross-client conflicts
-- **Deployment simplicity**: One branch = one deployment target
-
-To verify a client branch is orphan:
-```bash
-git checkout client/garage-mueller
-git log --oneline --all --graph --decorate
-# Should show only this client's commits, no shared history
-```
-
----
-
-## Worktree Structure
-
-When you checkout a client, the structure looks like:
-
-```
-/workspaces/next-pages/              # Coordinator repo root
-├── clients.json                     # Registry
-├── tools/cli/                       # CLI tools
-├── packages/                        
-│   └── shared/                      # Development worktree ← shared/components branch
-│       ├── components/              # For working on shared components
-│       ├── layouts/                 #
-│       └── styles/                  #
-│
-├── sites/                           # Worktree checkout directory (gitignored)
-│   ├── garage-mueller/              # Client worktree ← client/garage-mueller branch
-│   │   ├── src/                     # Client source code
-│   │   │   ├── pages/               #
-│   │   │   ├── i18n/                #
-│   │   │   └── shared/              # Extracted files from shared/components@v1.0.0
-│   │   │       ├── components/      # (Not a worktree - regular files)
-│   │   │       ├── layouts/         #
-│   │   │       └── styles/          #
-│   │   ├── public/                  #
-│   │   └── package.json             #
-│   │
-│   └── garage-other/                # Another client worktree
-│       ├── src/                     #
-│       │   └── shared/              # Can use different version (e.g., v1.1.0)
-│       └── package.json             #
-│
-└── .git/                            # Main git directory
-```
-
-**Key distinctions:**
-- **`packages/shared/`**: Worktree for developing shared components (linked to `shared/components` branch)
-- **`sites/<client>/`**: Worktree per client (one per client branch)
-- **`sites/<client>/src/shared/`**: Extracted snapshot at a specific version tag (not a worktree)
-
-**Multiple clients checked out simultaneously:**
-- Each client in its own `sites/<client-name>/` directory
-- Each has its own version of shared components extracted at the version specified in `clients.json`
-- Work on multiple clients without switching branches
-- Update to newer shared component versions with `cli upgrade`
-
----
-
-## Daily Workflows
-
-### 1. Checkout a Client
+### Start Working on a Client
 
 ```bash
-# From coordinator branch (main)
 cli checkout garage-mueller
+cd sites/garage-mueller
+npm install && npm run dev
 ```
 
 **What happens:**
-1. Creates worktree at `sites/garage-mueller/` on branch `client/garage-mueller`
-2. Extracts shared components at the specified version (e.g., `v1.0.0`) into `sites/garage-mueller/src/shared/`
-3. Client is ready for development
+1. Creates worktree at `sites/garage-mueller/` from `client/garage-mueller` branch
+2. Extracts shared components (v1.0.0) into `src/shared/`
+3. Ready to work
 
-**Result:**
-```
-✓ Successfully checked out garage-mueller with shared lib v1.0.0
-
-Client workspace:
-  /workspaces/next-pages/sites/garage-mueller
-
-Shared components:
-  /workspaces/next-pages/sites/garage-mueller/src/shared
-  Version: v1.0.0 (extracted snapshot)
-```
-
-### 2. Work on the Client
+### Make Changes
 
 ```bash
-cd sites/garage-mueller/
-npm install
-npm run dev
-```
+# Edit client files
+vim src/pages/de/index.astro
 
-Edit files, commit changes:
-```bash
+# Commit to client branch
 git add .
 git commit -m "feat: add contact page"
 git push origin client/garage-mueller
 ```
 
-**The shared components in `src/shared/` are version-locked** — they're a snapshot at a specific tag. To update to a newer version, use `cli upgrade`.
-
-### 3. View All Clients
+### Upgrade Shared Components
 
 ```bash
-cli list
-```
+# See available versions
+git tag -l | grep ^v
 
-Output:
-```
-✓ Checked Out Clients:
-
-  ● garage-mueller (client/garage-mueller)
-    Domain: garage-mueller.ch
-    Shared lib: v1.0.0 | Language: de
-    Path: sites/garage-mueller/
-
-Available Clients:
-
-  ○ garage-other (client/garage-other)
-    Domain: garage-other.com
-    Shared lib: v1.1.0 | Language: fr
-    Checkout with: cli checkout garage-other
-
-──────────────────────────────────────────────────────────────
-Total: 2 clients | Checked out: 1 | Available: 1
-```
-
-### 4. Upgrade Shared Library
-
-```bash
-# Check available versions
-cli upgrade-shared garage-mueller
-
-# Upgrade to specific version
+# Upgrade
 cli upgrade-shared garage-mueller v1.1.0
+
+# Test
+npm run build
+
+# Commit if working
+git add .
+git commit -m "chore: upgrade to v1.1.0"
+git push
 ```
 
-**What happens:**
-1. Fetches latest tags from `shared/components` branch
-2. Shows diff of changes between old and new version
-3. Removes old shared components and extracts new version
-4. Updates `clients.json` registry
-5. You test the changes and commit if all works
-
-### 5. Close a Client
+### Finish Working
 
 ```bash
 cli close garage-mueller
 ```
 
-**What happens:**
-1. Checks for uncommitted changes (fails if found)
-2. Removes nested shared lib worktree
-3. Removes client worktree
-4. Frees up disk space
-
-**Note:** You can have multiple clients checked out at once. Closing one doesn't affect others.
-
 ---
 
-## Common Tasks
+## Multiple Clients
 
-### Create a New Client
-
-```bash
-cli create garage-new-client \
-  --name "New Client Garage" \
-  --domain "new-client.ch" \
-  --language fr \
-  --shared-version v1.0.0
-```
-
-**What happens:**
-1. Creates orphan branch `client/garage-new-client`
-2. Scaffolds client structure on that branch
-3. Adds client to `clients.json` registry
-4. Automatically checks out the client (unless `--no-checkout`)
-
-### Checkout Multiple Clients Simultaneously
+Work on several clients simultaneously:
 
 ```bash
 cli checkout garage-mueller
 cli checkout garage-other
-cli checkout garage-third
 
-# All three are now available in sites/
-ls sites/
-# garage-mueller/  garage-other/  garage-third/
+# Now both available:
+cd sites/garage-mueller && npm run dev  # Terminal 1
+cd sites/garage-other && npm run dev    # Terminal 2
 ```
 
-**Use case:** Work on multiple clients in different IDE windows/terminals.
+Each client is completely isolated.
 
-### Switch Between Checked-Out Clients
+---
+
+## Creating New Clients
 
 ```bash
-# No need to close! Just cd to the other client
-cd sites/garage-mueller/
-# ... work ...
-
-cd ../garage-other/
-# ... work ...
+cli create garage-new \
+  --name "Garage New" \
+  --domain "new.ch" \
+  --language de \
+  --shared-version v1.0.0
 ```
 
-### Close All Clients
+Creates:
+1. Orphan branch `client/garage-new`
+2. Scaffolds site structure
+3. Registers in `clients.json`
+4. Checks out for immediate work
+
+---
+
+## Key Concepts
+
+### Orphan Branches
+
+Each client branch has **no shared git history** with others:
 
 ```bash
-cli close  # Without argument closes all
-# or
-cli close --all
+git checkout client/garage-mueller
+git log --oneline --all --graph
+# Shows only garage-mueller commits
 ```
 
-### Update Client Registry (Coordinator Changes)
+**Benefits:**
+- Complete isolation (no cross-client pollution)
+- One branch = one deployment
+- No merge conflicts between clients
 
-```bash
-# On coordinator branch
-git checkout main
-vim clients.json   # Edit registry
-git add clients.json
-git commit -m "chore: update garage-mueller shared lib version"
-git push
+### Version Pinning
+
+Each client locks to a specific component version:
+
+```json
+{
+  "clients": [
+    { "name": "garage-mueller", "sharedLibVersion": "v1.0.0" },
+    { "name": "garage-other", "sharedLibVersion": "v1.2.0" }
+  ]
+}
 ```
+
+Different clients = different versions (safe).
+
+### Worktrees vs Extracted Files
+
+**Worktree:**
+- `sites/garage-mueller/` - Full git repository linked to client branch
+
+**Extracted files:**
+- `sites/garage-mueller/src/shared/` - Snapshot from version tag (not a git repo)
+
+`src/shared/` is **read-only**. Update via `cli upgrade-shared`.
 
 ---
 
 ## Best Practices
 
-### 1. Always Work on Client Branches
+✅ **DO:**
+- Commit client code on client branches
+- Pin specific component versions (not "latest")
+- Test upgrades before committing
+- Work on multiple clients in parallel
 
-Never commit client code to the `main` (coordinator) branch. 
-
-Client code lives on `client/*` branches.
-
-### 2. Don't Modify Shared Library
-
-The shared library (`sites/<client>/src/shared/`) is **read-only** for clients.
-
-If you need changes:
-1. Make changes on the `shared/components` orphan branch
-2. Create a new version tag (e.g., `v1.1.0`)
-3. Upgrade your client: `cli upgrade-shared <client> v1.1.0`
-
-### 3. Check Status Before Closing
-
-Always ensure clean state before closing a client:
-```bash
-cd sites/garage-mueller/
-git status
-# Commit or stash changes first
-```
-
-The CLI will prevent closing if uncommitted changes exist.
-
-### 4. Pin Shared Lib Versions
-
-Each client pins a specific shared lib version. Don't use "latest" — always use explicit version tags.
-
-**Why?** Different clients can use different versions simultaneously without interference.
-
-### 5. Keep Coordinator Updated
-
-After creating or updating clients, push changes to the coordinator:
-```bash
-git checkout main
-git add clients.json
-git commit -m "chore: register new client garage-xyz"
-git push
-```
-
-### 6. Regular Cleanup
-
-If you're only working on one client at a time, close others to save disk space:
-```bash
-cli close garage-mueller  # When done working on it
-```
-
-Worktrees can be recreated instantly with `cli checkout`.
+❌ **DON'T:**
+- Edit `src/shared/` directly (use `cli upgrade-shared`)
+- Commit client code to `main` branch
+- Merge between client branches
 
 ---
 
 ## Troubleshooting
 
-### "Worktree already exists"
-
-If you see this warning when checking out:
+**Already checked out:**
 ```bash
-✗ Client garage-mueller is already checked out
+cli close garage-mueller
+cli checkout garage-mueller
+```
+
+**Version not found:**
+```bash
+git tag -l | grep ^v              # List versions
+cli upgrade-shared <client> v1.0.0  # Use existing version
+```
+
+**Uncommitted changes:**
+```bash
+cd sites/garage-mueller
+git status
+git add . && git commit -m "WIP"  # Commit first
+cli close garage-mueller          # Then close
 ```
 
 **Solution:**
