@@ -6,6 +6,7 @@ import { listSites } from './commands/list.ts';
 import { checkoutClient } from './commands/checkout.ts';
 import { closeClient, closeAllClients } from './commands/close.ts';
 import { upgradeSharedLib } from './commands/upgrade-shared.ts';
+import { syncWorktrees } from './commands/sync.ts';
 
 const program = new Command();
 
@@ -64,5 +65,10 @@ program
   .option('-c, --checked-out-only', 'Show only checked-out clients')
   .option('-a, --available-only', 'Show only available (not checked- out) clients')
   .action(listSites);
+
+program
+  .command('sync')
+  .description('Sync worktrees to ensure they are at correct versions')
+  .action(syncWorktrees);
 
 program.parse();
