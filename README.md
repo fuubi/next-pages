@@ -130,7 +130,7 @@ Import shared components in pages:
 ```astro
 ---
 import BaseLayout from '@shared/layouts/BaseLayout.astro';
-import Hero from '@shared/components/sections/Hero/v1/Hero.astro';
+import Hero from '@shared/components/sections/Hero/Hero.astro';
 ---
 
 <BaseLayout title="Home">

@@ -1,441 +1,204 @@
-# Component-Level Versioning Strategy
+# Component Versioning Strategy
 
-For long-running client sites that you don't want to touch, we use **component-level versioning** with explicit version folders only.
+This project uses **git-tag-only versioning** for the shared component library.
 
 ## Philosophy
 
-**Never remove or break components. No "latest" version.** All components exist ONLY in explicit version folders (v1/, v2/, etc.). Sites explicitly choose which version to use, preventing accidental breaking changes.
+Components are versioned at the **repository level** using git tags, not at the individual component level. This provides a simpler mental model while leveraging the orphan branch architecture.
 
-## Structure
+## How It Works
 
-```
-src/shared/components/
-  sections/
-    Hero/
-      v1/
-        Hero.astro                  # Version 1 - never changes
-      v2/
-        Hero.astro                  # Version 2 - breaking changes from v1
-    ContactBlock/
-      v1/
-        ContactBlock.astro          # Only version, explicitly versioned
-```
+### Version Pinning via Git Tags
 
-**Critical rule**: No component files at the root of component folders. Only versioned subdirectories exist.
-
-## Import Patterns
-
-### New Sites (Choose Explicit Version)
-
-```astro
-import Hero from '@colombalink/shared/components/sections/Hero/v1/Hero.astro';
-```
-
-### Upgrade to Newer Version
-
-```astro
-import Hero from '@colombalink/shared/components/sections/Hero/v2/Hero.astro';
-```
-
-### Old Sites Keep Working Forever
-
-```astro
-// Site created in 2024 - uses v1 import Hero from
-'@colombalink/shared/components/sections/Hero/v1/Hero.astro'; // Never breaks, even as we add v2,
-v3, etc.
-```
-
-## Workflow
-
-### When Creating a Breaking Change
-
-Instead of updating Hero/v1/Hero.astro, create a new version:
-
-```bash
-# Step 1: Create new version folder
-mkdir -p src/shared/components/sections/Hero/v2
-
-# Step 2: Copy existing version as starting point
-cp src/shared/components/sections/Hero/v1/Hero.astro src/shared/components/sections/Hero/v2/
-
-# Step 3: Make breaking changes to v2
-# Edit src/shared/components/sections/Hero/v2/Hero.astro
-
-# Step 4: Add version documentation
-```
-
-```astro
----
-/**
- * Hero Component v2
- *
- * Breaking changes from v1:
- * - Changed props from headline/text to heading/description
- * - Added new responsive prop
- *
- * For v1, import from:
- * '@colombalink/shared/components/sections/Hero/v1/Hero.astro'
- */
-
-export interface Props {
-  heading: string; // Was 'headline' in v1
-  description?: string; // Was 'text' in v1
-  responsive?: boolean; // New prop
-}
----
-
-<!-- src/shared/components/sections/Hero/v2/Hero.astro -->
-```
-
-### Changesets for This Approach
-
-**All component changes are MINOR:**
-
-```bash
-npm run changeset
-# Type: minor (not major!)
-# Summary: "Added Hero v2 with improved prop names (heading/description). v1 remains available."
-```
-
-**MAJOR bumps only for:**
-
-- Removing very old versioned folders (after 5+ years)
-- Changing build system or peer dependencies
-- Fundamental breaking changes to the package structure
-
-## Version Lifecycle
-
-### Phase 1: Initial Release
-
-```
-v1.0.0
-components/sections/
-  Hero/
-    v1/
-      Hero.astro
-  ContactBlock/
-    v1/
-      ContactBlock.astro
-```
-
-### Phase 2: Breaking Change Needed (MINOR!)
-
-```
-v1.5.0  (MINOR, not MAJOR!)
-components/sections/
-  Hero/
-    v1/
-      Hero.astro               # Original preserved
-    v2/
-      Hero.astro               # New version with breaking changes
-  ContactBlock/
-    v1/
-      ContactBlock.astro
-```
-
-**Changeset:**
-
-```markdown
----
-'@colombalink/shared': minor
----
-
-Added Hero v2 with improved prop names. v1 remains available for legacy sites.
-
-Breaking changes in v2:
-
-- `headline` → `heading`
-- `text` → `description`
-
-Migration:
-
-- New sites: Import from v2 path
-- Existing sites: No action needed (continue using v1 path)
-```
-
-### Phase 3: Another Breaking Change (Still MINOR!)
-
-```
-v1.8.0  (MINOR)
-components/sections/
-  Hero/
-    v1/
-      Hero.astro               # Original
-    v2/
-      Hero.astro               # Second iteration
-    v3/
-      Hero.astro               # Latest iteration
-  ContactBlock/
-    v1/
-      ContactBlock.astro
-```
-
-**Changeset:**
-
-```markdown
----
-'@colombalink/shared': minor
----
-
-Added Hero v3 with variant support. v1 and v2 remain available.
-
-New features in v3:
-
-- Added `variant` prop (default, centered, split)
-- Improved animations
-
-Migration:
-
-- New sites: Import from v3 path if needed
-- v1/v2 sites: No action needed
-```
-
-### Phase 4: Optional Cleanup After Years (MAJOR)
-
-```
-v2.0.0  (MAJOR - but rare!)
-components/sections/
-  Hero/
-    v2/
-      Hero.astro               # Keep recent versions
-    v3/
-      Hero.astro
-  # Removed v1/ after 5+ years and confirmation no sites use it
-```
-
-## Package.json Structure
+Each client site pins to a specific git tag of the `shared/components` branch:
 
 ```json
+// clients.json
 {
-  "name": "@colombalink/shared",
-  "version": "1.8.5",
-  "exports": {
-    "./components/sections/*/v1/*": "./components/sections/*/v1/*",
-    "./components/sections/*/v2/*": "./components/sections/*/v2/*",
-    "./components/sections/*/v3/*": "./components/sections/*/v3/*",
-    "./components/ui/*/v1/*": "./components/ui/*/v1/*",
-    "./components/site/*/v1/*": "./components/site/*/v1/*",
-    "./layouts/*": "./layouts/*",
-    "./styles/*": "./styles/*",
-    "./utils/*": "./utils/*"
-  }
+  "clients": [
+    { "name": "garage-mueller", "sharedLibVersion": "v1.0.0" },
+    { "name": "garage-other", "sharedLibVersion": "v1.1.0" }
+  ]
 }
 ```
 
-## Client Site Lock Patterns
-
-### Explicit Version Imports (Required for All Sites)
-
-```astro
-<!-- sites/example-client/src/pages/index.astro -->import Hero from
-'@colombalink/shared/components/sections/Hero/v1/Hero.astro'; import ContactBlock from
-'@colombalink/shared/components/sections/ContactBlock/v1/ContactBlock.astro';
-
-<!-- This site will NEVER break, even 10 years later -->
-<Hero headline="Welcome" text="..." />
+When you checkout a client, the CLI extracts that specific version:
+```bash
+cli checkout garage-mueller
+# Extracts shared components @ v1.0.0 into sites/garage-mueller/src/shared/
 ```
 
-### Upgrade to Newer Version When Ready
+### Component Structure
 
-```astro
-<!-- sites/another-client/src/pages/index.astro -->import Hero from
-'@colombalink/shared/components/sections/Hero/v2/Hero.astro';
+Components live at direct paths without version folders:
 
-<!-- Explicitly upgraded to v2 when ready -->
-<Hero heading="Welcome" description="..." />
+```
+packages/shared/components/
+  sections/
+    Hero/
+      Hero.astro           # No v1/ or v2/ folders
+    ContactBlock/
+      ContactBlock.astro
+  ui/
+    Button/
+      Button.astro
 ```
 
-### Mixed Versions (Different Components)
+### Import Patterns
 
 ```astro
-<!-- Use different versions for different components -->import Hero from
-'@colombalink/shared/components/sections/Hero/v2/Hero.astro'; import ContactBlock from
-'@colombalink/shared/components/sections/ContactBlock/v1/ContactBlock.astro';
-```
-
-## Documentation in Components
-
-Each component version should document its breaking changes:
-
-````astro
 ---
-/**
- * Hero Component v3
- *
- * Breaking Changes from v2:
- * - Added required `variant` prop (default: 'default')
- *
- * Migration from v2:
- * ```diff
- * - <Hero heading="..." />
- * + <Hero heading="..." variant="default" />
- * ```
- *
- * For previous versions:
- * - v2: Import from ../v2/Hero.astro
- * - v1: Import from ../v1/Hero.astro
- */
+import Hero from '@shared/components/sections/Hero/Hero.astro';
+import Button from '@shared/components/ui/Button/Button.astro';
 ---
-````
+```
 
-## CLI Integration
+## Semantic Versioning
 
-Update your garage CLI to support version selection:
+Git tags follow semantic versioning:
+
+- **PATCH (1.0.0 → 1.0.1)**: Bug fixes, no API changes
+- **MINOR (1.0.0 → 1.1.0)**: New components, new optional props
+- **MAJOR (1.0.0 → 2.0.0)**: Breaking changes to existing components
+
+## Making Changes
+
+### Non-Breaking Changes (MINOR/PATCH)
+
+Add new features or fix bugs:
 
 ```bash
-# Create new site with v1 components
-npm run site create my-site
-
-# Generate imports with explicit versions
-npm run site create my-site --component-version=v1
+cd packages/shared
+# Make changes to components
+git add .
+git commit -m "feat: add new Footer variant"
+git tag v1.1.0
+git push origin shared/components --tags
 ```
 
-This generates imports like:
+Clients can upgrade gradually:
+```bash
+cli upgrade-shared garage-mueller v1.1.0
+```
+
+### Breaking Changes (MAJOR)
+
+When you need to make breaking changes:
+
+```bash
+cd packages/shared
+# Make breaking changes to Hero component
+git add .
+git commit -m "feat!: Hero now uses 'heading' prop instead of 'headline'
+
+BREAKING CHANGE: Renamed prop from headline to heading"
+git tag v2.0.0
+git push origin shared/components --tags
+```
+
+Clients stay on v1.x.x until they're ready to migrate:
+```bash
+# Client stays on v1.0.0 - no changes needed
+# When ready to upgrade:
+cli upgrade-shared garage-mueller v2.0.0
+# Test, fix breaking changes, commit
+```
+
+## Migration Path for Clients
+
+When upgrading across major versions, clients can:
+
 
 ```astro
-import Hero from '@colombalink/shared/components/sections/Hero/v1/Hero.astro';
+---
+// During migration from v1 to v2
+// Temporarily copy old component
+import OldHero from './components/OldHero.astro';  // Copied from v1.0.0
+import NewButton from '@shared/components/ui/Button/Button.astro';  // From v2.0.0
+---
 ```
 
-## Real-World Example
+## Benefits of Git-Tag-Only Versioning
 
-### Scenario: Example Client (Created 2024)
+✅ **Simple**: One versioning system (git tags), not two (git + folders)  
+✅ **Clear**: Version is explicit in clients.json and checkout command  
+✅ **Flexible**: Each client can use any version, upgrade at their pace  
+✅ **Testable**: Easy to rollback if issues are found  
+✅ **Clean**: No nested version folders cluttering the codebase
 
-**Initial setup (2024):**
+## When to Create New Versions
 
-```astro
-import Hero from '@colombalink/shared/components/sections/Hero/v1/Hero.astro';
-<Hero headline="Welcome" />
+### PATCH (1.0.x)
+- Bug fixes in existing components
+- Performance improvements
+- Accessibility fixes
+- Documentation updates
+
+### MINOR (1.x.0)
+- New components added
+- New optional props on existing components
+- New utility functions
+- Backward-compatible enhancements
+
+### MAJOR (x.0.0)
+- Removing props from components
+- Renaming existing props
+- Changing required props
+- Removing components (rare)
+- Changing behavior in breaking ways
+
+## Example Workflow
+
+### Scenario: Add New Component
+
+```bash
+cd packages/shared
+
+# Add new Carousel component
+mkdir -p components/ui/Carousel
+# Create Carousel.astro
+
+git add .
+git commit -m "feat: add Carousel component"
+git tag v1.1.0
+git push origin shared/components --tags
 ```
 
-**You add v2 (2025) - Their site keeps working:**
-
-- Package bumps v1.0.0 → v1.5.0 (MINOR)
-- Their imports still work because they explicitly use v1/Hero.astro
-- v1/Hero.astro is NEVER modified
-
-**You add v3 (2026) - Site still works:**
-
-- Package bumps v1.5.0 → v1.8.0 (MINOR)
-- v3/Hero.astro created with breaking changes
-- v2/Hero.astro preserved
-- v1/Hero.astro stays untouched
-- Example Client never breaks
-
-### Scenario: New Another Client (Created 2026)
-
-```astro
-import Hero from '@colombalink/shared/components/sections/Hero/v3/Hero.astro';
-<Hero heading="Welcome" variant="default" />
+Clients can now upgrade:
+```bash
+cli upgrade-shared garage-mueller v1.1.0
 ```
 
-Explicitly uses v3, can upgrade to v4 when available by changing import path.
+### Scenario: Breaking Change to Hero
 
-## Benefits
+```bash
+cd packages/shared
 
-✅ **Old sites never break** - They import from v1/, v2/, etc. with explicit paths  
-✅ **No forced migrations** - Clients update when ready by changing import path  
-✅ **No accidental upgrades** - All versions are explicit, no "latest" to surprise you  
-✅ **Mostly MINOR bumps** - Rarely need MAJOR versions  
-✅ **Easy rollback** - Just change import path  
-✅ **Clear history** - Version folders document evolution  
-✅ **Gradual adoption** - Mix old and new component versions
+# Edit Hero Component with breaking changes
+vim components/sections/Hero/Hero.astro
 
-## Drawbacks & Solutions
+git add .
+git commit -m "feat!: update Hero props
 
-❌ **More files to maintain**
-✅ Solution: Old versions are frozen - no maintenance needed
-
-❌ **Larger package size**
-✅ Solution: Most clients only use 1-2 versions max. Tree-shaking helps
-
-❌ **Could get messy**
-✅ Solution: Clear folder structure and documentation
-
-❌ **When to remove old versions?**
-✅ Solution: Only after 5+ years AND confirming no client uses it
-
-## Comparison: Traditional vs Component-Level Versioning
-
-### Traditional Approach
-
-```
-v1.0.0: Hero with headline prop
-v2.0.0: BREAKING - Hero with heading prop (breaks old sites)
+BREAKING CHANGE: Renamed 'headline' to 'heading' for consistency"
+git tag v2.0.0
+git push origin shared/components --tags
 ```
 
-Client must update code when upgrading package.
-
-### Component-Level Versioning
-
-```
-v1.0.0: Hero/v1/Hero.astro with headline prop
-v1.5.0: Hero/v2/Hero.astro with heading prop + Hero/v1/ preserved
-v1.8.0: Hero/v3/Hero.astro with new features + Hero/v1/ and Hero/v2/ preserved
-```
-
-Client can upgrade package anytime, imports never break because they use explicit version paths.
-
-## Implementation Checklist
-
-- [x] Update package.json exports to include versioned paths
-- [x] Create v1/ folders for all components (only versioned files exist)
-- [x] Remove all "latest" component files from root of component folders
-- [x] Add version history docs to each component
-- [ ] Update CLI to support --component-version flag
-- [x] Create migration guide showing import path patterns
-- [x] Update CHANGELOG to explain versioning strategy
-- [ ] Document which version each client site uses (internal tracking)
-
-## File Structure After Implementation
-
-```
-src/shared/
-  components/
-    sections/
-      Hero/
-        v1/
-          Hero.astro
-        v2/
-          Hero.astro
-        v3/
-          Hero.astro
-      ContactBlock/
-        v1/
-          ContactBlock.astro
-        v2/
-          ContactBlock.astro
-      FeatureGrid/
-        v1/
-          FeatureGrid.astro
-    ui/
-      Button/
-        v1/
-          Button.astro
-      Card/
-        v1/
-          Card.astro
-    site/
-      Header/
-        v1/
-          Header.astro
-      Footer/
-        v1/
-        Hero.astro                  # Frozen - original
-        ContactBlock.astro          # Frozen - original
-        FeatureGrid.astro           # Frozen - original
-      v2/
-        Hero.astro                  # Frozen - second iteration
-        ContactBlock.astro          # Frozen - second iteration
-    ui/
-      Button.astro                  # Latest
-      Card.astro                    # Latest
-      v1/
-        Button.astro                # Frozen
+Clients decide when to upgrade:
+```bash
+# garage-mueller stays on v1.0.0 (still works)
+# garage-other upgrades when ready
+cli upgrade-shared garage-other v2.0.0
+cd sites/garage-other
+# Fix imports, test, commit
 ```
 
-## Summary
+## Best Practices
 
-**Old approach:** Delete/breaking changes → MAJOR bump → clients must update  
-**New approach:** Keep all versions → MINOR bump → clients never forced to update
-
-This is perfect for long-running sites that shouldn't be touched!
+1. **Document breaking changes** in commit messages using conventional commits
+2. **Test thoroughly** before tagging new versions
+3. **Use semantic versioning** strictly
+4. **Communicate upgrades** to client developers
+5. **Don't force upgrades** - let clients migrate at their pace
+6. **Tag thoughtfully** - tags are permanent milestones
