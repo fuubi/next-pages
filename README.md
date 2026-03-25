@@ -183,6 +183,50 @@ Components use version folders (`v1/`, `v2/`) so old versions remain available.
 
 ---
 
+## Theme Customization
+
+Each client can customize their brand colors, typography, and styling while using the same component library.
+
+### Setup
+
+1. **Create site-specific styles:**
+   ```bash
+   mkdir -p sites/{client}/src/styles
+   ```
+
+2. **Create `tokens.css`** with brand colors:
+   ```css
+   :root {
+     --color-primary: #your-brand-color;
+     --color-secondary: #your-secondary;
+     --font-sans: 'Your Font', sans-serif;
+   }
+   ```
+
+3. **Import in pages:**
+   ```astro
+   ---
+   import '../../styles/tokens.css';
+   ---
+   ```
+
+### How It Works
+
+- **Shared library** provides base design tokens
+- **Site-specific tokens** override selected values
+- **Import order** ensures site tokens take precedence
+- Changes committed to **client branch**, not shared library
+
+See [sites/garage-mueller/THEME-CUSTOMIZATION.md](sites/garage-mueller/THEME-CUSTOMIZATION.md) for complete guide.
+
+### Example Themes
+
+- **Garage Mueller**: Industrial-clean with automotive red, charcoal blacks
+- **Professional Services**: Navy blue, clean whites, subtle shadows
+- **Creative Agency**: Purple gradients, bold imagery, rounded corners
+
+---
+
 ## Documentation
 
 **Essential:**
