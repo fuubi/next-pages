@@ -31,6 +31,9 @@ pnpm-debug.log*
 sites/
 workspaces/
 
+# Shared components worktree for development/reference
+packages/shared/
+
 # Centralized git repository storage for shared components
 # Used by CLI to create nested worktrees
 .git-repos/
