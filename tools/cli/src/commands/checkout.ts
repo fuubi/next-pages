@@ -116,15 +116,15 @@ export async function checkoutClient(clientName: string) {
     spinner.start('Setting up public assets...');
     const sitePublicDir = join(clientPath, 'public');
     const sharedPublicDir = join(sharedLibPath, 'public');
-    
+
     try {
       if (existsSync(sharedPublicDir)) {
         // Create site's public directory if it doesn't exist
         if (!existsSync(sitePublicDir)) {
           await execa('mkdir', ['-p', sitePublicDir], { cwd: workspaceRoot });
           // Fresh checkout - copy all shared assets
-          await execa('cp', ['-r', `${sharedPublicDir}/.`, sitePublicDir], { 
-            cwd: workspaceRoot 
+          await execa('cp', ['-r', `${sharedPublicDir}/.`, sitePublicDir], {
+            cwd: workspaceRoot
           });
           spinner.succeed('Shared public assets copied to site');
         } else {

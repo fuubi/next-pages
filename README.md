@@ -157,7 +157,7 @@ Each site has its own `public/` directory for static assets (tracked in git):
 ```bash
 sites/garage-mueller/public/
 ├── images/          # Images (shared samples + your custom images)
-├── favicon.svg      # Site favicon  
+├── favicon.svg      # Site favicon
 └── robots.txt       # SEO configuration
 ```
 
