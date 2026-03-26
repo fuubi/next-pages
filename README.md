@@ -29,11 +29,16 @@ This repository uses a **coordinator pattern** with **orphan branches**:
 ├── tools/cli/                    # Client management CLI
 └── sites/                        # Client checkouts (when working)
     ├── garage-mueller/           # Client worktree
+    │   ├── public/               # Static assets (tracked in git)
+    │   │   ├── images/           # Images (shared samples + custom)
+    │   │   ├── favicon.svg
+    │   │   └── robots.txt
     │   ├── src/
     │   │   ├── pages/            # Client pages & content
     │   │   └── shared/           # Shared components (v1.0.0)
     │   └── package.json
     └── garage-other/             # Another client (different version possible)
+        ├── public/               # Site-specific assets (independent)
         └── src/shared/           # Shared components (v1.1.0)
 ```
 
@@ -50,6 +55,10 @@ cli list
 
 # 3. Checkout a client
 cli checkout garage-mueller
+# This automatically:
+# - Creates a worktree for the client branch
+# - Extracts shared components at the specified version
+# - Copies shared public assets (first checkout only - preserves existing assets)
 
 # 4. Work on it
 cd sites/garage-mueller
@@ -112,6 +121,7 @@ git push
 
 - Each client can use a different version
 - Components are extracted at checkout (not a git worktree)
+- Shared sample assets copied on first checkout only (preserves existing assets)
 - Upgrade with `cli upgrade-shared`
 - Test thoroughly before committing upgrades
 
@@ -139,6 +149,25 @@ import Hero from '@shared/components/sections/Hero/Hero.astro';
   <Hero {...heroData} />
 </BaseLayout>
 ```
+
+### Public Assets
+
+Each site has its own `public/` directory for static assets (tracked in git):
+
+```bash
+sites/garage-mueller/public/
+├── images/          # Images (shared samples + your custom images)
+├── favicon.svg      # Site favicon  
+└── robots.txt       # SEO configuration
+```
+
+**On first checkout:** Shared sample assets are copied from the component library
+
+**Subsequent checkouts:** Existing `public/` assets are preserved (never overwritten)
+
+**Your workflow:** Add site-specific images, fonts, PDFs, or any static files and commit them
+
+**In components:** Reference from root: `/images/my-image.jpg`
 
 ### Content Structure
 
