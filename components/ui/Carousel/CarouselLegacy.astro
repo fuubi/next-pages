@@ -1,0 +1,396 @@
+---
+export interface Props {
+  navigation?: 'arrows' | 'dots' | 'both' | 'none';
+  autoplay?: boolean;
+  slidesPerView?: 1 | 2 | 3 | 4 | 5;
+  gap?: 'none' | 'sm' | 'md' | 'lg';
+  arrowPosition?: 'middle-outside' | 'middle-inside' | 'bottom';
+}
+
+const {
+  navigation = 'both',
+  autoplay = false,
+  slidesPerView = 1,
+  gap = 'md',
+  arrowPosition = 'middle-outside'
+} = Astro.props;
+
+// Generate unique ID for this carousel instance
+const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div 
+  class:list={[
+    'carousel',
+    `gap-${gap}`,
+    `slides-${slidesPerView}`,
+    `arrows-${arrowPosition}`
+  ]}
+  data-carousel-id={carouselId}
+  data-autoplay={autoplay}
+  data-slides-per-view={slidesPerView}
+>
+  <div class="carousel-track">
+    <slot />
+  </div>
+
+  {navigation === 'both' && (
+    <div class="carousel-navigation">
+      <button class="carousel-prev" aria-label="Previous slide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <div class="carousel-indicators"></div>
+      <button class="carousel-next" aria-label="Next slide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+  )}
+
+  {navigation === 'arrows' && (
+    <div class="carousel-controls">
+      <button class="carousel-prev" aria-label="Previous slide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button class="carousel-next" aria-label="Next slide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+  )}
+
+  {navigation === 'dots' && (
+    <div class="carousel-indicators"></div>
+  )}
+</div>
+
+<script>
+  import { CarouselController } from './CarouselController.ts';
+
+  // Initialize all carousels on the page
+  document.addEventListener('DOMContentLoaded', () => {
+    const carousels = document.querySelectorAll('[data-carousel-id]');
+    carousels.forEach(carousel => new CarouselController(carousel as HTMLElement));
+  });
+</script>
+
+<style>
+  .carousel {
+    position: relative;
+    width: 100%;
+    padding: var(--space-4);
+    padding-bottom: calc(var(--space-4) + 70px); /* Reserve space for navigation */
+  }
+
+  /* Arrow position variants - add side padding for outside arrows */
+  .carousel.arrows-middle-outside {
+    padding-left: calc(var(--space-4) + 60px);
+    padding-right: calc(var(--space-4) + 60px);
+    padding-bottom: var(--space-4); /* No bottom space needed for side arrows */
+  }
+
+  .carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: var(--carousel-gap, var(--space-4));
+  }
+
+  .carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel-track > :global(*) {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    flex-shrink: 0;
+  }
+
+  /* Slides per view sizing */
+  .slides-1 .carousel-track > :global(*) {
+    width: 100%;
+  }
+
+  .slides-2 .carousel-track > :global(*) {
+    width: calc((100% - var(--carousel-gap, var(--space-4))) / 2);
+  }
+
+  .slides-3 .carousel-track > :global(*) {
+    width: calc((100% - (var(--carousel-gap, var(--space-4)) * 2)) / 3);
+  }
+
+  .slides-4 .carousel-track > :global(*) {
+    width: calc((100% - (var(--carousel-gap, var(--space-4)) * 3)) / 4);
+  }
+
+  .slides-5 .carousel-track > :global(*) {
+    width: calc((100% - (var(--carousel-gap, var(--space-4)) * 4)) / 5);
+  }
+
+  /* Gap variants */
+  .gap-none {
+    --carousel-gap: 0;
+  }
+
+  .gap-sm {
+    --carousel-gap: var(--space-2);
+  }
+
+  .gap-md {
+    --carousel-gap: var(--space-4);
+  }
+
+  .gap-lg {
+    --carousel-gap: var(--space-6);
+  }
+
+  /* Unified Navigation (arrows + dots together) - Bottom positioning */
+  .carousel-navigation {
+    position: absolute;
+    bottom: var(--space-3);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-2) var(--space-4);
+    background: rgba(31, 89, 80, 0.95);
+    border-radius: var(--border-radius-full);
+    box-shadow: var(--shadow-lg);
+    z-index: 10;
+  }
+
+  /* Middle Outside - arrows on sides, indicators at bottom */
+  .arrows-middle-outside .carousel-navigation {
+    justify-content: space-between;
+    left: var(--space-2);
+    right: var(--space-2);
+    width: calc(100% - var(--space-4));
+    transform: none;
+    bottom: 50%;
+    transform: translateY(50%);
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .arrows-middle-outside .carousel-navigation .carousel-prev {
+    position: absolute;
+    left: calc(-1 * (var(--space-4) + 50px));
+  }
+
+  .arrows-middle-outside .carousel-navigation .carousel-next {
+    position: absolute;
+    right: calc(-1 * (var(--space-4) + 50px));
+  }
+
+  .arrows-middle-outside .carousel-navigation .carousel-indicators {
+    position: absolute;
+    bottom: calc(-50% + var(--space-3) - 22px);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Indicators inside unified navigation */
+  .carousel-navigation .carousel-indicators {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    position: static;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  /* Controls (arrows only mode) */
+  .carousel-controls {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Middle Outside - buttons on sides, outside the content */
+  .arrows-middle-outside .carousel-controls {
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+  }
+
+  .arrows-middle-outside .carousel-controls .carousel-prev {
+    position: absolute;
+    left: calc(-1 * (var(--space-4) + 50px));
+  }
+
+  .arrows-middle-outside .carousel-controls .carousel-next {
+    position: absolute;
+    right: calc(-1 * (var(--space-4) + 50px));
+  }
+
+  /* Middle Inside - buttons overlap content */
+  .arrows-middle-inside .carousel-controls {
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    padding: 0 var(--space-2);
+  }
+
+  /* Bottom - buttons at bottom */
+  .arrows-bottom .carousel-controls {
+    bottom: var(--space-3);
+    left: 50%;
+    transform: translateX(-50%);
+    gap: var(--space-2);
+    width: auto;
+  }
+
+  /* Buttons */
+  .carousel-prev,
+  .carousel-next {
+    pointer-events: auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--duration-fast);
+    box-shadow: var(--shadow-md);
+    flex-shrink: 0;
+  }
+
+  .carousel-prev:hover,
+  .carousel-next:hover {
+    background: var(--color-primary);
+    color: var(--color-primary-contrast);
+    border-color: var(--color-primary);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .carousel-prev:active,
+  .carousel-next:active {
+    transform: scale(0.98);
+  }
+
+  /* Dots - standalone mode */
+  .carousel-indicators {
+    position: absolute;
+    bottom: var(--space-3);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: rgba(31, 89, 80, 0.95);
+    border-radius: var(--border-radius-full);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    cursor: pointer;
+    transition: all var(--duration-fast);
+    padding: 0;
+  }
+
+  .carousel-dot:hover {
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(1.2);
+  }
+
+  .carousel-dot.active {
+    background: var(--color-primary);
+    width: 20px;
+    border-radius: var(--border-radius-full);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .carousel {
+      padding: var(--space-2);
+      padding-bottom: calc(var(--space-2) + 60px);
+    }
+
+    .carousel.arrows-middle-outside {
+      padding-left: calc(var(--space-2) + 48px);
+      padding-right: calc(var(--space-2) + 48px);
+      padding-bottom: calc(var(--space-2) + 60px);
+    }
+
+    .arrows-middle-outside .carousel-navigation .carousel-prev,
+    .arrows-middle-outside .carousel-controls .carousel-prev {
+      left: calc(-1 * (var(--space-2) + 42px));
+    }
+
+    .arrows-middle-outside .carousel-navigation .carousel-next,
+    .arrows-middle-outside .carousel-controls .carousel-next {
+      right: calc(-1 * (var(--space-2) + 42px));
+    }
+
+    .carousel-navigation {
+      gap: var(--space-2);
+      padding: var(--space-1) var(--space-3);
+    }
+
+    .carousel-prev,
+    .carousel-next {
+      width: 36px;
+      height: 36px;
+    }
+
+    /* Responsive slides per view */
+    .slides-3 .carousel-track > :global(*),
+    .slides-4 .carousel-track > :global(*),
+    .slides-5 .carousel-track > :global(*) {
+      width: calc((100% - var(--carousel-gap, var(--space-4))) / 2);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .slides-2 .carousel-track > :global(*),
+    .slides-3 .carousel-track > :global(*),
+    .slides-4 .carousel-track > :global(*),
+    .slides-5 .carousel-track > :global(*) {
+      width: 100%;
+    }
+  }
+
+  /* Accessibility */  @media (prefers-reduced-motion: reduce) {
+    .carousel-track {
+      scroll-behavior: auto;
+    }
+    
+    .carousel-prev,
+    .carousel-next,
+    .carousel-dot {
+      transition: none;
+    }
+  }
+</style>

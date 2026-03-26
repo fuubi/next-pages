@@ -1,0 +1,81 @@
+---
+/**
+ * CarouselWithArrows - Convenience wrapper combining CarouselBase with arrows and dots
+ * Uses slot composition for clean architecture
+ */
+import CarouselBase from './CarouselBase.astro';
+import CarouselArrows from './CarouselArrows.astro';
+import CarouselDots from './CarouselDots.astro';
+
+export interface Props {
+  slidesPerView?: 1 | 2 | 3 | 4 | 5;
+  gap?: 'none' | 'sm' | 'md' | 'lg';
+  autoplay?: boolean;
+  arrowPosition?: 'middle-outside' | 'middle-inside' | 'bottom' | 'top';
+  arrowSize?: 'sm' | 'md' | 'lg';
+  arrowVariant?: 'default' | 'ghost' | 'primary';
+  showDots?: boolean;
+  dotPosition?: 'bottom' | 'top' | 'outside-bottom';
+}
+
+const {
+  slidesPerView = 1,
+  gap = 'md',
+  autoplay = false,
+  arrowPosition = 'middle-outside',
+  arrowSize = 'md',
+  arrowVariant = 'default',
+  showDots = true,
+  dotPosition = 'bottom',
+} = Astro.props;
+---
+
+<div
+  class:list={['carousel-with-arrows', `arrows-${arrowPosition}`]}
+  style={arrowPosition === 'middle-outside'
+    ? `padding-left: calc(var(--space-4) + 60px); padding-right: calc(var(--space-4) + 60px);`
+    : ''}
+>
+  <CarouselBase slidesPerView={slidesPerView} gap={gap} autoplay={autoplay}>
+    <!-- Default slot: slides -->
+    <slot />
+
+    <!-- Compose arrows into controls slot -->
+    <Fragment slot="controls">
+      <CarouselArrows position={arrowPosition} size={arrowSize} variant={arrowVariant} />
+    </Fragment>
+
+    <!-- Compose dots into indicators slot -->
+    {
+      showDots && (
+        <Fragment slot="indicators">
+          <CarouselDots position={dotPosition} />
+        </Fragment>
+      )
+    }
+  </CarouselBase>
+</div>
+
+<style>
+  .carousel-with-arrows {
+    position: relative;
+    padding-bottom: 40px; /* Compact space for smaller dots */
+  }
+
+  /* Add padding to container for outside arrows to prevent overlap */
+  .arrows-middle-outside {
+    padding-left: calc(var(--space-4) + 60px);
+    padding-right: calc(var(--space-4) + 60px);
+  }
+
+  @media (max-width: 768px) {
+    .carousel-with-arrows {
+      padding-bottom: 32px;
+    }
+
+    .arrows-middle-outside {
+      padding-left: calc(var(--space-2) + 48px);
+      padding-right: calc(var(--space-2) + 48px);
+    }
+  }
+</style>

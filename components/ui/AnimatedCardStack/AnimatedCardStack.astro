@@ -1,0 +1,76 @@
+---
+/**
+ * AnimatedCardStack - Sticky card stack container
+ *
+ * Container for sticky card stacks. Uses StackItem components as direct children
+ * to apply sticky positioning. The StackItem wrapper approach avoids conflicts
+ * with Card component transforms.
+ *
+ * Usage:
+ * <AnimatedCardStack stackOffset={20}>
+ *   <StackItem index={1}><Card>...</Card></StackItem>
+ *   <StackItem index={2}><Card>...</Card></StackItem>
+ * </AnimatedCardStack>
+ *
+ * Based on: CSS Tricks sticky card stack technique
+ */
+export interface Props {
+  /**
+   * Spacing offset between stacked cards (in pixels)
+   * StackItem uses this value: top = stackOffset * index
+   */
+  stackOffset?: number;
+
+  /**
+   * Additional CSS classes
+   */
+  class?: string;
+
+  /**
+   * Maximum width of the stack container
+   */
+  maxWidth?: string;
+
+  /**
+   * Top padding (creates space before stack)
+   */
+  topPadding?: string;
+
+  /**
+   * Bottom padding (creates scroll space - critical for sticky to work)
+   */
+  bottomPadding?: string;
+}
+
+const {
+  stackOffset = 20,
+  class: className,
+  maxWidth = '900px',
+  topPadding = '8rem',
+  bottomPadding = '60rem',
+} = Astro.props;
+---
+
+<div
+  class:list={['sticky-card-stack', className]}
+  style={`
+    --stack-offset: ${stackOffset}px;
+    --stack-max-width: ${maxWidth};
+    --stack-padding-top: ${topPadding};
+    --stack-padding-bottom: ${bottomPadding};
+  `}
+>
+  <slot />
+</div>
+
+<style>
+  .sticky-card-stack {
+    width: 100%;
+    max-width: var(--stack-max-width);
+    margin-inline: auto;
+    padding-top: var(--stack-padding-top);
+    padding-bottom: var(--stack-padding-bottom);
+    padding-inline: 1rem;
+    position: relative;
+  }
+</style>

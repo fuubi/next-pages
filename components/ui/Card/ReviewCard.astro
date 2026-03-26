@@ -1,0 +1,271 @@
+---
+/**
+ * ReviewCard - Customer review/testimonial card
+ * Features: avatar, name, date, star rating, review text, optional platform badge
+ */
+export interface Props {
+  name: string;
+  avatar?: string;
+  date?: string;
+  rating?: 1 | 2 | 3 | 4 | 5;
+  review: string;
+  platform?: 'google' | 'trustpilot' | 'facebook' | 'none';
+  variant?: 'default' | 'elevated' | 'bordered' | 'gradient';
+  class?: string;
+}
+
+const {
+  name,
+  avatar,
+  date = 'Recently',
+  rating = 5,
+  review,
+  platform = 'none',
+  variant = 'elevated',
+  class: className,
+} = Astro.props;
+
+// Generate avatar initials if no avatar image provided
+const initials = name
+  .split(' ')
+  .map((n) => n[0])
+  .join('')
+  .toUpperCase()
+  .slice(0, 2);
+
+// Generate random avatar colors based on name
+const colors = [
+  '#5B7FDB', // blue
+  '#8B5FDB', // purple
+  '#DB5B7F', // pink
+  '#DB8B5F', // orange
+  '#5FDB8B', // green
+  '#5FDBDB', // cyan
+];
+const colorIndex = name.charCodeAt(0) % colors.length;
+const avatarColor = colors[colorIndex];
+---
+
+<div class:list={['review-card', `variant-${variant}`, className]}>
+  <div class="review-header">
+    <div class="reviewer-info">
+      {
+        avatar ? (
+          <img src={avatar} alt={name} class="avatar" />
+        ) : (
+          <div class="avatar avatar-initials" style={`background-color: ${avatarColor};`}>
+            {initials}
+          </div>
+        )
+      }
+      <div class="reviewer-details">
+        <h4 class="reviewer-name">{name}</h4>
+        <span class="review-date">{date}</span>
+      </div>
+    </div>
+
+    {
+      platform !== 'none' && (
+        <div class="platform-badge">
+          {platform === 'google' && (
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-label="Google">
+              <path
+                fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              />
+            </svg>
+          )}
+          {platform === 'trustpilot' && (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#00B67A" aria-label="Trustpilot">
+              <path d="M12 2l2.4 7.4h7.8l-6.3 4.6 2.4 7.4L12 16.8l-6.3 4.6 2.4-7.4L1.8 9.4h7.8z" />
+            </svg>
+          )}
+        </div>
+      )
+    }
+  </div>
+
+  <div class="rating">
+    {
+      Array.from({ length: 5 }).map((_, i) => (
+        <svg
+          class:list={['star', i < rating ? 'filled' : 'empty']}
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+      ))
+    }
+  </div>
+
+  <div class="review-text">
+    <slot>
+      <p>{review}</p>
+    </slot>
+  </div>
+</div>
+
+<style>
+  .review-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border-radius: var(--border-radius-lg);
+    transition: all var(--duration-fast);
+  }
+
+  /* Variant styles */
+  .variant-default {
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .variant-elevated {
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+  }
+
+  .variant-bordered {
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+  }
+
+  .variant-gradient {
+    background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-dark) 100%);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Header with reviewer info */
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .reviewer-info {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+  }
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .avatar-initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-lg);
+    text-transform: uppercase;
+  }
+
+  .reviewer-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .reviewer-name {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .review-date {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .platform-badge {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Star rating */
+  .rating {
+    display: flex;
+    gap: 2px;
+  }
+
+  .star {
+    width: 16px;
+    height: 16px;
+  }
+
+  .star.filled {
+    color: #f0c36d; /* Gold color for filled stars */
+  }
+
+  .star.empty {
+    color: var(--color-border);
+  }
+
+  /* Review text */
+  .review-text {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text);
+  }
+
+  .review-text p {
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 6; /* Limit to 6 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Hover effect */
+  .review-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 640px) {
+    .review-card {
+      padding: var(--space-4);
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+    }
+
+    .reviewer-name {
+      font-size: var(--font-size-sm);
+    }
+
+    .review-text {
+      font-size: var(--font-size-sm);
+    }
+  }
+</style>

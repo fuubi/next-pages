@@ -1,0 +1,93 @@
+---
+/**
+ * CarouselContainer - Layout container with clear positioning zones
+ * Provides left/center/right horizontal layout + bottom slot for indicators
+ */
+export interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['carousel-container', className]}>
+  <div class="carousel-horizontal">
+    <!-- Left zone for left navigation -->
+    <div class="carousel-zone-left">
+      <slot name="left" />
+    </div>
+
+    <!-- Center zone for carousel track -->
+    <div class="carousel-zone-center">
+      <slot />
+    </div>
+
+    <!-- Right zone for right navigation -->
+    <div class="carousel-zone-right">
+      <slot name="right" />
+    </div>
+  </div>
+
+  <!-- Bottom zone for indicators (dots) -->
+  <div class="carousel-zone-bottom">
+    <slot name="bottom" />
+  </div>
+</div>
+
+<style>
+  .carousel-container {
+    position: relative;
+    width: 100%;
+  }
+
+  /* Horizontal layout: left | center | right */
+  .carousel-horizontal {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .carousel-zone-left,
+  .carousel-zone-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .carousel-zone-center {
+    flex: 1;
+    min-width: 0; /* Allow shrinking */
+    overflow: hidden;
+  }
+
+  /* Bottom zone for indicators */
+  .carousel-zone-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: var(--space-4);
+  }
+
+  /* Empty zones should not take space */
+  .carousel-zone-left:empty,
+  .carousel-zone-right:empty {
+    display: none;
+  }
+
+  .carousel-zone-bottom:empty {
+    display: none;
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    .carousel-horizontal {
+      gap: var(--space-1);
+    }
+
+    .carousel-zone-bottom {
+      padding-top: var(--space-3);
+    }
+  }
+</style>

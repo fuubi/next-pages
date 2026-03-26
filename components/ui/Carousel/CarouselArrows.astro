@@ -1,0 +1,203 @@
+---
+/**
+ * CarouselArrows - Reusable arrow navigation for carousels
+ * Compose into CarouselBase via slot="controls"
+ */
+export interface Props {
+  position?: 'middle-outside' | 'middle-inside' | 'bottom' | 'top';
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'ghost' | 'primary';
+}
+
+const { position = 'middle-outside', size = 'md', variant = 'default' } = Astro.props;
+---
+
+<div class:list={['carousel-arrows', `position-${position}`, `size-${size}`, `variant-${variant}`]}>
+  <button class="carousel-prev" aria-label="Previous slide">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+  </button>
+  <button class="carousel-next" aria-label="Next slide">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </button>
+</div>
+
+<style>
+  .carousel-arrows {
+    position: absolute;
+    display: flex;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Position variants */
+  .position-middle-outside {
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    justify-content: space-between;
+  }
+
+  .position-middle-inside {
+    top: 50%;
+    left: var(--space-2);
+    right: var(--space-2);
+    transform: translateY(-50%);
+    justify-content: space-between;
+  }
+
+  .position-bottom {
+    bottom: var(--space-3);
+    left: 50%;
+    transform: translateX(-50%);
+    gap: var(--space-2);
+  }
+
+  .position-top {
+    top: var(--space-3);
+    left: 50%;
+    transform: translateX(-50%);
+    gap: var(--space-2);
+  }
+
+  /* Buttons */
+  .carousel-prev,
+  .carousel-next {
+    pointer-events: auto;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--duration-fast);
+    flex-shrink: 0;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+
+  /* Size variants */
+  .size-sm .carousel-prev,
+  .size-sm .carousel-next {
+    width: 32px;
+    height: 32px;
+  }
+
+  .size-sm svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .size-md .carousel-prev,
+  .size-md .carousel-next {
+    width: 44px;
+    height: 44px;
+  }
+
+  .size-lg .carousel-prev,
+  .size-lg .carousel-next {
+    width: 56px;
+    height: 56px;
+  }
+
+  .size-lg svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* Variant styles */
+  .variant-default .carousel-prev,
+  .variant-default .carousel-next {
+    background: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: var(--shadow-md);
+  }
+
+  .variant-default .carousel-prev:hover,
+  .variant-default .carousel-next:hover {
+    background: var(--color-primary);
+    color: var(--color-primary-contrast);
+    border-color: var(--color-primary);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .variant-ghost .carousel-prev,
+  .variant-ghost .carousel-next {
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  .variant-ghost .carousel-prev:hover,
+  .variant-ghost .carousel-next:hover {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: white;
+    transform: scale(1.05);
+  }
+
+  .variant-primary .carousel-prev,
+  .variant-primary .carousel-next {
+    background: var(--color-primary);
+    color: var(--color-primary-contrast);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-md);
+  }
+
+  .variant-primary .carousel-prev:hover,
+  .variant-primary .carousel-next:hover {
+    background: var(--color-primary-hover);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .carousel-prev:active,
+  .carousel-next:active {
+    transform: scale(0.98);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .size-md .carousel-prev,
+    .size-md .carousel-next {
+      width: 36px;
+      height: 36px;
+    }
+
+    .size-lg .carousel-prev,
+    .size-lg .carousel-next {
+      width: 44px;
+      height: 44px;
+    }
+
+    .size-lg svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .carousel-prev,
+    .carousel-next {
+      transition: none;
+    }
+  }
+</style>

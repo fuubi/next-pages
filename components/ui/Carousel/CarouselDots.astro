@@ -1,0 +1,60 @@
+---
+/**
+ * CarouselDots - Simple, clean dot indicators
+ * Use in bottom slot of CarouselContainer
+ * Dots are created dynamically by CarouselController
+ */
+---
+
+<div class="carousel-indicators">
+  <!-- Dots are populated dynamically by CarouselController -->
+</div>
+
+<style>
+  .carousel-indicators {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2); /* Tighter spacing: 8px */
+    justify-content: center;
+  }
+
+  /* Simple circular dots */
+  .carousel-indicators :global(.carousel-dot) {
+    width: 4px;
+    height: 4px;
+    padding: 10px; /* 24px touch target - smaller but still usable */
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition:
+      transform 0.2s,
+      background 0.2s;
+  }
+
+  .carousel-indicators :global(.carousel-dot:hover) {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.2);
+  }
+
+  .carousel-indicators :global(.carousel-dot.active) {
+    background: var(--color-primary);
+    transform: scale(1.5);
+  }
+
+  /* Outside position - solid style */
+  .position-outside-bottom :global(.carousel-dot) {
+    background: var(--color-text-tertiary);
+  }
+
+  .position-outside-bottom :global(.carousel-dot.active) {
+    background: var(--color-primary);
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .carousel-indicators :global(.carousel-dot) {
+      transition: none;
+    }
+  }
+</style>

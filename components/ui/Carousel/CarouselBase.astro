@@ -1,0 +1,137 @@
+---
+/**
+ * CarouselBase - Core carousel component with scrolling logic only
+ * Uses named slots for composable navigation controls
+ */
+export interface Props {
+  slidesPerView?: 1 | 2 | 3 | 4 | 5;
+  gap?: 'none' | 'sm' | 'md' | 'lg';
+  autoplay?: boolean;
+}
+
+const { slidesPerView = 1, gap = 'md', autoplay = false } = Astro.props;
+const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div
+  class:list={['carousel-base', `gap-${gap}`, `slides-${slidesPerView}`]}
+  data-carousel-id={carouselId}
+  data-autoplay={autoplay}
+  data-slides-per-view={slidesPerView}
+>
+  <!-- Named slot for controls (arrows) above/around track -->
+  <slot name="controls" />
+
+  <div class="carousel-track">
+    <slot />
+  </div>
+
+  <!-- Named slot for indicators (dots) below track -->
+  <slot name="indicators" />
+</div>
+
+<script>
+  import { CarouselController } from './CarouselController.ts';
+
+  // Initialize all carousels on the page
+  document.addEventListener('DOMContentLoaded', () => {
+    const carousels = document.querySelectorAll('[data-carousel-id]');
+    carousels.forEach((carousel) => new CarouselController(carousel as HTMLElement));
+  });
+</script>
+
+<style>
+  .carousel-base {
+    position: relative;
+    width: 100%;
+    padding: var(--space-4);
+  }
+
+  .carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: var(--carousel-gap, var(--space-4));
+  }
+
+  .carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel-track > :global(*) {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    flex-shrink: 0;
+  }
+
+  /* Slides per view sizing */
+  .slides-1 .carousel-track > :global(*) {
+    width: 100%;
+  }
+
+  .slides-2 .carousel-track > :global(*) {
+    width: calc((100% - var(--carousel-gap, var(--space-4))) / 2);
+  }
+
+  .slides-3 .carousel-track > :global(*) {
+    width: calc((100% - (var(--carousel-gap, var(--space-4)) * 2)) / 3);
+  }
+
+  .slides-4 .carousel-track > :global(*) {
+    width: calc((100% - (var(--carousel-gap, var(--space-4)) * 3)) / 4);
+  }
+
+  .slides-5 .carousel-track > :global(*) {
+    width: calc((100% - (var(--carousel-gap, var(--space-4)) * 4)) / 5);
+  }
+
+  /* Gap variants */
+  .gap-none {
+    --carousel-gap: 0;
+  }
+
+  .gap-sm {
+    --carousel-gap: var(--space-2);
+  }
+
+  .gap-md {
+    --carousel-gap: var(--space-4);
+  }
+
+  .gap-lg {
+    --carousel-gap: var(--space-6);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .carousel-base {
+      padding: var(--space-2);
+    }
+
+    /* Responsive slides per view */
+    .slides-3 .carousel-track > :global(*),
+    .slides-4 .carousel-track > :global(*),
+    .slides-5 .carousel-track > :global(*) {
+      width: calc((100% - var(--carousel-gap, var(--space-4))) / 2);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .slides-2 .carousel-track > :global(*),
+    .slides-3 .carousel-track > :global(*),
+    .slides-4 .carousel-track > :global(*),
+    .slides-5 .carousel-track > :global(*) {
+      width: 100%;
+    }
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .carousel-track {
+      scroll-behavior: auto;
+    }
+  }
+</style>

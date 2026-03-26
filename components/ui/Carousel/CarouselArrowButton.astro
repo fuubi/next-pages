@@ -1,0 +1,138 @@
+---
+/**
+ * CarouselArrowButton - Single reusable arrow button
+ * Use in left/right slots of CarouselContainer
+ */
+export interface Props {
+  direction: 'prev' | 'next';
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'ghost' | 'primary';
+  label?: string;
+}
+
+const {
+  direction,
+  size = 'md',
+  variant = 'default',
+  label = direction === 'prev' ? 'Previous slide' : 'Next slide',
+} = Astro.props;
+---
+
+<button
+  class:list={['carousel-arrow-btn', `carousel-${direction}`, `size-${size}`, `variant-${variant}`]}
+  aria-label={label}
+>
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+  >
+    {
+      direction === 'prev' ? (
+        <polyline points="15 18 9 12 15 6" />
+      ) : (
+        <polyline points="9 18 15 12 9 6" />
+      )
+    }
+  </svg>
+</button>
+
+<style>
+  .carousel-arrow-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all var(--duration-fast);
+    flex-shrink: 0;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(31, 89, 80, 0.8);
+    color: var(--color-text);
+    backdrop-filter: blur(4px);
+  }
+
+  .carousel-arrow-btn:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    transform: scale(1.1);
+  }
+
+  .carousel-arrow-btn:active {
+    transform: scale(0.95);
+  }
+
+  .carousel-arrow-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* Size variants */
+  .size-sm {
+    width: 2rem;
+    height: 2rem;
+    padding: 0.25rem;
+  }
+
+  .size-sm svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .size-md {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.5rem;
+  }
+
+  .size-md svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .size-lg {
+    width: 3rem;
+    height: 3rem;
+    padding: 0.625rem;
+  }
+
+  .size-lg svg {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  /* Style variants */
+  .variant-ghost {
+    background: transparent;
+    border-color: var(--color-border-soft);
+    color: var(--color-text-secondary);
+  }
+
+  .variant-ghost:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--color-border);
+  }
+
+  .variant-primary {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+  }
+
+  .variant-primary:hover {
+    background: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+  }
+
+  /* Mobile optimization */
+  @media (max-width: 768px) {
+    .carousel-arrow-btn {
+      /* Slightly larger touch targets on mobile */
+      min-width: 44px;
+      min-height: 44px;
+    }
+  }
+</style>

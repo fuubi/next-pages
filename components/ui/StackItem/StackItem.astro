@@ -1,0 +1,46 @@
+---
+/**
+ * StackItem - Sticky wrapper for cards in AnimatedCardStack
+ *
+ * This component wraps content (like Card components) and applies sticky positioning.
+ * By making the wrapper sticky instead of the card itself, we avoid conflicts with
+ * the Card component's transform styles which break sticky positioning.
+ *
+ * @component
+ * @example
+ * <StackItem index={1}>
+ *   <Card>Content</Card>
+ * </StackItem>
+ */
+
+export interface Props {
+  /**
+   * The stack index (1-based) - determines the sticky top position
+   * index * stackOffset = top value
+   */
+  index: number;
+  /**
+   * Optional additional CSS classes
+   */
+  class?: string;
+}
+
+const { index, class: className } = Astro.props;
+---
+
+<div class:list={['stack-item', className]} style={`--stack-index: ${index};`}>
+  <slot />
+</div>
+
+<style>
+  .stack-item {
+    position: sticky;
+    top: calc(var(--stack-offset, 20px) * var(--stack-index));
+    margin-bottom: 1.5rem;
+    /* Critical: ensure no transforms on the sticky element itself */
+    transform: none !important;
+    z-index: auto;
+    /* Ensure opaque background so text from cards below doesn't show through */
+    background: var(--color-background, #f5f5f5);
+  }
+</style>

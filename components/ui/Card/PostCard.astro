@@ -1,0 +1,318 @@
+---
+/**
+ * PostCard - Versatile post/article card for blog, offers, car listings, etc.
+ * Features: image, category badge, title, date, author, description, tags
+ */
+export interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+  category?: string;
+  categoryColor?: 'primary' | 'accent' | 'info' | 'success' | 'warning' | 'alarm';
+  date?: string;
+  author?: string;
+  tags?: string[];
+  href?: string;
+  variant?: 'default' | 'elevated' | 'bordered' | 'hover';
+  imageHeight?: 'sm' | 'md' | 'lg' | 'xl';
+  class?: string;
+}
+
+const {
+  title,
+  description,
+  image,
+  imageAlt = title,
+  category,
+  categoryColor = 'primary',
+  date,
+  author,
+  tags = [],
+  href,
+  variant = 'elevated',
+  imageHeight = 'lg',
+  class: className,
+} = Astro.props;
+
+const heightMap = {
+  sm: '12rem',
+  md: '16rem',
+  lg: '20rem',
+  xl: '24rem',
+};
+
+const categoryColors = {
+  primary: 'var(--color-primary)',
+  accent: 'var(--color-accent)',
+  info: 'var(--color-info)',
+  success: 'var(--color-success)',
+  warning: 'var(--color-warning)',
+  alarm: 'var(--color-alarm)',
+};
+
+const Component = href ? 'a' : 'article';
+---
+
+<Component
+  href={href}
+  class:list={['post-card', `variant-${variant}`, className]}
+  {...href && { rel: 'noopener' }}
+>
+  {
+    image && (
+      <div class="post-image" style={`height: ${heightMap[imageHeight]};`}>
+        <img src={image} alt={imageAlt} />
+      </div>
+    )
+  }
+
+  <div class="post-content">
+    {
+      category && (
+        <span class="post-category" style={`background-color: ${categoryColors[categoryColor]};`}>
+          {category}
+        </span>
+      )
+    }
+
+    <h3 class="post-title">{title}</h3>
+
+    {
+      (date || author) && (
+        <div class="post-meta">
+          {date && (
+            <span class="meta-item">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              {date}
+            </span>
+          )}
+          {author && (
+            <span class="meta-item">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              {author}
+            </span>
+          )}
+        </div>
+      )
+    }
+
+    {description && <p class="post-description">{description}</p>}
+
+    {
+      tags.length > 0 && (
+        <div class="post-tags">
+          {tags.map((tag) => (
+            <span class="tag">#{tag}</span>
+          ))}
+        </div>
+      )
+    }
+
+    <slot />
+  </div>
+</Component>
+
+<style>
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    transition: all var(--duration-fast);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Link styling */
+  a.post-card {
+    cursor: pointer;
+  }
+
+  a.post-card:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Variant styles */
+  .variant-default {
+    background: var(--color-surface);
+    box-shadow: var(--shadow);
+  }
+
+  .variant-elevated {
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+  }
+
+  .variant-elevated:hover {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .variant-bordered {
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+  }
+
+  .variant-hover {
+    background: var(--color-surface);
+    box-shadow: var(--shadow);
+  }
+
+  .variant-hover:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  /* Image */
+  .post-image {
+    width: 100%;
+    overflow: hidden;
+    background: var(--color-surface-dark);
+    position: relative;
+  }
+
+  .post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-normal);
+  }
+
+  a.post-card:hover .post-image img {
+    transform: scale(1.05);
+  }
+
+  /* Content */
+  .post-content {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  /* Category badge */
+  .post-category {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--border-radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: white;
+    width: fit-content;
+  }
+
+  /* Title */
+  .post-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin: 0;
+    line-height: var(--line-height-tight);
+  }
+
+  a.post-card:hover .post-title {
+    color: var(--color-primary);
+  }
+
+  /* Meta info */
+  .post-meta {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .meta-item svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  /* Description */
+  .post-description {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Tags */
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+  }
+
+  .tag {
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-surface-dark);
+    border-radius: var(--border-radius-full);
+    font-size: var(--font-size-sm);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-medium);
+    transition: all var(--duration-fast);
+  }
+
+  .tag:hover {
+    background: var(--color-primary);
+    color: var(--color-primary-contrast);
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 640px) {
+    .post-content {
+      padding: var(--space-4);
+      gap: var(--space-2);
+    }
+
+    .post-title {
+      font-size: var(--font-size-xl);
+    }
+
+    .post-description {
+      font-size: var(--font-size-sm);
+      -webkit-line-clamp: 2;
+    }
+
+    .post-meta {
+      gap: var(--space-3);
+    }
+  }
+</style>
