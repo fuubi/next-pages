@@ -3,12 +3,15 @@
 Multi-variant footer component with professional designs for different use cases.
 
 ## Location
+
 `packages/shared/components/site/Footer/`
 
 ## Available Variants
 
 ### 1. Classic Footer (`variant="classic"`)
+
 **Best for:** Corporate websites, service businesses, dealerships
+
 - Multi-column layout
 - Company info and tagline
 - Business hours display
@@ -19,7 +22,9 @@ Multi-variant footer component with professional designs for different use cases
 - Dark theme
 
 ### 2. Minimal Footer (`variant="minimal"`)
+
 **Best for:** Portfolios, blogs, simple landing pages
+
 - Single-row centered layout
 - Company name
 - Inline navigation links
@@ -27,7 +32,9 @@ Multi-variant footer component with professional designs for different use cases
 - Light theme
 
 ### 3. Newsletter Footer (`variant="newsletter"`)
+
 **Best for:** Marketing sites, content platforms, e-commerce
+
 - Newsletter signup form with gradient header
 - Multi-column layout
 - Company info
@@ -36,7 +43,9 @@ Multi-variant footer component with professional designs for different use cases
 - Social media
 
 ### 4. Compact Footer (`variant="compact"`)
+
 **Best for:** Apps, dashboards, compact pages
+
 - Two-column layout
 - Company info on left
 - Links and contact on right
@@ -82,10 +91,10 @@ const footerData = {
 You can also import specific variants directly:
 
 ```astro
-import Classic from '@shared/components/site/Footer/Classic.astro';
-import Minimal from '@shared/components/site/Footer/Minimal.astro';
-import Newsletter from '@shared/components/site/Footer/Newsletter.astro';
-import Compact from '@shared/components/site/Footer/Compact.astro';
+import Classic from '@shared/components/site/Footer/Classic.astro'; import Minimal from
+'@shared/components/site/Footer/Minimal.astro'; import Newsletter from
+'@shared/components/site/Footer/Newsletter.astro'; import Compact from
+'@shared/components/site/Footer/Compact.astro';
 ```
 
 ## Props Interface
@@ -113,6 +122,7 @@ See all variants in action at:
 ## Responsive Design
 
 All variants are fully responsive:
+
 - **Mobile (<768px):** Single column, stacked layout
 - **Tablet (768px-1199px):** Adjusted grid spacing
 - **Desktop (1200px+):** Full multi-column layouts
@@ -125,6 +135,7 @@ All variants are fully responsive:
 ## Customization
 
 Each footer can be customized by:
+
 1. **Colors:** Edit the CSS in the specific variant file
 2. **Spacing:** Adjust padding/margin values
 3. **Layout:** Modify grid configurations
