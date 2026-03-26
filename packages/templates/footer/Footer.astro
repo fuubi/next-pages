@@ -1,0 +1,59 @@
+---
+/**
+ * Footer Component - Multiple Variants
+ * 
+ * Variants:
+ * - classic: Multi-column footer with company info, links, hours, and contact
+ * - minimal: Simple, clean footer with social links
+ * - newsletter: Footer with newsletter signup form
+ * - compact: Two-column layout for smaller footers
+ */
+
+import Classic from './Classic.astro';
+import Minimal from './Minimal.astro';
+import Newsletter from './Newsletter.astro';
+import Compact from './Compact.astro';
+
+export interface Props {
+  variant?: 'classic' | 'minimal' | 'newsletter' | 'compact';
+  companyName?: string;
+  tagline?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  hours?: Array<{ day: string; time: string }>;
+  links?: Array<{ label: string; href: string }>;
+  socialLinks?: Array<{ platform: string; href: string }>;
+  showBadge?: boolean;
+}
+
+const {
+  variant = 'classic',
+  companyName = 'Your Company',
+  tagline = 'Quality service you can trust',
+  phone,
+  email,
+  address,
+  hours,
+  links = [],
+  socialLinks = [],
+  showBadge = false,
+} = Astro.props;
+
+const commonProps = {
+  companyName,
+  tagline,
+  phone,
+  email,
+  address,
+  hours,
+  links,
+  socialLinks,
+  showBadge,
+};
+---
+
+{variant === 'classic' && <Classic {...commonProps} />}
+{variant === 'minimal' && <Minimal {...commonProps} />}
+{variant === 'newsletter' && <Newsletter {...commonProps} />}
+{variant === 'compact' && <Compact {...commonProps} />}

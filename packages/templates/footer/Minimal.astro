@@ -1,0 +1,168 @@
+---
+/**
+ * Minimal Footer - Simple, clean design
+ * Features: Basic info, social links, copyright
+ */
+
+export interface Props {
+  companyName: string;
+  links?: Array<{ label: string; href: string }>;
+  socialLinks?: Array<{ platform: string; href: string }>;
+}
+
+const {
+  companyName,
+  links = [],
+  socialLinks = [],
+} = Astro.props;
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer-minimal">
+  <div class="footer-container">
+    <div class="footer-content">
+      <!-- Company Name -->
+      <div class="company-name">{companyName}</div>
+
+      <!-- Navigation Links -->
+      {links.length > 0 && (
+        <nav class="footer-nav">
+          {links.map((link, index) => (
+            <>
+              <a href={link.href} class="nav-link">{link.label}</a>
+              {index < links.length - 1 && <span class="separator">•</span>}
+            </>
+          ))}
+        </nav>
+      )}
+
+      <!-- Social Links -->
+      {socialLinks.length > 0 && (
+        <div class="social-links">
+          {socialLinks.map((social) => (
+            <a
+              href={social.href}
+              class="social-link"
+              aria-label={social.platform}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="social-text">{social.platform}</span>
+            </a>
+          ))}
+        </div>
+      )}
+
+      <!-- Copyright -->
+      <p class="copyright">© {currentYear} {companyName}. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-minimal {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    text-align: center;
+  }
+
+  .company-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+
+  .footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .nav-link {
+    color: #4a4a4a;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover {
+    color: #000000;
+  }
+
+  .separator {
+    color: #ccc;
+    font-size: 0.75rem;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .social-link {
+    color: #4a4a4a;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+
+  .social-link:hover {
+    color: #000000;
+  }
+
+  .social-text {
+    text-transform: capitalize;
+  }
+
+  .copyright {
+    font-size: 0.875rem;
+    color: #888;
+    margin: 0;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 640px) {
+    .footer-container {
+      padding: 1.5rem 1rem;
+    }
+
+    .footer-content {
+      gap: 1rem;
+    }
+
+    .company-name {
+      font-size: 1.1rem;
+    }
+
+    .footer-nav {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .separator {
+      display: none;
+    }
+
+    .nav-link {
+      font-size: 0.9rem;
+    }
+  }
+</style>

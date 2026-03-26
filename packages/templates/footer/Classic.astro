@@ -1,0 +1,329 @@
+---
+/**
+ * Classic Footer - Multi-column layout
+ * Features: Company info, navigation links, hours, contact details
+ */
+
+export interface Props {
+  companyName: string;
+  tagline: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  hours?: Array<{ day: string; time: string }>;
+  links?: Array<{ label: string; href: string }>;
+  socialLinks?: Array<{ platform: string; href: string }>;
+  showBadge?: boolean;
+}
+
+const {
+  companyName,
+  tagline,
+  phone,
+  email,
+  address,
+  hours = [],
+  links = [],
+  socialLinks = [],
+  showBadge = false,
+} = Astro.props;
+
+const currentYear = new Date().getFullYear();
+
+// Split links into columns (approximately 1/3 each)
+const linksPerColumn = Math.ceil(links.length / 3);
+const linkColumns = [
+  links.slice(0, linksPerColumn),
+  links.slice(linksPerColumn, linksPerColumn * 2),
+  links.slice(linksPerColumn * 2),
+];
+---
+
+<footer class="footer-classic">
+  <div class="footer-main">
+    <div class="footer-container">
+      <!-- Company Info Column -->
+      <div class="footer-column footer-company">
+        <h3 class="footer-heading">{companyName}</h3>
+        <p class="footer-tagline">{tagline}</p>
+        
+        {socialLinks.length > 0 && (
+          <div class="social-links">
+            {socialLinks.map((social) => (
+              <a
+                href={social.href}
+                class="social-link"
+                aria-label={social.platform}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span class="social-icon">{social.platform.charAt(0).toUpperCase()}</span>
+              </a>
+            ))}
+          </div>
+        )}
+        
+        {showBadge && (
+          <div class="badge">
+            <div class="badge-placeholder">Certified Business</div>
+          </div>
+        )}
+      </div>
+
+      <!-- Links Columns -->
+      {linkColumns.filter(col => col.length > 0).map((column) => (
+        <div class="footer-column footer-links">
+          <h4 class="footer-subheading">Quick Links</h4>
+          <ul class="link-list">
+            {column.map((link) => (
+              <li>
+                <a href={link.href} class="footer-link">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+
+      <!-- Hours Column -->
+      {hours.length > 0 && (
+        <div class="footer-column footer-hours">
+          <h4 class="footer-subheading">Business Hours</h4>
+          <ul class="hours-list">
+            {hours.map((schedule) => (
+              <li class="hours-item">
+                <span class="hours-day">{schedule.day}:</span>
+                <span class="hours-time">{schedule.time}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <!-- Contact Column -->
+      <div class="footer-column footer-contact">
+        <h4 class="footer-subheading">Contact Us</h4>
+        <ul class="contact-list">
+          {phone && (
+            <li class="contact-item">
+              <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+              </svg>
+              <a href={`tel:${phone.replace(/[\s\-()]/g, '')}`} class="contact-link">{phone}</a>
+            </li>
+          )}
+          {email && (
+            <li class="contact-item">
+              <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+              </svg>
+              <a href={`mailto:${email}`} class="contact-link">{email}</a>
+            </li>
+          )}
+          {address && (
+            <li class="contact-item">
+              <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+              </svg>
+              <span class="contact-text">{address}</span>
+            </li>
+          )}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom">
+    <div class="footer-container">
+      <p class="copyright">© {currentYear} {companyName}. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-classic {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+  }
+
+  .footer-main {
+    padding: 4rem 0 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2.5rem;
+  }
+
+  .footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .footer-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.5rem;
+  }
+
+  .footer-tagline {
+    font-size: 0.95rem;
+    color: #b0b0b0;
+    line-height: 1.5;
+    margin: 0 0 1rem;
+  }
+
+  .footer-subheading {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 1rem;
+  }
+
+  .link-list,
+  .hours-list,
+  .contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-link {
+    color: #b0b0b0;
+    text-decoration: none;
+    transition: color 0.2s;
+    font-size: 0.95rem;
+  }
+
+  .footer-link:hover {
+    color: #ffffff;
+  }
+
+  .hours-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .hours-day {
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  .hours-time {
+    color: #b0b0b0;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .contact-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #888;
+    flex-shrink: 0;
+  }
+
+  .contact-link,
+  .contact-text {
+    color: #b0b0b0;
+    text-decoration: none;
+    transition: color 0.2s;
+    font-size: 0.95rem;
+  }
+
+  .contact-link:hover {
+    color: #ffffff;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .social-link {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #ffffff;
+    transition: all 0.2s;
+  }
+
+  .social-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .social-icon {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .badge {
+    margin-top: 1.5rem;
+  }
+
+  .badge-placeholder {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: #ffffff;
+    text-align: center;
+  }
+
+  .footer-bottom {
+    padding: 1.5rem 0;
+  }
+
+  .copyright {
+    text-align: center;
+    font-size: 0.875rem;
+    color: #888;
+    margin: 0;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .footer-container {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .footer-main {
+      padding: 3rem 0 1.5rem;
+    }
+
+    .footer-heading {
+      font-size: 1.25rem;
+    }
+
+    .hours-item {
+      font-size: 0.85rem;
+    }
+  }
+</style>
