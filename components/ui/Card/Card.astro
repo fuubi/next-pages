@@ -1,21 +1,42 @@
 ---
 export interface Props {
-  variant?: 'default' | 'hover';
-  padding?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'hover' | 'bordered' | 'elevated' | 'gradient' | 'glass' | 'outlined';
+  padding?: 'none' | 'sm' | 'md' | 'lg';
+  background?: 'white' | 'surface' | 'transparent' | 'primary' | 'secondary';
+  radius?: 'none' | 'sm' | 'md' | 'lg' | 'full';
+  clickable?: boolean;
 }
 
-const { variant = 'default', padding = 'md' } = Astro.props;
+const {
+  variant = 'default',
+  padding = 'md',
+  background,
+  radius = 'lg',
+  clickable = false,
+} = Astro.props;
 
 const hoverAttr = variant === 'hover' ? { 'data-hover': 'scale' } : {};
+const clickableAttr = clickable ? { 'data-clickable': 'true' } : {};
 ---
 
-<div class:list={['card', `variant-${variant}`, `padding-${padding}`]} {...hoverAttr}>
+<div
+  class:list={[
+    'card',
+    `variant-${variant}`,
+    `padding-${padding}`,
+    `radius-${radius}`,
+    background && `bg-${background}`,
+    clickable && 'clickable',
+  ]}
+  {...hoverAttr}
+  {...clickableAttr}
+>
   <slot />
 </div>
 
 <style>
   .card {
-    background-color: var(--color-background);
+    background-color: var(--color-surface);
     border: var(--border-width) solid var(--color-border);
     border-radius: var(--border-radius-lg);
     position: relative;
@@ -23,9 +44,10 @@ const hoverAttr = variant === 'hover' ? { 'data-hover': 'scale' } : {};
     /* Hardware acceleration */
     transform: translateZ(0);
     backface-visibility: hidden;
+    transition: all var(--duration-normal) var(--ease-out);
   }
 
-  /* Subtle gradient overlay on hover */
+  /* Subtle gradient overlay on hover (for default/hover variants) */
   .card::before {
     content: '';
     position: absolute;
@@ -43,13 +65,16 @@ const hoverAttr = variant === 'hover' ? { 'data-hover': 'scale' } : {};
     opacity: 1;
   }
 
+  /* ===== VISUAL VARIANTS ===== */
+
+  /* Default - simple card with subtle shadow */
   .variant-default {
     box-shadow: var(--shadow-sm);
   }
 
+  /* Hover - lifts on hover with enhanced shadow */
   .variant-hover {
     box-shadow: var(--shadow-sm);
-    transition: all var(--duration-normal) var(--ease-out);
   }
 
   .variant-hover:hover {
@@ -58,14 +83,132 @@ const hoverAttr = variant === 'hover' ? { 'data-hover': 'scale' } : {};
     border-color: var(--color-primary);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .variant-hover:hover {
-      transform: none;
-    }
+  /* Bordered - emphasized border, minimal shadow */
+  .variant-bordered {
+    border-width: 2px;
+    border-color: var(--color-border);
+    box-shadow: none;
+  }
 
-    .card::before {
-      display: none;
-    }
+  .variant-bordered:hover {
+    border-color: var(--color-primary);
+  }
+
+  /* Elevated - strong shadow for premium feel */
+  .variant-elevated {
+    box-shadow: var(--shadow-lg);
+    border: none;
+  }
+
+  .variant-elevated:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-2px) translateZ(0);
+  }
+
+  /* Gradient - gradient border effect */
+  .variant-gradient {
+    position: relative;
+    border: none;
+    background: var(--color-surface);
+  }
+
+  .variant-gradient::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .variant-gradient:hover::after {
+    background: linear-gradient(135deg, var(--color-primary-hover), var(--color-primary));
+  }
+
+  /* Glass - glassmorphism effect */
+  .variant-glass {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .variant-glass:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Outlined - minimal with colored outline */
+  .variant-outlined {
+    background: transparent;
+    border: 2px solid var(--color-border-soft);
+    box-shadow: none;
+  }
+
+  .variant-outlined:hover {
+    border-color: var(--color-primary);
+    background: var(--color-surface-neutral);
+  }
+
+  /* ===== BACKGROUND VARIANTS ===== */
+
+  .bg-white {
+    background-color: #ffffff;
+  }
+
+  .bg-surface {
+    background-color: var(--color-surface);
+  }
+
+  .bg-transparent {
+    background-color: transparent;
+  }
+
+  .bg-primary {
+    background-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+    border-color: var(--color-primary-dark);
+  }
+
+  .bg-secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-text-inverse);
+    border-color: var(--color-secondary-dark);
+  }
+
+  /* ===== RADIUS VARIANTS ===== */
+
+  .radius-none {
+    border-radius: 0;
+  }
+
+  .radius-sm {
+    border-radius: var(--border-radius-sm);
+  }
+
+  .radius-md {
+    border-radius: var(--border-radius);
+  }
+
+  .radius-lg {
+    border-radius: var(--border-radius-lg);
+  }
+
+  .radius-full {
+    border-radius: 9999px;
+  }
+
+  /* ===== PADDING VARIANTS ===== */
+
+  .padding-none {
+    padding: 0;
   }
 
   .padding-sm {
@@ -78,5 +221,71 @@ const hoverAttr = variant === 'hover' ? { 'data-hover': 'scale' } : {};
 
   .padding-lg {
     padding: var(--space-8);
+  }
+
+  /* ===== CLICKABLE STATE ===== */
+
+  .clickable {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .clickable:active {
+    transform: scale(0.98) translateZ(0);
+  }
+
+  /* Ripple effect on click for clickable cards */
+  .clickable::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.1);
+    transform: translate(-50%, -50%);
+    transition:
+      width 0.6s,
+      height 0.6s;
+  }
+
+  .clickable:active::after {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* ===== ACCESSIBILITY & MOTION ===== */
+
+  .clickable:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card,
+    .variant-hover:hover,
+    .variant-elevated:hover,
+    .clickable:active {
+      transform: none;
+      transition: none;
+    }
+
+    .card::before,
+    .clickable::after {
+      display: none;
+    }
+  }
+
+  /* Dark mode adjustments for glass variant */
+  @media (prefers-color-scheme: dark) {
+    .variant-glass {
+      background: rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .variant-glass:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
   }
 </style>
