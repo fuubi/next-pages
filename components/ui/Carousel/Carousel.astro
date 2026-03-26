@@ -1,0 +1,248 @@
+---
+export interface Props {
+  navigation?: 'arrows' | 'dots' | 'both' | 'none';
+  autoplay?: boolean;
+  slidesPerView?: 1 | 2 | 3 | 4 | 5;
+  gap?: 'none' | 'sm' | 'md' | 'lg';
+}
+
+const { navigation = 'both', autoplay = false, slidesPerView = 1, gap = 'md' } = Astro.props;
+
+// Generate unique ID for this carousel instance
+const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div
+  class:list={['carousel', `gap-${gap}`, `slides-${slidesPerView}`]}
+  data-carousel-id={carouselId}
+  data-autoplay={autoplay}
+  data-slides-per-view={slidesPerView}
+>
+  <div class="carousel-track">
+    <slot />
+  </div>
+
+  {
+    (navigation === 'arrows' || navigation === 'both') && (
+      <div class="carousel-controls">
+        <button class="carousel-prev" aria-label="Previous slide">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+        <button class="carousel-next" aria-label="Next slide">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      </div>
+    )
+  }
+
+  {(navigation === 'dots' || navigation === 'both') && <div class="carousel-indicators" />}
+</div>
+
+<script>
+  import { CarouselController } from './CarouselController.ts';
+
+  // Initialize all carousels on the page
+  document.addEventListener('DOMContentLoaded', () => {
+    const carousels = document.querySelectorAll('[data-carousel-id]');
+    carousels.forEach((carousel) => new CarouselController(carousel as HTMLElement));
+  });
+</script>
+
+<style>
+  .carousel {
+    position: relative;
+    width: 100%;
+    padding: var(--space-4);
+  }
+
+  .carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    gap: var(--carousel-gap, var(--space-4));
+  }
+
+  .carousel-track::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  .carousel-track > :global(*) {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    flex-shrink: 0;
+  }
+
+  /* Slides per view sizing */
+  .slides-1 .carousel-track > :global(*) {
+    width: 100%;
+  }
+
+  .slides-2 .carousel-track > :global(*) {
+    width: calc((100% - var(--carousel-gap, var(--space-4))) / 2);
+  }
+
+  .slides-3 .carousel-track > :global(*) {
+    width: calc((100% - (var(--carousel-gap, var(--space-4)) * 2)) / 3);
+  }
+
+  .slides-4 .carousel-track > :global(*) {
+    width: calc((100% - (var(--carousel-gap, var(--space-4)) * 3)) / 4);
+  }
+
+  .slides-5 .carousel-track > :global(*) {
+    width: calc((100% - (var(--carousel-gap, var(--space-4)) * 4)) / 5);
+  }
+
+  /* Gap variants */
+  .gap-none {
+    --carousel-gap: 0;
+  }
+
+  .gap-sm {
+    --carousel-gap: var(--space-2);
+  }
+
+  .gap-md {
+    --carousel-gap: var(--space-4);
+  }
+
+  .gap-lg {
+    --carousel-gap: var(--space-6);
+  }
+
+  /* Controls */
+  .carousel-controls {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 var(--space-2);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .carousel-prev,
+  .carousel-next {
+    pointer-events: auto;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--duration-fast);
+    box-shadow: var(--shadow-md);
+  }
+
+  .carousel-prev:hover,
+  .carousel-next:hover {
+    background: var(--color-primary);
+    color: var(--color-primary-contrast);
+    transform: scale(1.1);
+  }
+
+  /* Indicators */
+  .carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+  }
+
+  .carousel-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-border);
+    border: none;
+    cursor: pointer;
+    transition: all var(--duration-fast);
+    padding: 0;
+  }
+
+  .carousel-dot.active {
+    background: var(--color-primary);
+    width: 32px;
+    border-radius: 6px;
+  }
+
+  .carousel-dot:hover {
+    background: var(--color-primary-light);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .carousel {
+      padding: var(--space-2);
+    }
+
+    .carousel-prev,
+    .carousel-next {
+      width: 40px;
+      height: 40px;
+    }
+
+    /* Responsive slides per view */
+    .slides-3 .carousel-track > :global(*),
+    .slides-4 .carousel-track > :global(*),
+    .slides-5 .carousel-track > :global(*) {
+      width: calc((100% - var(--carousel-gap, var(--space-4))) / 2);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .slides-2 .carousel-track > :global(*),
+    .slides-3 .carousel-track > :global(*),
+    .slides-4 .carousel-track > :global(*),
+    .slides-5 .carousel-track > :global(*) {
+      width: 100%;
+    }
+  }
+
+  /* Accessibility */
+  .carousel:focus-within .carousel-prev,
+  .carousel:focus-within .carousel-next {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carousel-track {
+      scroll-behavior: auto;
+    }
+
+    .carousel-prev,
+    .carousel-next,
+    .carousel-dot {
+      transition: none;
+    }
+  }
+</style>
