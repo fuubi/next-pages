@@ -5,12 +5,14 @@
 ⚠️ **Note:** Garage Mueller has its own copy of shared components in `src/shared/` instead of using a symlink. This means when you update Footer components in `packages/shared/`, you need to sync them to garage-mueller.
 
 ### Quick Sync Command
+
 ```bash
 cd sites/garage-mueller
 ./sync-footer.sh
 ```
 
 Or manually:
+
 ```bash
 cp -r packages/shared/components/site/Footer/* sites/garage-mueller/src/shared/components/site/Footer/
 ```
@@ -18,11 +20,13 @@ cp -r packages/shared/components/site/Footer/* sites/garage-mueller/src/shared/c
 ## What Was Done
 
 ### 1. Synced Footer Components to Shared Folder
+
 - ✅ Copied all footer variants from `packages/templates/footer/` to `packages/shared/components/site/Footer/`
 - ✅ Moved old Footer.astro to `v1/Footer.astro` for version control
 - ✅ Now available via `@shared/components/site/Footer/Footer.astro`
 
 ### 2. Files in Shared Footer Folder
+
 ```
 packages/shared/components/site/Footer/
 ├── Footer.astro          # Main component with variant switching
@@ -36,11 +40,13 @@ packages/shared/components/site/Footer/
 ```
 
 ### 3. Updated Garage Mueller Site
+
 - ✅ Updated all three language pages (de, fr, it) to import from `@shared` instead of `@templates`
 - ✅ All pages now use the Classic footer variant
 - ✅ Footer includes localized content for each language
 
 ### 4. Created Showcase Page
+
 - ✅ New page at: `/templates/footer`
 - ✅ Displays all 4 footer variants with:
   - Interactive navigation
@@ -51,11 +57,13 @@ packages/shared/components/site/Footer/
 ## How to Access
 
 ### Main Site Pages
+
 - German: `/de/` (uses Classic footer)
 - French: `/fr/` (uses Classic footer)
 - Italian: `/it/` (uses Classic footer)
 
 ### Showcase Page
+
 - **URL:** `/templates/footer`
 - Shows all 4 variants in action
 - Direct links to each variant
@@ -74,15 +82,9 @@ const footerData = {
   phone: '+41 44 123 45 67',
   email: 'info@company.com',
   address: 'Your Address',
-  hours: [
-    { day: 'Monday - Friday', time: '08:00 - 18:00' },
-  ],
-  links: [
-    { label: 'About', href: '/about' },
-  ],
-  socialLinks: [
-    { platform: 'Facebook', href: 'https://facebook.com' },
-  ],
+  hours: [{ day: 'Monday - Friday', time: '08:00 - 18:00' }],
+  links: [{ label: 'About', href: '/about' }],
+  socialLinks: [{ platform: 'Facebook', href: 'https://facebook.com' }],
   showBadge: true, // Classic variant only
 };
 ---
@@ -110,7 +112,7 @@ const footerData = {
 ✅ **Versioned:** Old footer preserved in v1 folder  
 ✅ **Documented:** Comprehensive docs and examples  
 ✅ **Showcase:** Live demonstration page for easy testing  
-✅ **Responsive:** All variants work on mobile, tablet, and desktop  
+✅ **Responsive:** All variants work on mobile, tablet, and desktop
 
 ---
 

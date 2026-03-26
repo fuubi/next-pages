@@ -5,6 +5,7 @@ Four responsive footer variants for different use cases.
 ## Variants
 
 ### 1. Classic Footer
+
 **Best for:** Corporate websites, service businesses, dealerships
 **Features:** Multi-column layout, company info, links, business hours, contact details
 
@@ -45,6 +46,7 @@ const footerData = {
 ```
 
 ### 2. Minimal Footer
+
 **Best for:** Portfolios, blogs, simple landing pages
 **Features:** Clean design, inline navigation, social links
 
@@ -71,6 +73,7 @@ const footerData = {
 ```
 
 ### 3. Newsletter Footer
+
 **Best for:** Marketing sites, content platforms, e-commerce
 **Features:** Newsletter signup form, gradient header, contact info
 
@@ -101,6 +104,7 @@ const footerData = {
 ```
 
 ### 4. Compact Footer
+
 **Best for:** Apps, dashboards, compact pages
 **Features:** Two-column layout, efficient use of space
 
@@ -133,6 +137,7 @@ const footerData = {
 ## Responsive Design
 
 All footer variants are fully responsive:
+
 - **Desktop (1200px+):** Full multi-column layouts
 - **Tablet (768px-1199px):** Adjusted grid spacing
 - **Mobile (<768px):** Single column, stacked layout
@@ -140,6 +145,7 @@ All footer variants are fully responsive:
 ## Customization
 
 Each footer can be customized by:
+
 1. Modifying the color schemes in the style section
 2. Adjusting spacing with CSS variables
 3. Adding/removing sections based on needs
@@ -150,8 +156,7 @@ Each footer can be customized by:
 You can also import specific variants directly:
 
 ```astro
-import Classic from '@templates/footer/Classic.astro';
-import Minimal from '@templates/footer/Minimal.astro';
-import Newsletter from '@templates/footer/Newsletter.astro';
+import Classic from '@templates/footer/Classic.astro'; import Minimal from
+'@templates/footer/Minimal.astro'; import Newsletter from '@templates/footer/Newsletter.astro';
 import Compact from '@templates/footer/Compact.astro';
 ```

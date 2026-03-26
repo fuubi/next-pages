@@ -33,62 +33,84 @@ const currentYear = new Date().getFullYear();
         <div class="footer-left">
           <h3 class="company-name">{companyName}</h3>
           <p class="tagline">{tagline}</p>
-          
-          {socialLinks.length > 0 && (
-            <div class="social-links">
-              {socialLinks.map((social) => (
-                <a
-                  href={social.href}
-                  class="social-link"
-                  aria-label={social.platform}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={social.platform}
-                >
-                  <span class="social-icon">{social.platform.charAt(0).toUpperCase()}</span>
-                </a>
-              ))}
-            </div>
-          )}
+
+          {
+            socialLinks.length > 0 && (
+              <div class="social-links">
+                {socialLinks.map((social) => (
+                  <a
+                    href={social.href}
+                    class="social-link"
+                    aria-label={social.platform}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={social.platform}
+                  >
+                    <span class="social-icon">{social.platform.charAt(0).toUpperCase()}</span>
+                  </a>
+                ))}
+              </div>
+            )
+          }
         </div>
 
         <!-- Right Column: Links & Contact -->
         <div class="footer-right">
-          {links.length > 0 && (
-            <div class="links-section">
-              <h4 class="section-heading">Quick Links</h4>
-              <nav class="link-grid">
-                {links.map((link) => (
-                  <a href={link.href} class="footer-link">{link.label}</a>
-                ))}
-              </nav>
-            </div>
-          )}
+          {
+            links.length > 0 && (
+              <div class="links-section">
+                <h4 class="section-heading">Quick Links</h4>
+                <nav class="link-grid">
+                  {links.map((link) => (
+                    <a href={link.href} class="footer-link">
+                      {link.label}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            )
+          }
 
-          {(phone || email) && (
-            <div class="contact-section">
-              <h4 class="section-heading">Get in Touch</h4>
-              <ul class="contact-list">
-                {phone && (
-                  <li class="contact-item">
-                    <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                    </svg>
-                    <a href={`tel:${phone.replace(/[\s\-()]/g, '')}`} class="contact-link">{phone}</a>
-                  </li>
-                )}
-                {email && (
-                  <li class="contact-item">
-                    <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                    </svg>
-                    <a href={`mailto:${email}`} class="contact-link">{email}</a>
-                  </li>
-                )}
-              </ul>
-            </div>
-          )}
+          {
+            (phone || email) && (
+              <div class="contact-section">
+                <h4 class="section-heading">Get in Touch</h4>
+                <ul class="contact-list">
+                  {phone && (
+                    <li class="contact-item">
+                      <svg
+                        class="contact-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                      </svg>
+                      <a href={`tel:${phone.replace(/[\s\-()]/g, '')}`} class="contact-link">
+                        {phone}
+                      </a>
+                    </li>
+                  )}
+                  {email && (
+                    <li class="contact-item">
+                      <svg
+                        class="contact-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                      </svg>
+                      <a href={`mailto:${email}`} class="contact-link">
+                        {email}
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            )
+          }
         </div>
       </div>
     </div>
