@@ -1,0 +1,308 @@
+---
+/**
+ * Compact Footer - Two-column layout
+ * Features: Compact design with essential info
+ */
+
+export interface Props {
+  companyName: string;
+  tagline?: string;
+  phone?: string;
+  email?: string;
+  links?: Array<{ label: string; href: string }>;
+  socialLinks?: Array<{ platform: string; href: string }>;
+}
+
+const {
+  companyName,
+  tagline = 'Quality service you can trust',
+  phone,
+  email,
+  links = [],
+  socialLinks = [],
+} = Astro.props;
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer-compact">
+  <div class="footer-main">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <!-- Left Column: Company Info -->
+        <div class="footer-left">
+          <h3 class="company-name">{companyName}</h3>
+          <p class="tagline">{tagline}</p>
+
+          {
+            socialLinks.length > 0 && (
+              <div class="social-links">
+                {socialLinks.map((social) => (
+                  <a
+                    href={social.href}
+                    class="social-link"
+                    aria-label={social.platform}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={social.platform}
+                  >
+                    <span class="social-icon">{social.platform.charAt(0).toUpperCase()}</span>
+                  </a>
+                ))}
+              </div>
+            )
+          }
+        </div>
+
+        <!-- Right Column: Links & Contact -->
+        <div class="footer-right">
+          {
+            links.length > 0 && (
+              <div class="links-section">
+                <h4 class="section-heading">Quick Links</h4>
+                <nav class="link-grid">
+                  {links.map((link) => (
+                    <a href={link.href} class="footer-link">
+                      {link.label}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            )
+          }
+
+          {
+            (phone || email) && (
+              <div class="contact-section">
+                <h4 class="section-heading">Get in Touch</h4>
+                <ul class="contact-list">
+                  {phone && (
+                    <li class="contact-item">
+                      <svg
+                        class="contact-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                      </svg>
+                      <a href={`tel:${phone.replace(/[\s\-()]/g, '')}`} class="contact-link">
+                        {phone}
+                      </a>
+                    </li>
+                  )}
+                  {email && (
+                    <li class="contact-item">
+                      <svg
+                        class="contact-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                      </svg>
+                      <a href={`mailto:${email}`} class="contact-link">
+                        {email}
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-container">
+      <p class="copyright">© {currentYear} {companyName}. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-compact {
+    background-color: var(--color-footer-bg);
+    color: var(--color-footer-text);
+  }
+
+  .footer-main {
+    padding: var(--space-10) 0;
+    border-bottom: var(--border-width) solid var(--color-footer-border);
+  }
+
+  .footer-container {
+    max-width: var(--container-lg);
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .company-name {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-inverse);
+    margin: 0;
+  }
+
+  .tagline {
+    font-size: var(--font-size-base);
+    color: var(--color-footer-text-secondary);
+    margin: 0;
+    line-height: var(--line-height-normal);
+  }
+
+  .social-links {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  .social-link {
+    width: var(--space-10);
+    height: var(--space-10);
+    border-radius: var(--border-radius-full);
+    background-color: var(--color-glass-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--color-text-inverse);
+    transition: all var(--transition-fast);
+  }
+
+  .social-link:hover {
+    background-color: var(--color-primary);
+    transform: translateY(-2px);
+  }
+
+  .social-icon {
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+  }
+
+  .footer-right {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+  }
+
+  .links-section,
+  .contact-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .section-heading {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-inverse);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .link-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .footer-link {
+    color: var(--color-footer-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    font-size: var(--font-size-base);
+  }
+
+  .footer-link:hover {
+    color: var(--color-footer-link-hover);
+  }
+
+  .contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .contact-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    color: var(--color-text-tertiary);
+    flex-shrink: 0;
+  }
+
+  .contact-link {
+    color: var(--color-footer-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    font-size: var(--font-size-base);
+  }
+
+  .contact-link:hover {
+    color: var(--color-footer-link-hover);
+  }
+
+  .footer-bottom {
+    padding: var(--space-5) 0;
+  }
+
+  .copyright {
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+    margin: 0;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 992px) {
+    .footer-right {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .footer-main {
+      padding: 2rem 0;
+    }
+
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .footer-right {
+      gap: 2rem;
+    }
+
+    .company-name {
+      font-size: 1.25rem;
+    }
+  }
+</style>

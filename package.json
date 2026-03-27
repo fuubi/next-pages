@@ -24,6 +24,7 @@
     "./components/*/v2/*": "./components/*/v2/*",
     "./layouts/*": "./layouts/*",
     "./styles/*": "./styles/*",
+    "./templates/*": "./templates/*",
     "./utils/*": "./utils/*"
   }
 }

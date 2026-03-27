@@ -1,0 +1,378 @@
+---
+/**
+ * Newsletter Footer - Includes newsletter signup
+ * Features: Newsletter form, links, social media, contact info
+ */
+
+export interface Props {
+  companyName: string;
+  tagline?: string;
+  phone?: string;
+  email?: string;
+  links?: Array<{ label: string; href: string }>;
+  socialLinks?: Array<{ platform: string; href: string }>;
+}
+
+const {
+  companyName,
+  tagline = 'Stay connected',
+  phone,
+  email,
+  links = [],
+  socialLinks = [],
+} = Astro.props;
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer-newsletter">
+  <div class="footer-top">
+    <div class="footer-container">
+      <div class="newsletter-section">
+        <h3 class="newsletter-heading">Stay Updated</h3>
+        <p class="newsletter-text">
+          Subscribe to our newsletter for the latest updates and offers.
+        </p>
+        <form class="newsletter-form" action="#" method="POST">
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+            class="newsletter-input"
+          />
+          <button type="submit" class="newsletter-button">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-main">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <!-- Company Info -->
+        <div class="footer-column">
+          <h4 class="footer-heading">{companyName}</h4>
+          <p class="footer-tagline">{tagline}</p>
+
+          {
+            socialLinks.length > 0 && (
+              <div class="social-links">
+                {socialLinks.map((social) => (
+                  <a
+                    href={social.href}
+                    class="social-link"
+                    aria-label={social.platform}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span class="social-icon">{social.platform.charAt(0).toUpperCase()}</span>
+                  </a>
+                ))}
+              </div>
+            )
+          }
+        </div>
+
+        <!-- Quick Links -->
+        {
+          links.length > 0 && (
+            <div class="footer-column">
+              <h4 class="footer-heading">Quick Links</h4>
+              <ul class="link-list">
+                {links.map((link) => (
+                  <li>
+                    <a href={link.href} class="footer-link">
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+
+        <!-- Contact Info -->
+        {
+          (phone || email) && (
+            <div class="footer-column">
+              <h4 class="footer-heading">Contact</h4>
+              <ul class="contact-list">
+                {phone && (
+                  <li class="contact-item">
+                    <svg
+                      class="contact-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                    </svg>
+                    <a href={`tel:${phone.replace(/[\s\-()]/g, '')}`} class="contact-link">
+                      {phone}
+                    </a>
+                  </li>
+                )}
+                {email && (
+                  <li class="contact-item">
+                    <svg
+                      class="contact-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                    </svg>
+                    <a href={`mailto:${email}`} class="contact-link">
+                      {email}
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-container">
+      <p class="copyright">© {currentYear} {companyName}. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-newsletter {
+    background-color: var(--color-surface);
+  }
+
+  .footer-top {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: var(--color-primary-contrast);
+    padding: var(--space-12) 0;
+  }
+
+  .footer-container {
+    max-width: var(--container-lg);
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+  }
+
+  .newsletter-section {
+    text-align: center;
+    max-width: var(--container-md);
+    margin: 0 auto;
+  }
+
+  .newsletter-heading {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    margin: 0 0 var(--space-3);
+  }
+
+  .newsletter-text {
+    font-size: var(--font-size-lg);
+    margin: 0 0 var(--space-6);
+    opacity: 0.95;
+  }
+
+  .newsletter-form {
+    display: flex;
+    gap: var(--space-3);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .newsletter-input {
+    flex: 1;
+    padding: var(--space-3) var(--space-5);
+    border: var(--border-width-2) solid var(--color-glass-border);
+    border-radius: var(--border-radius-lg);
+    background-color: var(--color-glass-bg);
+    color: var(--color-primary-contrast);
+    font-size: var(--font-size-lg);
+    transition: all var(--transition-fast);
+  }
+
+  .newsletter-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .newsletter-input:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .newsletter-button {
+    padding: var(--space-3) var(--space-8);
+    background-color: var(--color-primary-contrast);
+    color: var(--color-primary);
+    border: none;
+    border-radius: var(--border-radius-lg);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-lg);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+  }
+
+  .newsletter-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .footer-main {
+    background-color: var(--color-surface);
+    padding: var(--space-12) 0;
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-10);
+  }
+
+  .footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .footer-heading {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin: 0 0 var(--space-2);
+  }
+
+  .footer-tagline {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .link-list,
+  .contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .footer-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    font-size: var(--font-size-base);
+  }
+
+  .footer-link:hover {
+    color: var(--color-primary);
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .contact-icon {
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    color: var(--color-text-tertiary);
+    flex-shrink: 0;
+  }
+
+  .contact-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    font-size: var(--font-size-base);
+  }
+
+  .contact-link:hover {
+    color: var(--color-primary);
+  }
+
+  .social-links {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  .social-link {
+    width: var(--space-10);
+    height: var(--space-10);
+    border-radius: var(--border-radius-full);
+    background-color: var(--color-border-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--color-text);
+    transition: all var(--transition-fast);
+  }
+
+  .social-link:hover {
+    background-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+    transform: translateY(-2px);
+  }
+
+  .social-icon {
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+  }
+
+  .footer-bottom {
+    background-color: var(--color-surface);
+    padding: var(--space-6) 0;
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .copyright {
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+    margin: 0;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .footer-top {
+      padding: 2rem 0;
+    }
+
+    .newsletter-heading {
+      font-size: 1.5rem;
+    }
+
+    .newsletter-text {
+      font-size: 0.9rem;
+    }
+
+    .newsletter-form {
+      flex-direction: column;
+    }
+
+    .newsletter-button {
+      width: 100%;
+    }
+
+    .footer-main {
+      padding: 2rem 0;
+    }
+
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>
