@@ -3,7 +3,7 @@ import '@shared/styles/global.css';
 import '@shared/styles/tokens.css';
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -11,7 +11,10 @@ import '@shared/styles/tokens.css';
     <title>Shared Component Library - Examples</title>
     <style>
       body {
-        font-family: system-ui, -apple-system, sans-serif;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
         max-width: 1200px;
         margin: 0 auto;
         padding: 2rem;
@@ -65,6 +68,41 @@ import '@shared/styles/tokens.css';
     <p style="margin-bottom: 2rem; color: var(--color-text-secondary, #666);">
       Examples and templates for efficient component development
     </p>
+
+    <h2 style="margin-top: 3rem; margin-bottom: 1rem; color: var(--color-text-primary, #1a1a1a);">
+      🎨 Component Showcase
+    </h2>
+    <p style="margin-bottom: 2rem; color: var(--color-text-secondary, #666);">
+      Browse components by category - sections, UI elements, cards, and more
+    </p>
+
+    <div class="category-grid">
+      <a href="/components/sections" class="category-card">
+        <h2>📐 Section Components</h2>
+        <p>Hero, Features, Services, Testimonials, FAQ, CTA sections</p>
+        <span class="count">10 components</span>
+      </a>
+
+      <a href="/components/ui" class="category-card">
+        <h2>🎨 UI Components</h2>
+        <p>Buttons, Badges, Forms, Inputs, Accordions</p>
+        <span class="count">4 components</span>
+      </a>
+
+      <a href="/components/cards" class="category-card">
+        <h2>🎴 Cards & Carousels</h2>
+        <p>All card layouts, carousels, and animated stacks</p>
+        <span class="count">7+ components</span>
+      </a>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+      <a href="/components/" class="category-card" style="display: inline-block; max-width: 500px;">
+        <h2>📦 View All Components</h2>
+        <p>Browse complete component library with quick links</p>
+        <span class="count">Component hub</span>
+      </a>
+    </div>
 
     <h2 style="margin-top: 3rem; margin-bottom: 1rem; color: var(--color-text-primary, #1a1a1a);">
       📄 Full Page Examples

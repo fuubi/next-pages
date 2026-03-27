@@ -27,7 +27,6 @@
     "./examples/*": "./examples/*",
     "./layouts/*": "./layouts/*",
     "./styles/*": "./styles/*",
-    "./templates/*": "./templates/*",
     "./utils/*": "./utils/*"
   },
   "dependencies": {

@@ -3,1058 +3,171 @@ import BaseLayout from '@shared/layouts/BaseLayout.astro';
 import Container from '@shared/components/site/Container/Container.astro';
 import Section from '@shared/components/site/Section/Section.astro';
 import Card from '@shared/components/ui/Card/Card.astro';
-import ImageCard from '@shared/components/ui/Card/ImageCard.astro';
-import HorizontalCard from '@shared/components/ui/Card/HorizontalCard.astro';
-import OverlayCard from '@shared/components/ui/Card/OverlayCard.astro';
-import ReviewCard from '@shared/components/ui/Card/ReviewCard.astro';
-import PostCard from '@shared/components/ui/Card/PostCard.astro';
-import CarouselBase from '@shared/components/ui/Carousel/CarouselBase.astro';
-import CarouselContainer from '@shared/components/ui/Carousel/CarouselContainer.astro';
-import CarouselArrowButton from '@shared/components/ui/Carousel/CarouselArrowButton.astro';
-import CarouselDots from '@shared/components/ui/Carousel/CarouselDots.astro';
-import AnimatedCardStack from '@shared/components/ui/AnimatedCardStack/AnimatedCardStack.astro';
-import StackItem from '@shared/components/ui/StackItem/StackItem.astro';
-import Button from '@shared/components/ui/Button/Button.astro';
-// TODO: When copying to your site, import your i18n utils
-// import { getAlternateLanguageUrls } from '@site/i18n/utils.ts';
-// TODO: Import your site-specific theme overrides
-// import '@site/styles/tokens.css';
-// import '@site/styles/global.css';
 
-// Placeholder alternate languages - update with your domain
 const alternateLanguages: { lang: string; url: string }[] = [];
+
+const componentCategories = [
+  {
+    title: 'Section Components',
+    description:
+      'Complete page sections: Hero, Features, Services, Testimonials, CTA, FAQ, and more',
+    href: '/components/sections',
+    icon: '📐',
+    componentCount: '10 components',
+    examples:
+      'Hero, ServiceGrid, FeatureGrid, FeatureSplit, StatsRow, Testimonials, FAQ, LogoCloud, ContactBlock, CTASection',
+  },
+  {
+    title: 'UI Components',
+    description: 'Interactive elements: Buttons, Badges, Forms, Inputs, and Accordions',
+    href: '/components/ui',
+    icon: '🎨',
+    componentCount: '4 components',
+    examples: 'Button, Badge, Input, Accordion',
+  },
+  {
+    title: 'Cards & Carousels',
+    description: 'Versatile card layouts and carousel configurations for galleries and sliders',
+    href: '/components/cards',
+    icon: '🎴',
+    componentCount: '7+ components',
+    examples:
+      'Card, ImageCard, HorizontalCard, OverlayCard, ReviewCard, PostCard, Carousel, AnimatedCardStack',
+  },
+];
 ---
 
 <BaseLayout
-  title="Component Showcase - Garage Mueller"
-  description="All available components and their variations"
-  lang="de"
+  title="Component Library Showcase"
+  description="Explore all available components organized by category"
+  lang="en"
   alternateLanguages={alternateLanguages}
 >
-  <Section variant="default" spacing="lg">
+  <Section variant="default" spacing="xl">
     <Container>
       <div class="showcase-header">
-        <h1>Component Showcase</h1>
+        <h1>Component Library</h1>
         <p class="subtitle">
-          Explore all available components and their variations. Copy the code and use in your
-          pages.
+          Explore our complete collection of components, organized by category. Each page includes
+          live examples with code you can copy and use.
         </p>
+      </div>
+
+      <div class="categories-grid">
+        {
+          componentCategories.map((category) => (
+            <a href={category.href} class="category-link">
+              <Card variant="hover" padding="lg" clickable>
+                <div class="category-icon">{category.icon}</div>
+                <div class="category-header">
+                  <h2>{category.title}</h2>
+                  <span class="component-count">{category.componentCount}</span>
+                </div>
+                <p class="category-description">{category.description}</p>
+                <div class="component-examples">
+                  <small>Includes: {category.examples}</small>
+                </div>
+                <div class="category-cta">
+                  <span class="cta-text">View Components →</span>
+                </div>
+              </Card>
+            </a>
+          ))
+        }
       </div>
     </Container>
   </Section>
 
-  <!-- Card Component Variations -->
+  <!-- Quick Links -->
   <Section variant="surface" spacing="lg">
     <Container>
-      <div class="component-section">
-        <h2 id="card">Card Component</h2>
-        <p class="description">
-          Base card component with 7 visual variants, multiple backgrounds, corner radius options,
-          and clickable state.
-        </p>
+      <div class="quick-links">
+        <h2>Quick Access</h2>
+        <p>Jump directly to specific components:</p>
 
-        <div class="variants-grid">
-          <!-- Default -->
-          <div class="variant-item">
-            <Card variant="default" padding="lg">
-              <h3>Default Card</h3>
-              <p>Simple card with subtle shadow</p>
-              <div class="code">variant="default"</div>
-            </Card>
+        <div class="links-grid">
+          <div class="link-group">
+            <h3>Section Components</h3>
+            <ul>
+              <li><a href="/components/sections#hero">Hero</a></li>
+              <li><a href="/components/sections#service-grid">ServiceGrid</a></li>
+              <li><a href="/components/sections#feature-grid">FeatureGrid</a></li>
+              <li><a href="/components/sections#feature-split">FeatureSplit</a></li>
+              <li><a href="/components/sections#stats-row">StatsRow</a></li>
+              <li><a href="/components/sections#testimonials">Testimonials</a></li>
+              <li><a href="/components/sections#faq">FAQ</a></li>
+              <li><a href="/components/sections#logo-cloud">LogoCloud</a></li>
+              <li><a href="/components/sections#contact-block">ContactBlock</a></li>
+              <li><a href="/components/sections#cta-section">CTASection</a></li>
+            </ul>
           </div>
 
-          <!-- Hover -->
-          <div class="variant-item">
-            <Card variant="hover" padding="lg">
-              <h3>Hover Card</h3>
-              <p>Lifts on hover with enhanced shadow</p>
-              <div class="code">variant="hover"</div>
-            </Card>
+          <div class="link-group">
+            <h3>UI Components</h3>
+            <ul>
+              <li><a href="/components/ui#button">Button</a></li>
+              <li><a href="/components/ui#badge">Badge</a></li>
+              <li><a href="/components/ui#input">Input</a></li>
+              <li><a href="/components/ui#accordion">Accordion</a></li>
+            </ul>
           </div>
 
-          <!-- Bordered -->
-          <div class="variant-item">
-            <Card variant="bordered" padding="lg">
-              <h3>Bordered Card</h3>
-              <p>Emphasized border, minimal shadow</p>
-              <div class="code">variant="bordered"</div>
-            </Card>
+          <div class="link-group">
+            <h3>Cards & Carousels</h3>
+            <ul>
+              <li><a href="/components/cards#card">Card</a></li>
+              <li><a href="/components/cards#layout-cards">Layout Cards</a></li>
+              <li><a href="/components/cards#carousel">Carousel</a></li>
+              <li><a href="/components/cards#animated-stack">AnimatedCardStack</a></li>
+            </ul>
           </div>
-
-          <!-- Elevated -->
-          <div class="variant-item">
-            <Card variant="elevated" padding="lg">
-              <h3>Elevated Card</h3>
-              <p>Strong shadow for premium feel</p>
-              <div class="code">variant="elevated"</div>
-            </Card>
-          </div>
-
-          <!-- Gradient -->
-          <div class="variant-item">
-            <Card variant="gradient" padding="lg">
-              <h3>Gradient Card</h3>
-              <p>Gradient border effect</p>
-              <div class="code">variant="gradient"</div>
-            </Card>
-          </div>
-
-          <!-- Glass -->
-          <div class="variant-item">
-            <Card variant="glass" padding="lg">
-              <h3>Glass Card</h3>
-              <p>Glassmorphism effect</p>
-              <div class="code">variant="glass"</div>
-            </Card>
-          </div>
-
-          <!-- Outlined -->
-          <div class="variant-item">
-            <Card variant="outlined" padding="lg">
-              <h3>Outlined Card</h3>
-              <p>Minimal with colored outline</p>
-              <div class="code">variant="outlined"</div>
-            </Card>
-          </div>
-        </div>
-
-        <!-- Background Variants -->
-        <h3 class="subsection-title">Background Colors</h3>
-        <div class="variants-grid">
-          <Card variant="default" background="white" padding="lg">
-            <h4>White</h4>
-            <p>Pure white background</p>
-            <div class="code">background="white"</div>
-          </Card>
-
-          <Card variant="default" background="surface" padding="lg">
-            <h4>Surface</h4>
-            <p>Theme surface color</p>
-            <div class="code">background="surface"</div>
-          </Card>
-
-          <Card variant="default" background="primary" padding="lg">
-            <h4>Primary</h4>
-            <p>Brand primary color</p>
-            <div class="code">background="primary"</div>
-          </Card>
-
-          <Card variant="default" background="secondary" padding="lg">
-            <h4>Secondary</h4>
-            <p>Brand secondary color</p>
-            <div class="code">background="secondary"</div>
-          </Card>
-        </div>
-
-        <!-- Radius Variants -->
-        <h3 class="subsection-title">Corner Radius</h3>
-        <div class="variants-grid">
-          <Card variant="default" radius="none" padding="lg">
-            <h4>No Radius</h4>
-            <div class="code">radius="none"</div>
-          </Card>
-
-          <Card variant="default" radius="sm" padding="lg">
-            <h4>Small</h4>
-            <div class="code">radius="sm"</div>
-          </Card>
-
-          <Card variant="default" radius="md" padding="lg">
-            <h4>Medium</h4>
-            <div class="code">radius="md"</div>
-          </Card>
-
-          <Card variant="default" radius="lg" padding="lg">
-            <h4>Large</h4>
-            <div class="code">radius="lg"</div>
-          </Card>
-
-          <Card variant="default" radius="full" padding="lg">
-            <h4>Full</h4>
-            <div class="code">radius="full"</div>
-          </Card>
-        </div>
-
-        <!-- Clickable -->
-        <h3 class="subsection-title">Interactive State</h3>
-        <div class="variants-grid">
-          <Card variant="default" padding="lg" clickable>
-            <h4>Clickable Card</h4>
-            <p>With cursor pointer and ripple effect</p>
-            <div class="code">clickable={true}</div>
-          </Card>
         </div>
       </div>
     </Container>
   </Section>
 
-  <!-- Layout Components -->
+  <!-- Usage Guide -->
   <Section variant="default" spacing="lg">
     <Container>
-      <div class="component-section">
-        <h2 id="layout-cards">Layout Card Components</h2>
-        <p class="description">
-          Specialized card layout components for different content arrangements.
-        </p>
-
-        <!-- ImageCard -->
-        <h3 class="subsection-title">ImageCard</h3>
-        <p class="description-sm">Image with content below</p>
-        <div class="variants-grid">
-          <ImageCard
-            variant="elevated"
-            image="/images/service-oil.svg"
-            alt="Oil Change Service"
-            imagePosition="top"
-            padding="lg"
-          >
-            <h4>Service Package</h4>
-            <p>Complete inspection and maintenance for your vehicle</p>
-            <Button variant="primary" size="sm">Learn More</Button>
-          </ImageCard>
-
-          <ImageCard
-            variant="bordered"
-            image="/images/car-exterior.svg"
-            alt="Vehicle Service"
-            imagePosition="top"
-            imageHeight="sm"
-            padding="md"
-          >
-            <h4>Quick Service</h4>
-            <p>Fast turnaround for minor repairs</p>
-          </ImageCard>
-        </div>
-
-        <!-- HorizontalCard -->
-        <h3 class="subsection-title">HorizontalCard</h3>
-        <p class="description-sm">Side-by-side layout (responsive)</p>
-        <div class="variants-grid-wide">
-          <HorizontalCard
-            variant="default"
-            image="/images/workshop.svg"
-            alt="Modern Workshop Interior"
-            imagePosition="left"
-            imageWidth="40"
-            padding="lg"
-          >
-            <h4>About Our Workshop</h4>
+      <div class="usage-guide">
+        <h2>How to Use These Components</h2>
+        <div class="steps-grid">
+          <Card variant="bordered" padding="lg">
+            <div class="step-number">1</div>
+            <h3>Browse</h3>
             <p>
-              Modern equipment and experienced technicians ready to service all vehicle makes and
-              models.
+              Navigate to a category page to see all components in that category with live examples
             </p>
-            <Button variant="primary" size="sm">Contact Us</Button>
-          </HorizontalCard>
+          </Card>
 
-          <HorizontalCard
-            variant="hover"
-            image="/images/team.svg"
-            alt="Our Professional Team"
-            imagePosition="right"
-            imageWidth="50"
-            padding="lg"
-          >
-            <h4>Our Team</h4>
-            <p>Certified mechanics with decades of combined experience.</p>
-          </HorizontalCard>
-        </div>
+          <Card variant="bordered" padding="lg">
+            <div class="step-number">2</div>
+            <h3>Copy</h3>
+            <p>
+              Find a component you like and copy the example code. All props and variants are
+              documented
+            </p>
+          </Card>
 
-        <!-- OverlayCard -->
-        <h3 class="subsection-title">OverlayCard</h3>
-        <p class="description-sm">Content overlaid on image</p>
-        <div class="variants-grid-wide">
-          <OverlayCard
-            variant="default"
-            image="/images/mechanic.svg"
-            alt="Expert Mechanic at Work"
-            overlayPosition="bottom"
-            overlayOpacity="medium"
-            minHeight="md"
-            padding="lg"
-          >
-            <h2>Emergency Service Available</h2>
-            <p>24/7 roadside assistance and towing</p>
-            <Button variant="primary">Call Now</Button>
-          </OverlayCard>
-
-          <OverlayCard
-            variant="default"
-            image="/images/tools.svg"
-            alt="Modern Equipment"
-            overlayPosition="center"
-            overlayOpacity="dark"
-            minHeight="sm"
-            padding="lg"
-          >
-            <h3>Special Offer</h3>
-            <p>Free inspection with any service</p>
-          </OverlayCard>
-        </div>
-
-        <!-- ReviewCard -->
-        <h3 class="subsection-title">ReviewCard</h3>
-        <p class="description-sm">Customer testimonials with avatar, rating, and platform badge</p>
-        <div class="variants-grid">
-          <ReviewCard
-            name="khalil Hijazi"
-            date="a year ago"
-            rating={5}
-            platform="google"
-            variant="elevated"
-            review="After being away for a year I wanted to treat my wife to something special. Having just move back into town I found out an old buddy of mine had opened his own garage. Kazz and his team provided exceptional service at a fair price."
-          />
-          <ReviewCard
-            name="Moe Elali"
-            date="a year ago"
-            rating={5}
-            platform="google"
-            variant="elevated"
-            review="I had an outstanding experience at Stampede Auto, and it's all thanks to Kazz and Sam! From the moment I walked through the door, I felt welcomed and valued as a customer. Kazz was incredibly knowledgeable and took the time to explain everything."
-          />
-          <ReviewCard
-            name="Jennifer Brown"
-            date="2 months ago"
-            rating={5}
-            platform="none"
-            variant="bordered"
-            review="Best automotive service I've experienced! Professional team, state-of-the-art equipment, and transparent pricing. They completed my repair ahead of schedule."
-          />
-          <ReviewCard
-            name="Michael Chen"
-            date="3 weeks ago"
-            rating={4}
-            platform="none"
-            variant="gradient"
-            review="Very satisfied with the service. Quick diagnosis, fair pricing, and quality work. The only minor issue was the wait time, but the results were worth it."
-          />
-        </div>
-
-        <!-- PostCard -->
-        <h3 class="subsection-title">PostCard</h3>
-        <p class="description-sm">
-          Versatile post card for blogs, offers, car sales, events (with category, date, author,
-          tags)
-        </p>
-        <div class="variants-grid">
-          <PostCard
-            title="Spring Maintenance Special"
-            description="Get your car ready for spring! Complete vehicle inspection, oil change, and tire rotation. Book now and save 20% on all maintenance packages."
-            image="/images/service-oil.svg"
-            category="OFFER"
-            categoryColor="warning"
-            date="Valid until Apr 30, 2026"
-            tags={['spring-offer', 'maintenance', 'discount']}
-            variant="elevated"
-            imageHeight="md"
-            href="#"
-          />
-          <PostCard
-            title="2018 BMW 320i for Sale"
-            description="Excellent condition, low mileage, full service history. Recent brake service and new tires. One owner, garage kept. Contact us for a test drive."
-            image="/images/car-exterior.svg"
-            category="FOR SALE"
-            categoryColor="success"
-            date="Posted Mar 20, 2026"
-            author="Garage Mueller"
-            tags={['BMW', '320i', 'sedan', 'automatic']}
-            variant="elevated"
-            imageHeight="md"
-            href="#"
-          />
-          <PostCard
-            title="Understanding Your Check Engine Light"
-            description="Learn what your check engine light means, common causes, and when you should bring your car in for service. Don't ignore warning signs!"
-            image="/images/tools.svg"
-            category="BLOG"
-            categoryColor="info"
-            date="Mar 15, 2026"
-            author="Kazz Mueller"
-            tags={['tips', 'diagnostics', 'maintenance']}
-            variant="bordered"
-            imageHeight="md"
-            href="#"
-          />
-          <PostCard
-            title="Free Car Care Workshop"
-            description="Join us for a free workshop on basic car maintenance. Learn to check fluids, tire pressure, and identify common issues. Limited spots available!"
-            image="/images/workshop.svg"
-            category="EVENT"
-            categoryColor="primary"
-            date="Sat Apr 15, 2026 at 10 AM"
-            tags={['workshop', 'free', 'education']}
-            variant="hover"
-            imageHeight="md"
-            href="#"
-          />
+          <Card variant="bordered" padding="lg">
+            <div class="step-number">3</div>
+            <h3>Customize</h3>
+            <p>
+              Paste into your page and customize the content, colors, and layout to match your needs
+            </p>
+          </Card>
         </div>
       </div>
     </Container>
   </Section>
 
-  <!-- Carousel Component -->
-  <Section variant="surface" spacing="lg">
+  <!-- Back to Examples -->
+  <Section variant="surface" spacing="md">
     <Container>
-      <div class="component-section">
-        <h2 id="carousel">Carousel Component</h2>
-        <p class="description">
-          Smooth-scrolling carousel with CSS Scroll Snap, native touch support, autoplay, and
-          multiple slides per view.
-        </p>
-
-        <!-- Default Carousel -->
-        <h3 class="subsection-title">Hero Slider - Clear Layout</h3>
-        <p class="description-sm">Use case: Featured services, promotions (1 slide at a time)</p>
-        <p class="description-sm">
-          <strong>Layout:</strong> Left arrow | Carousel | Right arrow, with dots at bottom - no overlapping
-        </p>
-        <CarouselContainer>
-          <!-- Left navigation zone -->
-          <Fragment slot="left">
-            <CarouselArrowButton direction="prev" size="md" />
-          </Fragment>
-
-          <!-- Center: carousel track -->
-          <CarouselBase slidesPerView={1} gap="md">
-            <ImageCard
-              variant="elevated"
-              image="/images/service-oil.svg"
-              alt="Oil Change"
-              padding="lg"
-            >
-              <h4>Service 1: Oil Change</h4>
-              <p>Professional oil change service with premium oils</p>
-              <Button variant="primary" size="sm">Book Now</Button>
-            </ImageCard>
-            <ImageCard
-              variant="elevated"
-              image="/images/service-brake.svg"
-              alt="Brake Service"
-              padding="lg"
-            >
-              <h4>Service 2: Brake Inspection</h4>
-              <p>Complete brake system check and maintenance</p>
-              <Button variant="primary" size="sm">Book Now</Button>
-            </ImageCard>
-            <ImageCard
-              variant="elevated"
-              image="/images/service-tire.svg"
-              alt="Tire Service"
-              padding="lg"
-            >
-              <h4>Service 3: Tire Service</h4>
-              <p>Tire rotation, balancing, and replacement</p>
-              <Button variant="primary" size="sm">Book Now</Button>
-            </ImageCard>
-            <ImageCard
-              variant="elevated"
-              image="/images/service-battery.svg"
-              alt="Battery Service"
-              padding="lg"
-            >
-              <h4>Service 4: Battery Check</h4>
-              <p>Battery testing and replacement service</p>
-              <Button variant="primary" size="sm">Book Now</Button>
-            </ImageCard>
-          </CarouselBase>
-
-          <!-- Right navigation zone -->
-          <Fragment slot="right">
-            <CarouselArrowButton direction="next" size="md" />
-          </Fragment>
-
-          <!-- Bottom: indicators -->
-          <Fragment slot="bottom">
-            <CarouselDots />
-          </Fragment>
-        </CarouselContainer>
-
-        <!-- Gallery Example -->
-        <h3 class="subsection-title">Gallery/Portfolio - Manual Control</h3>
-        <p class="description-sm">Use case: Before/after photos, completed projects</p>
-        <p class="description-sm">
-          <strong>Layout:</strong> Centered carousel with arrows and dots at bottom
-        </p>
-        <CarouselContainer>
-          <!-- Center: carousel track -->
-          <CarouselBase slidesPerView={1} gap="md" autoplay={false}>
-            <ImageCard
-              variant="default"
-              image="/images/tools.svg"
-              alt="Modern Equipment"
-              padding="md"
-            >
-              <h4>Modern Equipment</h4>
-              <p>State-of-the-art diagnostic tools</p>
-            </ImageCard>
-            <ImageCard variant="default" image="/images/team.svg" alt="Expert Team" padding="md">
-              <h4>Expert Team</h4>
-              <p>Certified mechanics with years of experience</p>
-            </ImageCard>
-            <ImageCard
-              variant="default"
-              image="/images/service-brake.svg"
-              alt="Quality Service"
-              padding="md"
-            >
-              <h4>Quality Service</h4>
-              <p>Guaranteed satisfaction</p>
-            </ImageCard>
-          </CarouselBase>
-
-          <!-- Bottom: arrows and dots together -->
-          <Fragment slot="bottom">
-            <div
-              style="display: flex; flex-direction: column; align-items: center; gap: var(--space-3);"
-            >
-              <div style="display: flex; gap: var(--space-2);">
-                <CarouselArrowButton direction="prev" size="sm" />
-                <CarouselArrowButton direction="next" size="sm" />
-              </div>
-              <CarouselDots />
-            </div>
-          </Fragment>
-        </CarouselContainer>
-
-        <!-- Autoplay Example -->
-        <h3 class="subsection-title">Testimonials - Auto Advance with ReviewCard</h3>
-        <p class="description-sm">
-          Use case: Customer reviews with Google-style cards (auto-advances every 3s, pauses on
-          hover)
-        </p>
-        <p class="description-sm">
-          <strong>Layout:</strong> Left/right arrows with dots at bottom, autoplay enabled
-        </p>
-        <CarouselContainer>
-          <!-- Left navigation zone -->
-          <Fragment slot="left">
-            <CarouselArrowButton direction="prev" size="sm" />
-          </Fragment>
-
-          <!-- Center: carousel track with autoplay -->
-          <CarouselBase slidesPerView={1} gap="md" autoplay={true}>
-            <ReviewCard
-              name="Hans Mueller"
-              date="2 months ago"
-              rating={5}
-              platform="google"
-              review="Excellent service and fair prices! I've been bringing my car here for years and they never disappoint. The team is professional, honest, and always explains everything clearly. Highly recommended!"
-            />
-            <ReviewCard
-              name="Maria Schmidt"
-              date="3 weeks ago"
-              rating={5}
-              platform="google"
-              review="Fast, professional, and transparent service. They diagnosed the issue quickly, provided a fair quote, and completed the work on time. Will definitely return for future maintenance!"
-            />
-            <ReviewCard
-              name="Peter Keller"
-              date="1 month ago"
-              rating={5}
-              platform="google"
-              review="Great team with modern equipment! The waiting area is comfortable and they offer free coffee. Most importantly, the quality of work is excellent and prices are reasonable. Perfect results every time."
-            />
-            <ReviewCard
-              name="Sophie Weber"
-              date="2 weeks ago"
-              rating={5}
-              platform="google"
-              review="Best garage in town! They went above and beyond to help me when my car broke down. Emergency service was quick and efficient. The mechanics really know what they're doing."
-            />
-          </CarouselBase>
-
-          <!-- Right navigation zone -->
-          <Fragment slot="right">
-            <CarouselArrowButton direction="next" size="sm" />
-          </Fragment>
-
-          <!-- Bottom: indicators -->
-          <Fragment slot="bottom">
-            <CarouselDots />
-          </Fragment>
-        </CarouselContainer>
-
-        <!-- Multiple Slides Per View -->
-        <h3 class="subsection-title">Services Grid - Multiple Slides</h3>
-        <p class="description-sm">
-          Use case: Service offerings, features (shows 3 on desktop, 2 on tablet, 1 on mobile)
-        </p>
-        <CarouselContainer>
-          <!-- Left navigation zone -->
-          <Fragment slot="left">
-            <CarouselArrowButton direction="prev" size="md" />
-          </Fragment>
-
-          <!-- Center: carousel track -->
-          <CarouselBase slidesPerView={3} gap="lg">
-            <Card variant="bordered" padding="md">
-              <h4>Feature 1</h4>
-              <p>Fast turnaround</p>
-            </Card>
-            <Card variant="bordered" padding="md">
-              <h4>Feature 2</h4>
-              <p>Fair pricing</p>
-            </Card>
-            <Card variant="bordered" padding="md">
-              <h4>Feature 3</h4>
-              <p>Quality parts</p>
-            </Card>
-            <Card variant="bordered" padding="md">
-              <h4>Feature 4</h4>
-              <p>Expert advice</p>
-            </Card>
-            <Card variant="bordered" padding="md">
-              <h4>Feature 5</h4>
-              <p>Warranty included</p>
-            </Card>
-            <Card variant="bordered" padding="md">
-              <h4>Feature 6</h4>
-              <p>Free inspection</p>
-            </Card>
-          </CarouselBase>
-
-          <!-- Right navigation zone -->
-          <Fragment slot="right">
-            <CarouselArrowButton direction="next" size="md" />
-          </Fragment>
-
-          <!-- Bottom: indicators -->
-          <Fragment slot="bottom">
-            <CarouselDots />
-          </Fragment>
-        </CarouselContainer>
-
-        <!-- Logo Cloud -->
-        <h3 class="subsection-title">Logo Cloud - Dots Only Layout</h3>
-        <p class="description-sm">
-          Use case: Partner brands, certifications (loops continuously, touch/swipe enabled)
-        </p>
-        <p class="description-sm">
-          <strong>Layout:</strong> Centered carousel with dots at bottom - no arrows needed
-        </p>
-        <CarouselContainer>
-          <!-- No left/right slots = centered carousel -->
-          <CarouselBase slidesPerView={4} gap="lg">
-            <Card variant="bordered" padding="lg">
-              <div style="text-align: center;">
-                <h4 style="font-size: 2rem; margin: 0;">🔧</h4>
-                <p style="margin-top: 0.5rem; font-weight: 600;">Bosch</p>
-              </div>
-            </Card>
-            <Card variant="bordered" padding="lg">
-              <div style="text-align: center;">
-                <h4 style="font-size: 2rem; margin: 0;">⚙️</h4>
-                <p style="margin-top: 0.5rem; font-weight: 600;">Castrol</p>
-              </div>
-            </Card>
-            <Card variant="bordered" padding="lg">
-              <div style="text-align: center;">
-                <h4 style="font-size: 2rem; margin: 0;">🛞</h4>
-                <p style="margin-top: 0.5rem; font-weight: 600;">Michelin</p>
-              </div>
-            </Card>
-            <Card variant="bordered" padding="lg">
-              <div style="text-align: center;">
-                <h4 style="font-size: 2rem; margin: 0;">🔋</h4>
-                <p style="margin-top: 0.5rem; font-weight: 600;">Varta</p>
-              </div>
-            </Card>
-            <Card variant="bordered" padding="lg">
-              <div style="text-align: center;">
-                <h4 style="font-size: 2rem; margin: 0;">🏁</h4>
-                <p style="margin-top: 0.5rem; font-weight: 600;">Shell</p>
-              </div>
-            </Card>
-            <Card variant="bordered" padding="lg">
-              <div style="text-align: center;">
-                <h4 style="font-size: 2rem; margin: 0;">✓</h4>
-                <p style="margin-top: 0.5rem; font-weight: 600;">ISO 9001</p>
-              </div>
-            </Card>
-          </CarouselBase>
-
-          <!-- Bottom: dots only, no arrows -->
-          <Fragment slot="bottom">
-            <CarouselDots />
-          </Fragment>
-        </CarouselContainer>
-      </div>
-    </Container>
-  </Section>
-
-  <!-- Additional Carousel Layout Examples -->
-  <Section variant="default" spacing="lg">
-    <Container>
-      <div class="component-section">
-        <h2 id="carousel-composable">Additional Carousel Layouts</h2>
-        <p class="description">
-          More examples showing flexible layout zones: arrows overlaying the carousel, multiple
-          slides per view, and custom bottom layouts.
-        </p>
-
-        <!-- Overlaying Arrows Example -->
-        <h3 class="subsection-title">Overlaying Arrows - Ghost Variant</h3>
-        <p class="description-sm">
-          Arrows positioned inside the carousel area using ghost variant for subtle overlay effect.
-        </p>
-        <CarouselContainer>
-          <!-- Center with overlaying navigation using absolute positioning -->
-          <div style="position: relative;">
-            <CarouselBase slidesPerView={2} gap="lg">
-              <Card variant="hover" padding="lg">
-                <h4>Card 1</h4>
-                <p>Overlaying arrows</p>
-              </Card>
-              <Card variant="hover" padding="lg">
-                <h4>Card 2</h4>
-                <p>Ghost variant</p>
-              </Card>
-              <Card variant="hover" padding="lg">
-                <h4>Card 3</h4>
-                <p>Subtle appearance</p>
-              </Card>
-              <Card variant="hover" padding="lg">
-                <h4>Card 4</h4>
-                <p>Clean look</p>
-              </Card>
-            </CarouselBase>
-            <!-- Overlay arrows using absolute positioning -->
-            <div
-              style="position: absolute; top: 50%; left: var(--space-2); transform: translateY(-50%); z-index: 10;"
-            >
-              <CarouselArrowButton direction="prev" variant="ghost" />
-            </div>
-            <div
-              style="position: absolute; top: 50%; right: var(--space-2); transform: translateY(-50%); z-index: 10;"
-            >
-              <CarouselArrowButton direction="next" variant="ghost" />
-            </div>
-          </div>
-
-          <!-- Bottom: indicators -->
-          <Fragment slot="bottom">
-            <CarouselDots />
-          </Fragment>
-        </CarouselContainer>
-
-        <!-- Primary Variant Arrows -->
-        <h3 class="subsection-title">Primary Variant - Prominent Navigation</h3>
-        <p class="description-sm">
-          Using primary color variant for arrows to make navigation more prominent.
-        </p>
-        <CarouselContainer>
-          <Fragment slot="left">
-            <CarouselArrowButton direction="prev" variant="primary" />
-          </Fragment>
-
-          <CarouselBase slidesPerView={3} gap="lg">
-            <Card variant="bordered" padding="md">
-              <h4>Feature 1</h4>
-              <p>Primary arrows</p>
-            </Card>
-            <Card variant="bordered" padding="md">
-              <h4>Feature 2</h4>
-              <p>Stand out</p>
-            </Card>
-            <Card variant="bordered" padding="md">
-              <h4>Feature 3</h4>
-              <p>Clear CTA</p>
-            </Card>
-            <Card variant="bordered" padding="md">
-              <h4>Feature 4</h4>
-              <p>Prominent</p>
-            </Card>
-            <Card variant="bordered" padding="md">
-              <h4>Feature 5</h4>
-              <p>Eye-catching</p>
-            </Card>
-          </CarouselBase>
-
-          <Fragment slot="right">
-            <CarouselArrowButton direction="next" variant="primary" />
-          </Fragment>
-
-          <Fragment slot="bottom">
-            <CarouselDots />
-          </Fragment>
-        </CarouselContainer>
-
-        <!-- Custom Bottom Layout -->
-        <h3 class="subsection-title">Custom Bottom Layout - Arrows + Dots</h3>
-        <p class="description-sm">
-          Flexible bottom zone: place arrows and dots together in custom arrangement.
-        </p>
-        <CarouselContainer>
-          <CarouselBase slidesPerView={1} gap="none">
-            <ImageCard variant="elevated" image="/images/workshop.svg" alt="Workshop" padding="lg">
-              <h4>Workshop Tour</h4>
-              <p>State-of-the-art facilities</p>
-            </ImageCard>
-            <ImageCard variant="elevated" image="/images/mechanic.svg" alt="Mechanics" padding="lg">
-              <h4>Expert Team</h4>
-              <p>Certified professionals</p>
-            </ImageCard>
-            <ImageCard variant="elevated" image="/images/tools.svg" alt="Equipment" padding="lg">
-              <h4>Modern Equipment</h4>
-              <p>Latest diagnostic tools</p>
-            </ImageCard>
-          </CarouselBase>
-
-          <!-- Bottom zone with custom layout -->
-          <Fragment slot="bottom">
-            <div
-              style="display: flex; flex-direction: column; align-items: center; gap: var(--space-4);"
-            >
-              <CarouselDots />
-              <div style="display: flex; gap: var(--space-2);">
-                <CarouselArrowButton direction="prev" size="sm" />
-                <CarouselArrowButton direction="next" size="sm" />
-              </div>
-            </div>
-          </Fragment>
-        </CarouselContainer>
-
-        <!-- Minimal Layout -->
-        <h3 class="subsection-title">Minimal Layout - Arrows Only</h3>
-        <p class="description-sm">
-          Sometimes less is more: just arrows, no dots. Perfect for simple carousels.
-        </p>
-        <CarouselContainer>
-          <Fragment slot="left">
-            <CarouselArrowButton direction="prev" size="md" />
-          </Fragment>
-
-          <CarouselBase slidesPerView={3} gap="md">
-            <Card variant="gradient" padding="md">
-              <h4>Item A</h4>
-              <p>Simple</p>
-            </Card>
-            <Card variant="gradient" padding="md">
-              <h4>Item B</h4>
-              <p>Clean</p>
-            </Card>
-            <Card variant="gradient" padding="md">
-              <h4>Item C</h4>
-              <p>Minimal</p>
-            </Card>
-            <Card variant="gradient" padding="md">
-              <h4>Item D</h4>
-              <p>Focused</p>
-            </Card>
-            <Card variant="gradient" padding="md">
-              <h4>Item E</h4>
-              <p>Elegant</p>
-            </Card>
-          </CarouselBase>
-
-          <Fragment slot="right">
-            <CarouselArrowButton direction="next" size="md" />
-          </Fragment>
-          <!-- No bottom slot = no dots -->
-        </CarouselContainer>
-
-        <!-- PostCard Carousel -->
-        <h3 class="subsection-title">Blog/Offers Carousel - PostCard</h3>
-        <p class="description-sm">
-          Use case: Blog posts, special offers, car listings (shows 3 on desktop, 2 on tablet, 1 on
-          mobile)
-        </p>
-        <CarouselContainer>
-          <Fragment slot="left">
-            <CarouselArrowButton direction="prev" size="md" />
-          </Fragment>
-
-          <CarouselBase slidesPerView={3} gap="lg">
-            <PostCard
-              title="Winter Tire Special"
-              description="Get ready for winter! Complete tire package with installation. Premium brands at competitive prices. Limited time offer."
-              image="/images/service-tire.svg"
-              category="OFFER"
-              categoryColor="warning"
-              date="Valid until Nov 30"
-              tags={['winter-tires', 'discount']}
-              variant="elevated"
-              imageHeight="sm"
-              href="#"
-            />
-            <PostCard
-              title="5 Signs Your Brakes Need Service"
-              description="Learn to recognize the warning signs before it's too late. From squeaking to vibrations, we explain what to watch for."
-              image="/images/service-brake.svg"
-              category="BLOG"
-              categoryColor="info"
-              date="Mar 10, 2026"
-              author="Team Mueller"
-              tags={['safety', 'brakes', 'tips']}
-              variant="elevated"
-              imageHeight="sm"
-              href="#"
-            />
-            <PostCard
-              title="2020 Audi A4 Available"
-              description="Fully serviced, excellent condition. Quattro AWD, leather interior, navigation. View details and schedule test drive."
-              image="/images/car-exterior.svg"
-              category="FOR SALE"
-              categoryColor="success"
-              date="Posted yesterday"
-              tags={['Audi', 'A4', 'AWD']}
-              variant="elevated"
-              imageHeight="sm"
-              href="#"
-            />
-            <PostCard
-              title="Battery Health Check"
-              description="Free battery testing for all customers. Don't get stranded! Quick 5-minute check, no appointment needed."
-              image="/images/service-battery.svg"
-              category="SERVICE"
-              categoryColor="primary"
-              date="Ongoing"
-              tags={['free', 'battery', 'check']}
-              variant="elevated"
-              imageHeight="sm"
-              href="#"
-            />
-          </CarouselBase>
-
-          <Fragment slot="right">
-            <CarouselArrowButton direction="next" size="md" />
-          </Fragment>
-
-          <Fragment slot="bottom">
-            <CarouselDots />
-          </Fragment>
-        </CarouselContainer>
-      </div>
-    </Container>
-  </Section>
-
-  <!-- AnimatedCardStack Component -->
-  <Section variant="default" spacing="lg">
-    <Container>
-      <div class="component-section">
-        <h2 id="animated-stack">AnimatedCardStack Component</h2>
-        <p class="description">
-          Sticky card stack with scroll reveal. Cards stick at the top as you scroll, with each new
-          card sliding up to cover the previous one - creating a deck-stacking effect.
-        </p>
-
-        <!-- Single PostCard Stack Example -->
-        <h3 class="subsection-title">Project Showcase - Sticky Stack</h3>
-        <p class="description-sm">
-          Scroll down to see cards stick and stack. Each card sticks in place, then gets covered by
-          the next card sliding up from below.
-        </p>
-      </div>
-    </Container>
-  </Section>
-
-  <!-- AnimatedCardStack OUTSIDE Section to avoid container conflicts -->
-  <AnimatedCardStack stackOffset={20}>
-    <StackItem index={1}>
-      <Card padding="lg" variant="elevated">
-        <h3>Card 1 - First</h3>
-        <p>This card should stick at top: 20px. Lorem ipsum dolor sit amet.</p>
-      </Card>
-    </StackItem>
-    <StackItem index={2}>
-      <Card padding="lg" variant="elevated">
-        <h3>Card 2 - Second</h3>
-        <p>This card should stick at top: 40px. Consectetur adipiscing elit.</p>
-      </Card>
-    </StackItem>
-    <StackItem index={3}>
-      <Card padding="lg" variant="elevated">
-        <h3>Card 3 - Third</h3>
-        <p>This card should stick at top: 60px. Sed do eiusmod tempor incididunt.</p>
-      </Card>
-    </StackItem>
-    <StackItem index={4}>
-      <Card padding="lg" variant="elevated">
-        <h3>Card 4 - Fourth</h3>
-        <p>This card should stick at top: 80px. Ut labore et dolore magna aliqua.</p>
-      </Card>
-    </StackItem>
-  </AnimatedCardStack>
-
-  <Section variant="default" spacing="lg">
-    <Container>
-      <div class="component-section">
-        <h4
-          style="margin-top: var(--space-8); font-size: 1rem; color: var(--color-text-secondary);"
-        >
-          Full Example: PostCard Stack
-        </h4>
-      </div>
-    </Container>
-  </Section>
-
-  <!-- PostCard stack also outside Section -->
-  <AnimatedCardStack stackOffset={20}>
-    <StackItem index={1}>
-      <PostCard
-        title="Complete Engine Overhaul - Vintage BMW Restoration"
-        description="Full engine rebuild on a 1985 BMW E30. Months of meticulous work brought this classic back to life. Custom modifications while maintaining originality. A true labor of love."
-        image="/images/workshop.svg"
-        category="PROJECT"
-        categoryColor="primary"
-        date="Completed Feb 2026"
-        tags={['BMW', 'restoration', 'engine']}
-        variant="elevated"
-        imageHeight="lg"
-        href="#"
-      />
-    </StackItem>
-    <StackItem index={2}>
-      <PostCard
-        title="Fleet Management System Implementation"
-        description="Developed comprehensive digital solution for local delivery company. Real-time tracking, maintenance scheduling, and fuel optimization. Reduced downtime by 40%."
-        image="/images/tools.svg"
-        category="PROJECT"
-        categoryColor="info"
-        date="Completed Jan 2026"
-        tags={['fleet', 'technology', 'efficiency']}
-        variant="elevated"
-        imageHeight="lg"
-        href="#"
-      />
-    </StackItem>
-    <StackItem index={3}>
-      <PostCard
-        title="Electric Vehicle Conversion - Classic VW Bus"
-        description="Pioneer project: Converting a 1972 VW Bus to full electric. Custom battery pack, modern electronics, preserved vintage charm. Zero emissions, endless smiles."
-        image="/images/service-battery.svg"
-        category="PROJECT"
-        categoryColor="success"
-        date="Completed Dec 2025"
-        tags={['electric', 'VW', 'conversion']}
-        variant="elevated"
-        imageHeight="lg"
-        href="#"
-      />
-    </StackItem>
-    <StackItem index={4}>
-      <PostCard
-        title="Award-Winning Custom Paint Job"
-        description="Triple-layer metallic finish with custom airbrushing. Won Best in Show at Swiss Auto Expo 2025. Months of preparation for a stunning result."
-        image="/images/car-exterior.svg"
-        category="PROJECT"
-        categoryColor="warning"
-        date="Completed Nov 2025"
-        tags={['custom', 'paint', 'award']}
-        variant="elevated"
-        imageHeight="lg"
-        href="#"
-      />
-    </StackItem>
-  </AnimatedCardStack>
-
-  <Section variant="default" spacing="lg">
-    <Container>
-      <div class="component-section">
-        <p class="description-sm">
-          <strong>How it works:</strong> Each card uses <code>position: sticky</code> with incrementing
-          <code>top</code> values (20px, 40px, 60px, 80px...). As you scroll, cards stick in place, then
-          get covered by the next card. Classic CSS Tricks technique.
-        </p>
+      <div style="text-align: center;">
+        <a href="/" style="color: var(--color-primary); text-decoration: none; font-weight: 500;">
+          ← Back to Examples Home
+        </a>
       </div>
     </Container>
   </Section>
@@ -1076,80 +189,168 @@ const alternateLanguages: { lang: string; url: string }[] = [];
   .subtitle {
     font-size: var(--font-size-xl);
     color: var(--color-text-secondary);
+    line-height: 1.6;
   }
 
-  .component-section {
-    margin-bottom: var(--space-16);
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-8);
+    margin-top: var(--space-12);
   }
 
-  .component-section h2 {
+  .category-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .category-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-4);
+  }
+
+  .category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-3);
+  }
+
+  .category-header h2 {
+    margin: 0;
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+  }
+
+  .component-count {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    background: var(--color-background-secondary);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--border-radius-full);
+  }
+
+  .category-description {
+    margin: 0 0 var(--space-4);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .component-examples {
+    margin-bottom: var(--space-4);
+    padding: var(--space-3);
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-sm);
+  }
+
+  .component-examples small {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    line-height: 1.5;
+  }
+
+  .category-cta {
+    margin-top: var(--space-4);
+  }
+
+  .cta-text {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary);
+  }
+
+  .quick-links {
+    text-align: center;
+  }
+
+  .quick-links h2 {
     font-size: var(--font-size-3xl);
     font-weight: var(--font-weight-bold);
-    margin-bottom: var(--space-4);
-    padding-bottom: var(--space-4);
-    border-bottom: var(--border-width-thick) solid var(--color-border);
+    margin-bottom: var(--space-3);
   }
 
-  .description {
+  .quick-links > p {
     font-size: var(--font-size-lg);
     color: var(--color-text-secondary);
     margin-bottom: var(--space-8);
   }
 
-  .description-sm {
-    font-size: var(--font-size-base);
-    color: var(--color-text-secondary);
-    margin-bottom: var(--space-4);
-  }
-
-  .subsection-title {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-semibold);
-    margin-top: var(--space-12);
-    margin-bottom: var(--space-6);
-  }
-
-  .variants-grid {
+  .links-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--space-8);
-    margin-bottom: var(--space-12);
+    text-align: left;
   }
 
-  .variants-grid-wide {
+  .link-group h3 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-4);
+    color: var(--color-text-primary);
+  }
+
+  .link-group ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .link-group li {
+    margin-bottom: var(--space-2);
+  }
+
+  .link-group a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: var(--font-size-base);
+    transition: color 0.2s;
+  }
+
+  .link-group a:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+  }
+
+  .usage-guide {
+    text-align: center;
+  }
+
+  .usage-guide h2 {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-8);
+  }
+
+  .steps-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-8);
-    margin-bottom: var(--space-12);
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-6);
+    text-align: center;
   }
 
-  @media (min-width: 768px) {
-    .variants-grid-wide {
-      grid-template-columns: 1fr;
-    }
+  .step-number {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto var(--space-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primary);
+    color: white;
+    border-radius: var(--border-radius-full);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
   }
 
-  .variant-item h3,
-  .variant-item h4 {
+  .steps-grid h3 {
     margin: 0 0 var(--space-2);
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-xl);
     font-weight: var(--font-weight-semibold);
   }
 
-  .variant-item p {
-    margin: 0 0 var(--space-4);
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-sm);
-  }
-
-  .code {
-    font-family: var(--font-mono);
-    font-size: var(--font-size-sm);
-    background: var(--color-code-bg);
-    padding: var(--space-2) var(--space-3);
-    border-radius: var(--border-radius-sm);
-    display: inline-block;
-    margin-top: var(--space-2);
+  .steps-grid p {
+    margin: 0;
     color: var(--color-text-secondary);
   }
 </style>

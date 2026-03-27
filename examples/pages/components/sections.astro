@@ -1,0 +1,453 @@
+---
+import BaseLayout from '@shared/layouts/BaseLayout.astro';
+import Container from '@shared/components/site/Container/Container.astro';
+import Section from '@shared/components/site/Section/Section.astro';
+import Button from '@shared/components/ui/Button/Button.astro';
+
+// Section Components
+import Hero from '@shared/components/sections/Hero/Hero.astro';
+import CTASection from '@shared/components/sections/CTASection/CTASection.astro';
+import FeatureGrid from '@shared/components/sections/FeatureGrid/FeatureGrid.astro';
+import FeatureSplit from '@shared/components/sections/FeatureSplit/FeatureSplit.astro';
+import ServiceGrid from '@shared/components/sections/ServiceGrid/ServiceGrid.astro';
+import StatsRow from '@shared/components/sections/StatsRow/StatsRow.astro';
+import FAQ from '@shared/components/sections/FAQ/FAQ.astro';
+import Testimonials from '@shared/components/sections/Testimonials/Testimonials.astro';
+import ContactBlock from '@shared/components/sections/ContactBlock/ContactBlock.astro';
+import LogoCloud from '@shared/components/sections/LogoCloud/LogoCloud.astro';
+
+const alternateLanguages: { lang: string; url: string }[] = [];
+---
+
+<BaseLayout
+  title="Section Components Showcase"
+  description="Complete page sections ready to use"
+  lang="en"
+  alternateLanguages={alternateLanguages}
+>
+  <!-- Intro Section -->
+  <Section variant="default" spacing="lg">
+    <Container>
+      <div class="showcase-header">
+        <h1>Section Components</h1>
+        <p class="subtitle">
+          Complete page sections: Hero, Features, Services, Testimonials, and more
+        </p>
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Hero Component -->
+  <Section variant="surface" spacing="lg">
+    <Container>
+      <div class="component-section">
+        <h2 id="hero">Hero Component</h2>
+        <p class="description">
+          Main page hero with headline, CTAs, optional image, and trust indicators
+        </p>
+      </div>
+    </Container>
+  </Section>
+
+  <Hero
+    headline="Professional Auto Service You Can Trust"
+    text="Expert mechanics, modern equipment, and honest pricing. Serving Calgary for over 25 years."
+    variant="garage"
+    image="/images/workshop.svg"
+    cta={{
+      text: 'Book Appointment',
+      href: '#contact',
+    }}
+    secondaryCta={{
+      text: 'View Services',
+      href: '#services',
+    }}
+    trustIndicators={[
+      { type: 'years', value: '25+', label: 'Years Experience', icon: '🏆' },
+      { type: 'customers', value: '1000+', label: 'Happy Customers', icon: '⭐' },
+      { type: 'rating', value: '4.9', label: 'Google Rating', icon: '⭐' },
+    ]}
+  />
+
+  <Section variant="default" spacing="md">
+    <Container>
+      <div class="variant-note">
+        <p><strong>Variant:</strong> "garage" - Also available: "default", "centered"</p>
+      </div>
+    </Container>
+  </Section>
+
+  <!-- ServiceGrid Component -->
+  <Section variant="default" spacing="lg">
+    <Container>
+      <div class="component-section">
+        <h2 id="service-grid">ServiceGrid Component</h2>
+        <p class="description">
+          Display services in a responsive grid with icons and optional links
+        </p>
+      </div>
+    </Container>
+  </Section>
+
+  <ServiceGrid
+    headline="Our Services"
+    subheadline="Complete automotive care for all makes and models"
+    columns={3}
+    services={[
+      {
+        icon: '🛢️',
+        title: 'Oil Change',
+        description: 'Premium oil and filter change service with complimentary vehicle inspection',
+        link: { href: '#', text: 'Learn More' },
+      },
+      {
+        icon: '🔧',
+        title: 'Brake Service',
+        description: 'Complete brake system inspection, pad replacement, and rotor resurfacing',
+        link: { href: '#', text: 'Learn More' },
+      },
+      {
+        icon: '🛞',
+        title: 'Tire Service',
+        description: 'Tire rotation, balancing, alignment, and replacement with top brands',
+        link: { href: '#', text: 'Learn More' },
+      },
+      {
+        icon: '🔋',
+        title: 'Battery Testing',
+        description: 'Free battery health check and replacement service with warranty',
+        link: { href: '#', text: 'Learn More' },
+      },
+      {
+        icon: '⚙️',
+        title: 'Engine Diagnostics',
+        description: 'Advanced computer diagnostics to identify and resolve engine issues',
+        link: { href: '#', text: 'Learn More' },
+      },
+      {
+        icon: '🔍',
+        title: 'Pre-Purchase Inspection',
+        description: 'Thorough inspection before buying a used vehicle - peace of mind guaranteed',
+        link: { href: '#', text: 'Learn More' },
+      },
+    ]}
+  />
+
+  <!-- FeatureGrid Component -->
+  <Section variant="surface" spacing="lg">
+    <Container>
+      <div class="component-section">
+        <h2 id="feature-grid">FeatureGrid Component</h2>
+        <p class="description">
+          Showcase features and benefits in a grid layout (2, 3, or 4 columns)
+        </p>
+      </div>
+    </Container>
+  </Section>
+
+  <FeatureGrid
+    headline="Why Choose Us"
+    text="Experience the difference with our professional service"
+    variant="three-column"
+    items={[
+      {
+        icon: '⚡',
+        title: 'Fast Service',
+        description:
+          'Quick turnaround times without compromising quality. Most services completed same-day.',
+      },
+      {
+        icon: '💰',
+        title: 'Fair Pricing',
+        description:
+          'Transparent quotes with no hidden fees. We provide detailed breakdowns before work begins.',
+      },
+      {
+        icon: '✅',
+        title: 'Quality Guaranteed',
+        description: 'All work backed by comprehensive warranty. We stand behind our service.',
+      },
+      {
+        icon: '🔧',
+        title: 'Expert Mechanics',
+        description:
+          'Certified technicians with decades of combined experience across all vehicle types.',
+      },
+      {
+        icon: '📱',
+        title: 'Easy Booking',
+        description: 'Book online 24/7 or call us. We work around your schedule.',
+      },
+      {
+        icon: '🏆',
+        title: 'Award Winning',
+        description: 'Recognized for excellence with 4.9-star rating and Best of Calgary award.',
+      },
+    ]}
+  />
+
+  <!-- FeatureSplit Component -->
+  <Section variant="default" spacing="lg">
+    <Container>
+      <div class="component-section">
+        <h2 id="feature-split">FeatureSplit Component</h2>
+        <p class="description">Feature highlight with image on one side and content on the other</p>
+      </div>
+    </Container>
+  </Section>
+
+  <FeatureSplit
+    headline="State-of-the-Art Diagnostic Equipment"
+    text="Our modern facility features the latest computerized diagnostic tools, allowing us to quickly and accurately identify issues with your vehicle. From engine problems to electrical faults, our advanced equipment ensures precise diagnosis the first time."
+    image="/images/tools.svg"
+    imagePosition="right"
+    cta={{
+      text: 'Schedule Diagnostic',
+      href: '#contact',
+    }}
+  />
+
+  <FeatureSplit
+    headline="Comfortable Waiting Area"
+    text="We understand your time is valuable. Our comfortable waiting area features free Wi-Fi, coffee, and refreshments. Catch up on work or relax while our team takes care of your vehicle. For longer services, we offer complimentary shuttle service."
+    image="/images/workshop.svg"
+    imagePosition="left"
+  />
+
+  <!-- StatsRow Component -->
+  <Section variant="surface" spacing="lg">
+    <Container>
+      <div class="component-section">
+        <h2 id="stats-row">StatsRow Component</h2>
+        <p class="description">Display impressive statistics in a horizontal row</p>
+      </div>
+    </Container>
+  </Section>
+
+  <StatsRow
+    stats={[
+      { value: '25+', label: 'Years of Experience' },
+      { value: '1000+', label: 'Happy Customers' },
+      { value: '10000+', label: 'Vehicles Serviced' },
+      { value: '4.9', label: 'Average Rating' },
+    ]}
+  />
+
+  <!-- Testimonials Component -->
+  <Section variant="default" spacing="lg">
+    <Container>
+      <div class="component-section">
+        <h2 id="testimonials">Testimonials Component</h2>
+        <p class="description">Customer reviews and testimonials in a grid layout</p>
+      </div>
+    </Container>
+  </Section>
+
+  <Testimonials
+    headline="What Our Customers Say"
+    text="Don't just take our word for it - hear from our satisfied customers"
+    testimonials={[
+      {
+        quote:
+          "Excellent service from start to finish. They diagnosed the problem quickly, provided a fair quote, and had my car ready ahead of schedule. The team is professional, honest, and clearly skilled. I won't go anywhere else!",
+        author: 'Hans Mueller',
+        role: 'Business Owner',
+        company: 'Calgary, AB',
+      },
+      {
+        quote:
+          "I've been bringing my family's vehicles here for years and they never disappoint. Fair prices, transparent communication, and quality work every time. The waiting area is comfortable and they always finish on time.",
+        author: 'Maria Schmidt',
+        role: 'Teacher',
+        company: 'Calgary, AB',
+      },
+      {
+        quote:
+          "Best garage experience I've had. They took the time to explain everything, showed me the old parts, and even taught me some basic maintenance tips. Honest mechanics are hard to find - these guys are the real deal!",
+        author: 'Peter Keller',
+        role: 'Engineer',
+        company: 'Calgary, AB',
+      },
+    ]}
+  />
+
+  <!-- FAQ Component -->
+  <Section variant="surface" spacing="lg">
+    <Container>
+      <div class="component-section">
+        <h2 id="faq">FAQ Component</h2>
+        <p class="description">Frequently Asked Questions with expandable accordion items</p>
+      </div>
+    </Container>
+  </Section>
+
+  <FAQ
+    headline="Frequently Asked Questions"
+    text="Got questions? We've got answers!"
+    faqs={[
+      {
+        id: 'hours',
+        question: 'What are your business hours?',
+        answer:
+          'We are open Monday to Friday from 8:00 AM to 6:00 PM, and Saturday from 9:00 AM to 4:00 PM. We are closed on Sundays and major holidays. Emergency service is available by appointment.',
+      },
+      {
+        id: 'appointment',
+        question: 'Do I need an appointment?',
+        answer:
+          'While we accept walk-ins for basic services like oil changes, we recommend booking an appointment for more complex work to ensure we can dedicate time to your vehicle. You can book online, call us, or stop by.',
+      },
+      {
+        id: 'warranty',
+        question: 'Do you offer a warranty on repairs?',
+        answer:
+          'Yes! We stand behind our work with a comprehensive warranty. Parts come with manufacturer warranty (typically 1-3 years), and all labor is covered for 6 months. Brake work includes a 12-month / 20,000 km warranty.',
+      },
+      {
+        id: 'payment',
+        question: 'What payment methods do you accept?',
+        answer:
+          'We accept cash, all major credit cards (Visa, Mastercard, American Express), debit cards, and bank transfers. We also work directly with most insurance companies for covered repairs.',
+      },
+      {
+        id: 'estimate',
+        question: 'Can I get an estimate before you start work?',
+        answer:
+          'Absolutely! We always provide a detailed written estimate before beginning any work. The estimate includes parts, labor, and taxes. We will not perform any additional work without your approval.',
+      },
+      {
+        id: 'brands',
+        question: 'What brands of vehicles do you service?',
+        answer:
+          'Our certified mechanics are experienced with all makes and models, including European, Asian, and domestic vehicles. We service everything from economy cars to luxury vehicles and light trucks.',
+      },
+    ]}
+  />
+
+  <!-- LogoCloud Component -->
+  <Section variant="default" spacing="lg">
+    <Container>
+      <div class="component-section">
+        <h2 id="logo-cloud">LogoCloud Component</h2>
+        <p class="description">Display partner, certification, or client logos</p>
+      </div>
+    </Container>
+  </Section>
+
+  <LogoCloud
+    headline="Trusted Brands & Certifications"
+    text="We work with industry-leading manufacturers and hold professional certifications"
+    logos={[
+      { name: 'Bosch', logo: '🔧', url: '#' },
+      { name: 'Castrol', logo: '⚙️', url: '#' },
+      { name: 'Michelin', logo: '🛞', url: '#' },
+      { name: 'Varta', logo: '🔋', url: '#' },
+      { name: 'Shell', logo: '🏁', url: '#' },
+      { name: 'ISO 9001', logo: '✓', url: '#' },
+    ]}
+  />
+
+  <!-- ContactBlock Component -->
+  <Section variant="surface" spacing="lg">
+    <Container>
+      <div class="component-section">
+        <h2 id="contact-block">ContactBlock Component</h2>
+        <p class="description">Contact information with optional contact form</p>
+      </div>
+    </Container>
+  </Section>
+
+  <ContactBlock
+    headline="Get in Touch"
+    text="Questions about your vehicle? Need to book a service? Contact us today!"
+    email="info@garage-mueller.com"
+    phone="+41 44 123 45 67"
+    address="123 Auto Street, Calgary, AB T2A 2L2"
+    showForm={true}
+  />
+
+  <!-- CTASection Component -->
+  <Section variant="default" spacing="lg">
+    <Container>
+      <div class="component-section">
+        <h2 id="cta-section">CTASection Component</h2>
+        <p class="description">
+          Prominent call-to-action section with primary and secondary buttons
+        </p>
+      </div>
+    </Container>
+  </Section>
+
+  <CTASection
+    headline="Ready to Get Your Vehicle Serviced?"
+    text="Book your appointment today and experience the difference professional service makes"
+    variant="primary"
+    cta={{
+      text: 'Book Appointment',
+      href: '#contact',
+    }}
+    secondaryCta={{
+      text: 'Call Us Now',
+      href: 'tel:+41441234567',
+    }}
+  />
+
+  <!-- Back to Components -->
+  <Section variant="default" spacing="md">
+    <Container>
+      <div style="text-align: center; padding: var(--space-8) 0;">
+        <Button variant="outline" href="/components/"> ← Back to All Components </Button>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
+
+<style>
+  .showcase-header {
+    text-align: center;
+    max-width: var(--container-md);
+    margin: 0 auto var(--space-12);
+  }
+
+  .showcase-header h1 {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-4);
+  }
+
+  .subtitle {
+    font-size: var(--font-size-xl);
+    color: var(--color-text-secondary);
+  }
+
+  .component-section {
+    margin-bottom: var(--space-8);
+  }
+
+  .component-section h2 {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-4);
+    border-bottom: var(--border-width-thick) solid var(--color-border);
+  }
+
+  .description {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-4);
+  }
+
+  .variant-note {
+    padding: var(--space-4);
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    border-left: 4px solid var(--color-primary);
+  }
+
+  .variant-note p {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+</style>
