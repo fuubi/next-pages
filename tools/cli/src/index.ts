@@ -24,6 +24,12 @@ program
   .option('-l, --language <language>', 'Primary language (de|fr|it|en)', 'de')
   .option('-s, --shared-version <version>', 'Shared library version tag (e.g., v1.0.0 or "latest")', 'latest')
   .option('--no-checkout', 'Do not automatically checkout after creating')
+  .addHelpText('after', `
+Examples:
+  $ cli create garage-mueller
+  $ cli create garage-mueller --name "Garage Mueller AG" --domain garage-mueller.ch
+  $ cli create bike-shop --language fr --shared-version v1.2.0`)
+  .showHelpAfterError('(use --help for more information)')
   .action(createSite);
 
 program
