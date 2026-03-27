@@ -40,7 +40,7 @@ export async function createSite(name: string, options: CreateOptions) {
 
     if (!options.name || !options.domain) {
       spinner.stop();
-      
+
       const prompts = [];
 
       if (!options.name) {
@@ -73,13 +73,13 @@ export async function createSite(name: string, options: CreateOptions) {
 
       const responses = await inquirer.prompt(prompts);
       Object.assign(answers, responses);
-      
+
       spinner = ora('Creating client...').start();
     }
 
     // Create temporary directory for the new branch
     const tempDir = join(workspaceRoot, '.tmp-create', name);
-    
+
     spinner.text = 'Creating temporary worktree...';
 
     // Create an empty detached worktree in temp location
@@ -120,7 +120,7 @@ export async function createSite(name: string, options: CreateOptions) {
         try {
           const { rmSync } = require('fs');
           rmSync(tempDir, { recursive: true, force: true });
-        } catch {}
+        } catch { }
       });
     }
 
