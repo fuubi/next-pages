@@ -1,0 +1,143 @@
+---
+import BaseLayout from '@shared/layouts/BaseLayout.astro';
+import Hero from '@shared/components/sections/Hero/Hero.astro';
+import FeatureGrid from '@shared/components/sections/FeatureGrid/FeatureGrid.astro';
+import LogoCloud from '@shared/components/sections/LogoCloud/LogoCloud.astro';
+import CTASection from '@shared/components/sections/CTASection/CTASection.astro';
+import { getAlternateLanguageUrls } from '../../../i18n/utils.ts';
+import content from './index.json';
+
+// Load moon-landing theme CSS tokens (dark theme with automotive aesthetic)
+import '../../../styles/tokens-moon-landing.css';
+import '../../../styles/global.css';
+
+const alternateLanguages = getAlternateLanguageUrls('/template-moon-landing', 'de').map(
+  (alt: { lang: string; url: string }) => ({
+    lang: alt.lang,
+    url: `https://garage-mueller.ch${alt.url}`,
+  })
+);
+
+const heroProps = {
+  ...content.hero,
+  variant: 'centered' as const,
+};
+
+const featureGridProps = {
+  ...content.features,
+  variant: 'three-column' as const,
+};
+
+const ctaProps = {
+  ...content.cta,
+  variant: 'primary' as const,
+};
+---
+
+<BaseLayout
+  title="Garage Mueller - Moderne Werkstatt in Zürich"
+  description="Professioneller Auto-Service mit moderner Ausstattung und traditionellen Werten"
+  lang="de"
+  alternateLanguages={alternateLanguages}
+>
+  <Hero {...heroProps} />
+  <FeatureGrid {...featureGridProps} />
+  <LogoCloud {...content.compatibility} />
+  <CTASection {...ctaProps} />
+</BaseLayout>
+
+<style>
+  /* Template-specific overrides for modern garage aesthetic */
+  :global(body) {
+    background: linear-gradient(
+      180deg,
+      var(--color-surface-dark) 0%,
+      var(--color-background-dark) 100%
+    );
+    color: var(--color-text-inverse);
+  }
+
+  /* Subtle metallic texture effect */
+  :global(body::before) {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.1), transparent),
+      radial-gradient(1px 1px at 60% 70%, rgba(255, 255, 255, 0.08), transparent),
+      radial-gradient(1px 1px at 50% 50%, rgba(255, 255, 255, 0.06), transparent),
+      radial-gradient(1px 1px at 80% 10%, rgba(255, 255, 255, 0.09), transparent),
+      radial-gradient(1px 1px at 90% 60%, rgba(255, 255, 255, 0.07), transparent),
+      radial-gradient(1px 1px at 33% 85%, rgba(255, 255, 255, 0.05), transparent);
+    background-size: 200% 200%;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  :global(main) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Hero enhancement for modern garage style */
+  :global(.hero .hero-content) {
+    text-align: center;
+  }
+
+  :global(.hero .hero-headline) {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #f57c00 0%, #ff9800 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--space-6);
+  }
+
+  :global(.hero .hero-text) {
+    font-size: var(--font-size-xl);
+    color: var(--color-text-secondary);
+    max-width: 48rem;
+    margin: 0 auto var(--space-8);
+  }
+
+  /* Feature cards with dark theme */
+  :global(.feature-grid .card) {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all var(--transition-normal);
+  }
+
+  :global(.feature-grid .card:hover) {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(245, 124, 0, 0.5);
+    transform: translateY(-4px);
+  }
+
+  :global(.feature-icon) {
+    background: linear-gradient(135deg, rgba(245, 124, 0, 0.2), rgba(255, 152, 0, 0.2));
+    border: 1px solid rgba(245, 124, 0, 0.3);
+  }
+
+  /* Logo grid styling for dark theme */
+  :global(.logo-grid .logo-item img) {
+    filter: brightness(0) invert(1) grayscale(100%) opacity(0.6);
+  }
+
+  :global(.logo-grid .logo-item:hover img) {
+    filter: brightness(0) invert(1) grayscale(0%) opacity(1);
+  }
+
+  /* CTA section with gradient */
+  :global(.cta-section) {
+    background: linear-gradient(135deg, rgba(245, 124, 0, 0.1), rgba(211, 47, 47, 0.1));
+    border: 1px solid rgba(245, 124, 0, 0.2);
+    border-radius: var(--border-radius-lg);
+  }
+</style>

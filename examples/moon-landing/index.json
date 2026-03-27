@@ -1,0 +1,119 @@
+{
+  "hero": {
+    "headline": "Ihr Auto in besten Händen.",
+    "text": "Moderne Werkstatt mit traditionellen Werten. Professioneller Service, transparente Preise und schnelle Terminvergabe für alle Automarken.",
+    "cta": {
+      "text": "Termin vereinbaren",
+      "href": "#contact"
+    },
+    "secondaryCta": {
+      "text": "Unsere Services",
+      "href": "#services"
+    },
+    "image": "/images/hero-placeholder.jpg"
+  },
+  "features": {
+    "headline": "Unsere Services",
+    "text": "Von der Inspektion bis zur Komplettüberholung – wir bieten alle Leistungen rund um Ihr Fahrzeug aus einer Hand.",
+    "items": [
+      {
+        "title": "Service & Inspektion",
+        "description": "Regelmäßige Wartung nach Herstellervorgaben. Wir halten Ihr Fahrzeug in Top-Zustand und dokumentieren jeden Schritt.",
+        "icon": "🔧"
+      },
+      {
+        "title": "Fahrzeugdiagnose",
+        "description": "Modernste Diagnose-Technologie für alle Marken. Wir finden und beheben technische Probleme schnell und zuverlässig.",
+        "icon": "🔍"
+      },
+      {
+        "title": "Reparaturen",
+        "description": "Professionelle Reparaturen von Motor, Getriebe, Elektrik und mehr. Fair kalkuliert und termingerecht ausgeführt.",
+        "icon": "⚙️"
+      },
+      {
+        "title": "Karosserie & Lack",
+        "description": "Unfallreparaturen, Lackierarbeiten und Rostschutz. Ihr Auto sieht wieder aus wie neu.",
+        "icon": "🎨"
+      },
+      {
+        "title": "Reifen & Räder",
+        "description": "Reifenwechsel, Einlagerung und Achsvermessung. Sicher unterwegs zu jeder Jahreszeit.",
+        "icon": "🛞"
+      },
+      {
+        "title": "MFK & Prüfungen",
+        "description": "Vorbereitung und Begleitung zur MFK. Wir sorgen dafür, dass Ihr Fahrzeug alle Anforderungen erfüllt.",
+        "icon": "✓"
+      }
+    ]
+  },
+  "compatibility": {
+    "headline": "Alle Marken willkommen",
+    "text": "Wir arbeiten mit allen gängigen Automarken und haben Zugang zu Original-Ersatzteilen und Diagnose-Systemen.",
+    "logos": [
+      {
+        "name": "VW",
+        "logo": "https://api.iconify.design/simple-icons:volkswagen.svg",
+        "url": "#"
+      },
+      {
+        "name": "Audi",
+        "logo": "https://api.iconify.design/simple-icons:audi.svg",
+        "url": "#"
+      },
+      {
+        "name": "BMW",
+        "logo": "https://api.iconify.design/simple-icons:bmw.svg",
+        "url": "#"
+      },
+      {
+        "name": "Mercedes",
+        "logo": "https://api.iconify.design/simple-icons:mercedes.svg",
+        "url": "#"
+      },
+      {
+        "name": "Opel",
+        "logo": "https://api.iconify.design/simple-icons:opel.svg",
+        "url": "#"
+      },
+      {
+        "name": "Ford",
+        "logo": "https://api.iconify.design/simple-icons:ford.svg",
+        "url": "#"
+      },
+      {
+        "name": "Renault",
+        "logo": "https://api.iconify.design/simple-icons:renault.svg",
+        "url": "#"
+      },
+      {
+        "name": "Peugeot",
+        "logo": "https://api.iconify.design/simple-icons:peugeot.svg",
+        "url": "#"
+      },
+      {
+        "name": "Toyota",
+        "logo": "https://api.iconify.design/simple-icons:toyota.svg",
+        "url": "#"
+      },
+      {
+        "name": "Weitere Marken",
+        "logo": "https://api.iconify.design/mdi:car-multiple.svg",
+        "url": "#"
+      }
+    ]
+  },
+  "cta": {
+    "headline": "Bereit für den nächsten Service?",
+    "text": "Vereinbaren Sie jetzt einen Termin – schnell, unkompliziert und zu Zeiten, die zu Ihnen passen.",
+    "cta": {
+      "text": "Jetzt Termin buchen",
+      "href": "#contact"
+    },
+    "secondaryCta": {
+      "text": "Anrufen",
+      "href": "tel:+41442345678"
+    }
+  }
+}
