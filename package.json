@@ -19,7 +19,7 @@
     "build": "echo 'Build step - add your build command here'"
   },
   "workspaces": [
-    "packages/*",
+    "packages/shared",
     "sites/*",
     "tools/*"
   ],
