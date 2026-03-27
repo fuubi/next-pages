@@ -138,6 +138,11 @@ export async function createSite(name: string, options: CreateOptions) {
       notes: '',
     });
 
+    // Commit the clients.json update
+    spinner.text = 'Committing clients.json...';
+    await execa('git', ['add', 'clients.json'], { cwd: workspaceRoot });
+    await execa('git', ['commit', '-m', `Add client: ${name}`], { cwd: workspaceRoot });
+
     spinner.succeed(chalk.green(`✓ Client ${name} created successfully!`));
 
     console.log('\n' + chalk.bold('Next steps:'));
