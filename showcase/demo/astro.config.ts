@@ -13,7 +13,6 @@ export default defineConfig({
     resolve: {
       alias: {
         '@shared': resolve(__dirname, '../../packages/shared'),
-        '@templates': resolve(__dirname, '../../packages/templates'),
       },
     },
   },
