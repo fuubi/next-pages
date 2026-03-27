@@ -17,7 +17,7 @@ interface CreateOptions {
 }
 
 export async function createSite(name: string, options: CreateOptions) {
-  const spinner = ora('Creating new garage site...').start();
+  let spinner = ora('Creating new client...').start();
 
   try {
     // Validate name
@@ -31,8 +31,6 @@ export async function createSite(name: string, options: CreateOptions) {
     // Default to "latest" if no version specified
     const sharedVersion = options.sharedVersion || 'latest';
 
-    spinner.text = 'Gathering site information...';
-
     // Interactive prompts - only ask for missing information
     const answers: any = {
       businessName: options.name,
@@ -41,6 +39,8 @@ export async function createSite(name: string, options: CreateOptions) {
     };
 
     if (!options.name || !options.domain) {
+      spinner.stop();
+      
       const prompts = [];
 
       if (!options.name) {
@@ -56,7 +56,7 @@ export async function createSite(name: string, options: CreateOptions) {
         prompts.push({
           type: 'input',
           name: 'domain',
-          message: 'Domain (e.g., garage-mueller.ch):',
+          message: 'Domain (e.g., garage mueller.ch):',
           validate: (input: string) => /^[a-z0-9.-]+\.[a-z]{2,}$/.test(input)
         });
       }
@@ -73,38 +73,56 @@ export async function createSite(name: string, options: CreateOptions) {
 
       const responses = await inquirer.prompt(prompts);
       Object.assign(answers, responses);
+      
+      spinner = ora('Creating client...').start();
     }
 
-    spinner.text = 'Creating orphan branch...';
+    // Create temporary directory for the new branch
+    const tempDir = join(workspaceRoot, '.tmp-create', name);
+    
+    spinner.text = 'Creating temporary worktree...';
 
-    // Create orphan branch for the client
-    await execa('git', ['checkout', '--orphan', branchName], { cwd: workspaceRoot });
+    // Create an empty detached worktree in temp location
+    await execa('git', ['worktree', 'add', '--detach', tempDir], { cwd: workspaceRoot });
 
-    // Remove all files from staging
     try {
-      await execa('git', ['rm', '-rf', '.'], { cwd: workspaceRoot });
-    } catch {
-      // Ignore if there's nothing to remove
+      // Remove all files in the temp worktree
+      spinner.text = 'Preparing clean branch...';
+      await execa('git', ['rm', '-rf', '.'], { cwd: tempDir }).catch(() => {
+        // Ignore if no files to remove
+      });
+
+      spinner.text = 'Creating site structure...';
+
+      // Create site structure in the temp directory
+      createSiteStructure(tempDir, name, answers, sharedVersion);
+
+      spinner.text = 'Committing initial structure...';
+
+      // Commit the initial structure
+      await execa('git', ['add', '.'], { cwd: tempDir });
+      await execa('git', ['commit', '-m', `Initial setup for ${name}`], { cwd: tempDir });
+
+      // Create the branch from this commit
+      await execa('git', ['branch', branchName], { cwd: tempDir });
+
+      spinner.text = 'Pushing branch to remote...';
+
+      // Push the branch
+      await execa('git', ['push', 'origin', branchName], { cwd: tempDir });
+
+    } finally {
+      // Clean up temp worktree
+      spinner.text = 'Cleaning up...';
+      await execa('git', ['worktree', 'remove', tempDir, '--force'], { cwd: workspaceRoot }).catch((err) => {
+        // If automatic removal fails, try manual cleanup
+        console.log(chalk.dim('Cleaning up manually...'));
+        try {
+          const { rmSync } = require('fs');
+          rmSync(tempDir, { recursive: true, force: true });
+        } catch {}
+      });
     }
-
-    spinner.text = 'Creating site structure...';
-
-    // Create site with shared library version info
-    createSiteStructure(workspaceRoot, name, answers, sharedVersion);
-
-    spinner.text = 'Committing initial structure...';
-
-    // Commit the initial structure
-    await execa('git', ['add', '.'], { cwd: workspaceRoot });
-    await execa('git', ['commit', '-m', `Initial setup for ${name}`], { cwd: workspaceRoot });
-
-    spinner.text = 'Pushing branch to remote...';
-
-    // Push the branch
-    await execa('git', ['push', 'origin', branchName], { cwd: workspaceRoot });
-
-    // Switch back to coordinator branch
-    await execa('git', ['checkout', '-'], { cwd: workspaceRoot });
 
     spinner.text = 'Registering client in clients.json...';
 
