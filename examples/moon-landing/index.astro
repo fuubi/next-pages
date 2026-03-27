@@ -4,19 +4,27 @@ import Hero from '@shared/components/sections/Hero/Hero.astro';
 import FeatureGrid from '@shared/components/sections/FeatureGrid/FeatureGrid.astro';
 import LogoCloud from '@shared/components/sections/LogoCloud/LogoCloud.astro';
 import CTASection from '@shared/components/sections/CTASection/CTASection.astro';
-import { getAlternateLanguageUrls } from '../../../i18n/utils.ts';
 import content from './index.json';
 
-// Load moon-landing theme CSS tokens (dark theme with automotive aesthetic)
-import '../../../styles/tokens-moon-landing.css';
-import '../../../styles/global.css';
+// TODO: When copying to your site, import your i18n utils
+// import { getAlternateLanguageUrls } from '@site/i18n/utils.ts';
 
+// TODO: Load your custom theme CSS tokens
+// import '@site/styles/tokens-moon-landing.css';
+// import '@site/styles/global.css';
+
+// Placeholder alternate languages - update with your domain
+const alternateLanguages: { lang: string; url: string }[] = [];
+
+/*
+// Example with i18n:
 const alternateLanguages = getAlternateLanguageUrls('/template-moon-landing', 'de').map(
   (alt: { lang: string; url: string }) => ({
     lang: alt.lang,
     url: `https://garage-mueller.ch${alt.url}`,
   })
 );
+*/
 
 const heroProps = {
   ...content.hero,

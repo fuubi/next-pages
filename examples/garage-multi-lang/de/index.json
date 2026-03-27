@@ -1,0 +1,114 @@
+{
+  "utilityBar": {
+    "phone": "+41 44 123 45 67",
+    "hours": "Mo-Fr: 07:00-18:00, Sa: 08:00-12:00",
+    "location": "Zürich, Schweiz",
+    "emergencyAvailable": true
+  },
+  "hero": {
+    "headline": "Professionelle Autopflege seit 1998",
+    "text": "Ihr vertrauenswürdiger Partner für Reparatur, Wartung und Service in Zürich",
+    "cta": {
+      "text": "Termin buchen",
+      "href": "/de/contact"
+    },
+    "secondaryCta": {
+      "text": "Anrufen",
+      "href": "tel:+41441234567"
+    },
+    "variant": "garage",
+    "trustIndicators": [
+      {
+        "type": "years",
+        "value": "25+",
+        "label": "Jahre Erfahrung",
+        "icon": "🏆"
+      },
+      {
+        "type": "customers",
+        "value": "1000+",
+        "label": "Zufriedene Kunden",
+        "icon": "👥"
+      },
+      {
+        "type": "rating",
+        "value": "4.9★",
+        "label": "Google Bewertung",
+        "icon": "⭐"
+      },
+      {
+        "type": "certification",
+        "value": "ASE",
+        "label": "Zertifiziert",
+        "icon": "✓"
+      }
+    ]
+  },
+  "services": {
+    "headline": "Unsere Dienstleistungen",
+    "subheadline": "Professionelle KFZ-Services für alle Fahrzeugmarken",
+    "services": [
+      {
+        "icon": "🔧",
+        "title": "Reparatur & Wartung",
+        "description": "Professionelle KFZ-Reparaturen und regelmäßige Fahrzeugwartung für alle Marken",
+        "link": {
+          "text": "Mehr erfahren",
+          "href": "/de/services/repair"
+        }
+      },
+      {
+        "icon": "🛠️",
+        "title": "Inspektion & Diagnose",
+        "description": "Gründliche Fahrzeugprüfung mit modernster Computertechnologie",
+        "link": {
+          "text": "Mehr erfahren",
+          "href": "/de/services/inspection"
+        }
+      },
+      {
+        "icon": "🚗",
+        "title": "Karosserie & Lackierung",
+        "description": "Professionelle Karosseriearbeiten und hochwertige Lackierungen",
+        "link": {
+          "text": "Mehr erfahren",
+          "href": "/de/services/bodywork"
+        }
+      },
+      {
+        "icon": "⚙️",
+        "title": "Reifenservice",
+        "description": "Reifenwechsel, Einlagerung und Auswuchtung für Sommer und Winter",
+        "link": {
+          "text": "Mehr erfahren",
+          "href": "/de/services/tires"
+        }
+      },
+      {
+        "icon": "🔋",
+        "title": "Elektrik & Elektronik",
+        "description": "Diagnose und Reparatur elektrischer Systeme und Batterieservice",
+        "link": {
+          "text": "Mehr erfahren",
+          "href": "/de/services/electrical"
+        }
+      },
+      {
+        "icon": "🛡️",
+        "title": "Klimaservice",
+        "description": "Wartung und Reparatur von Klimaanlagen für angenehmes Fahren",
+        "link": {
+          "text": "Mehr erfahren",
+          "href": "/de/services/climate"
+        }
+      }
+    ]
+  },
+  "contact": {
+    "headline": "Kontaktieren Sie uns",
+    "text": "Haben Sie Fragen oder möchten einen Termin vereinbaren?",
+    "email": "info@garage-mueller.ch",
+    "phone": "+41 44 123 45 67",
+    "address": "Musterstrasse 123, 8000 Zürich"
+  }
+}

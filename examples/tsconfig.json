@@ -1,0 +1,11 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["../*"],
+      "@site/*": ["./site-placeholder/*"]
+    }
+  },
+  "// NOTE": "When copying examples to your site, update @site/* path to match your site's src folder structure"
+}

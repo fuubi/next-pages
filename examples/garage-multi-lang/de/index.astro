@@ -1,0 +1,73 @@
+---
+import BaseLayout from '@shared/layouts/BaseLayout.astro';
+import UtilityBar from '@shared/components/site/UtilityBar/UtilityBar.astro';
+import LanguageSwitcher from '@shared/components/site/LanguageSwitcher/LanguageSwitcher.astro';
+import Hero from '@shared/components/sections/Hero/Hero.astro';
+import ServiceGrid from '@shared/components/sections/ServiceGrid/ServiceGrid.astro';
+import ContactBlock from '@shared/components/sections/ContactBlock/ContactBlock.astro';
+import Footer from '@shared/components/site/Footer/Footer.astro';
+import { getAlternateLanguageUrls } from '../i18n/utils.ts';
+import content from './index.json';
+// TODO: Import your site-specific theme overrides
+// import '@site/styles/tokens.css';
+// import '@site/styles/global.css';
+
+const alternateLanguages = getAlternateLanguageUrls('/', 'de').map(
+  (alt: { lang: string; url: string }) => ({
+    lang: alt.lang,
+    url: `https://garage-mueller.ch${alt.url}`,
+  })
+);
+
+// Language switcher data (all languages including current)
+const allLanguages = [
+  { lang: 'de', url: '/de/' },
+  { lang: 'fr', url: '/fr/' },
+  { lang: 'it', url: '/it/' },
+];
+
+// Type-safe props from JSON
+const heroProps = {
+  ...content.hero,
+  variant: 'garage' as const,
+};
+
+// Footer data
+const footerData = {
+  variant: 'classic' as const,
+  companyName: 'Garage Mueller',
+  tagline: 'Ihre zuverlässige Autowerkstatt in Zürich',
+  phone: '+41 44 123 45 67',
+  email: 'info@garage-mueller.ch',
+  address: 'Musterstrasse 123, 8000 Zürich',
+  hours: [
+    { day: 'Montag - Freitag', time: '08:00 - 18:00' },
+    { day: 'Samstag', time: '09:00 - 16:00' },
+    { day: 'Sonntag', time: 'Geschlossen' },
+  ],
+  links: [
+    { label: 'Über uns', href: '/de/about' },
+    { label: 'Dienstleistungen', href: '/de/services' },
+    { label: 'Kontakt', href: '/de/contact' },
+    { label: 'FAQ', href: '/de/faq' },
+  ],
+  socialLinks: [
+    { platform: 'Facebook', href: 'https://facebook.com/garagemueller' },
+    { platform: 'Instagram', href: 'https://instagram.com/garagemueller' },
+  ],
+  showBadge: true,
+};
+---
+
+<BaseLayout
+  title="Garage Mueller - Ihre Autowerkstatt in Zürich"
+  lang="de"
+  alternateLanguages={alternateLanguages}
+>
+  <UtilityBar {...content.utilityBar} />
+  <LanguageSwitcher currentLang="de" currentPath="/" languages={allLanguages} />
+  <Hero {...heroProps} />
+  <ServiceGrid {...content.services} />
+  <ContactBlock {...content.contact} />
+  <Footer {...footerData} />
+</BaseLayout>

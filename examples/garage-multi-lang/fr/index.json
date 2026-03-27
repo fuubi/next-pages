@@ -1,0 +1,114 @@
+{
+  "utilityBar": {
+    "phone": "+41 44 123 45 67",
+    "hours": "Lun-Ven: 07:00-18:00, Sam: 08:00-12:00",
+    "location": "Zurich, Suisse",
+    "emergencyAvailable": true
+  },
+  "hero": {
+    "headline": "Entretien automobile professionnel depuis 1998",
+    "text": "Votre partenaire de confiance pour la réparation, l'entretien et le service à Zurich",
+    "cta": {
+      "text": "Prendre rendez-vous",
+      "href": "/fr/contact"
+    },
+    "secondaryCta": {
+      "text": "Appeler",
+      "href": "tel:+41441234567"
+    },
+    "variant": "garage",
+    "trustIndicators": [
+      {
+        "type": "years",
+        "value": "25+",
+        "label": "Années d'expérience",
+        "icon": "🏆"
+      },
+      {
+        "type": "customers",
+        "value": "1000+",
+        "label": "Clients satisfaits",
+        "icon": "👥"
+      },
+      {
+        "type": "rating",
+        "value": "4.9★",
+        "label": "Évaluation Google",
+        "icon": "⭐"
+      },
+      {
+        "type": "certification",
+        "value": "ASE",
+        "label": "Certifié",
+        "icon": "✓"
+      }
+    ]
+  },
+  "services": {
+    "headline": "Nos Services",
+    "subheadline": "Services automobiles professionnels pour toutes les marques",
+    "services": [
+      {
+        "icon": "🔧",
+        "title": "Réparation & Entretien",
+        "description": "Réparations automobiles professionnelles et entretien régulier pour toutes les marques",
+        "link": {
+          "text": "En savoir plus",
+          "href": "/fr/services/repair"
+        }
+      },
+      {
+        "icon": "🛠️",
+        "title": "Inspection & Diagnostic",
+        "description": "Contrôle approfondi du véhicule avec technologie informatique moderne",
+        "link": {
+          "text": "En savoir plus",
+          "href": "/fr/services/inspection"
+        }
+      },
+      {
+        "icon": "🚗",
+        "title": "Carrosserie & Peinture",
+        "description": "Travaux de carrosserie professionnels et peintures de haute qualité",
+        "link": {
+          "text": "En savoir plus",
+          "href": "/fr/services/bodywork"
+        }
+      },
+      {
+        "icon": "⚙️",
+        "title": "Service Pneus",
+        "description": "Changement de pneus, stockage et équilibrage pour l'été et l'hiver",
+        "link": {
+          "text": "En savoir plus",
+          "href": "/fr/services/tires"
+        }
+      },
+      {
+        "icon": "🔋",
+        "title": "Électrique & Électronique",
+        "description": "Diagnostic et réparation des systèmes électriques et service batteries",
+        "link": {
+          "text": "En savoir plus",
+          "href": "/fr/services/electrical"
+        }
+      },
+      {
+        "icon": "🛡️",
+        "title": "Service Climatisation",
+        "description": "Entretien et réparation de climatiseurs pour une conduite agréable",
+        "link": {
+          "text": "En savoir plus",
+          "href": "/fr/services/climate"
+        }
+      }
+    ]
+  },
+  "contact": {
+    "headline": "Contactez-nous",
+    "text": "Vous avez des questions ou souhaitez prendre rendez-vous?",
+    "email": "info@garage-mueller.ch",
+    "phone": "+41 44 123 45 67",
+    "address": "Musterstrasse 123, 8000 Zurich"
+  }
+}

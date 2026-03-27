@@ -1,0 +1,114 @@
+{
+  "utilityBar": {
+    "phone": "+41 44 123 45 67",
+    "hours": "Lun-Ven: 07:00-18:00, Sab: 08:00-12:00",
+    "location": "Zurigo, Svizzera",
+    "emergencyAvailable": true
+  },
+  "hero": {
+    "headline": "Cura professionale dell'auto dal 1998",
+    "text": "Il vostro partner di fiducia per riparazione, manutenzione e servizio a Zurigo",
+    "cta": {
+      "text": "Prenota appuntamento",
+      "href": "/it/contact"
+    },
+    "secondaryCta": {
+      "text": "Chiama",
+      "href": "tel:+41441234567"
+    },
+    "variant": "garage",
+    "trustIndicators": [
+      {
+        "type": "years",
+        "value": "25+",
+        "label": "Anni di esperienza",
+        "icon": "🏆"
+      },
+      {
+        "type": "customers",
+        "value": "1000+",
+        "label": "Clienti soddisfatti",
+        "icon": "👥"
+      },
+      {
+        "type": "rating",
+        "value": "4.9★",
+        "label": "Valutazione Google",
+        "icon": "⭐"
+      },
+      {
+        "type": "certification",
+        "value": "ASE",
+        "label": "Certificato",
+        "icon": "✓"
+      }
+    ]
+  },
+  "services": {
+    "headline": "I Nostri Servizi",
+    "subheadline": "Servizi auto professionali per tutte le marche",
+    "services": [
+      {
+        "icon": "🔧",
+        "title": "Riparazione & Manutenzione",
+        "description": "Riparazioni auto professionali e manutenzione regolare per tutte le marche",
+        "link": {
+          "text": "Scopri di più",
+          "href": "/it/services/repair"
+        }
+      },
+      {
+        "icon": "🛠️",
+        "title": "Ispezione & Diagnosi",
+        "description": "Controllo approfondito del veicolo con tecnologia informatica moderna",
+        "link": {
+          "text": "Scopri di più",
+          "href": "/it/services/inspection"
+        }
+      },
+      {
+        "icon": "🚗",
+        "title": "Carrozzeria & Verniciatura",
+        "description": "Lavori di carrozzeria professionale e verniciature di alta qualità",
+        "link": {
+          "text": "Scopri di più",
+          "href": "/it/services/bodywork"
+        }
+      },
+      {
+        "icon": "⚙️",
+        "title": "Servizio Pneumatici",
+        "description": "Cambio pneumatici, deposito ed equilibratura per estate e inverno",
+        "link": {
+          "text": "Scopri di più",
+          "href": "/it/services/tires"
+        }
+      },
+      {
+        "icon": "🔋",
+        "title": "Elettrica & Elettronica",
+        "description": "Diagnosi e riparazione di sistemi elettrici e servizio batterie",
+        "link": {
+          "text": "Scopri di più",
+          "href": "/it/services/electrical"
+        }
+      },
+      {
+        "icon": "🛡️",
+        "title": "Servizio Climatizzatore",
+        "description": "Manutenzione e riparazione di climatizzatori per una guida piacevole",
+        "link": {
+          "text": "Scopri di più",
+          "href": "/it/services/climate"
+        }
+      }
+    ]
+  },
+  "contact": {
+    "headline": "Contattaci",
+    "text": "Hai domande o vuoi fissare un appuntamento?",
+    "email": "info@garage-mueller.ch",
+    "phone": "+41 44 123 45 67",
+    "address": "Musterstrasse 123, 8000 Zurigo"
+  }
+}
