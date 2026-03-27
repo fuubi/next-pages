@@ -49,16 +49,18 @@ const {
     cursor: pointer;
     transition: all var(--duration-fast);
     flex-shrink: 0;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    background: rgba(31, 89, 80, 0.8);
+    border: 2px solid var(--color-border);
+    background: var(--color-surface);
     color: var(--color-text);
-    backdrop-filter: blur(4px);
+    box-shadow: var(--shadow-md);
   }
 
   .carousel-arrow-btn:hover {
     background: var(--color-primary);
     border-color: var(--color-primary);
+    color: var(--color-primary-contrast);
     transform: scale(1.1);
+    box-shadow: var(--shadow-lg);
   }
 
   .carousel-arrow-btn:active {
@@ -68,6 +70,36 @@ const {
   .carousel-arrow-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+  }
+
+  /* Variant styles */
+  .variant-default {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text);
+  }
+
+  .variant-ghost {
+    background: var(--color-glass-bg-strong);
+    border-color: var(--color-glass-border);
+    backdrop-filter: var(--blur-sm);
+  }
+
+  .variant-ghost:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+  }
+
+  .variant-primary {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+  }
+
+  .variant-primary:hover {
+    background: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
   }
 
   /* Size variants */

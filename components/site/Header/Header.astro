@@ -117,7 +117,7 @@ const { siteName, navigation } = settings.data;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 4rem;
+    height: var(--header-height-desktop);
     gap: var(--space-8);
   }
 
@@ -165,7 +165,7 @@ const { siteName, navigation } = settings.data;
     bottom: -4px;
     left: 0;
     width: 0;
-    height: 2px;
+    height: var(--border-width-thick);
     background-color: var(--color-primary);
     transition: width var(--duration-normal) var(--ease-out);
   }
@@ -194,13 +194,13 @@ const { siteName, navigation } = settings.data;
     border-radius: var(--border-radius);
     text-decoration: none;
     transition: all var(--duration-fast) var(--ease-out);
-    box-shadow: 0 2px 8px rgba(107, 165, 67, 0.3);
+    box-shadow: var(--shadow-md);
   }
 
   .cta-button:hover {
     background-color: var(--color-primary-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(107, 165, 67, 0.4);
+    box-shadow: var(--shadow-lg);
   }
 
   .cta-button:active {

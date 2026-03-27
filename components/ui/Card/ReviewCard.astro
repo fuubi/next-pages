@@ -165,8 +165,8 @@ const avatarColor = colors[colorIndex];
   }
 
   .avatar {
-    width: 48px;
-    height: 48px;
+    width: var(--avatar-md);
+    height: var(--avatar-md);
     border-radius: 50%;
     flex-shrink: 0;
   }
@@ -201,8 +201,8 @@ const avatarColor = colors[colorIndex];
 
   .platform-badge {
     flex-shrink: 0;
-    width: 24px;
-    height: 24px;
+    width: var(--avatar-xs);
+    height: var(--avatar-xs);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -220,7 +220,7 @@ const avatarColor = colors[colorIndex];
   }
 
   .star.filled {
-    color: #f0c36d; /* Gold color for filled stars */
+    color: var(--color-rating-star);
   }
 
   .star.empty {

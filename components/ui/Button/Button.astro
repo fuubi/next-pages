@@ -47,7 +47,7 @@ const Element = href ? 'a' : 'button';
     width: 0;
     height: 0;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
+    background: var(--color-glass-bg);
     transform: translate(-50%, -50%);
     transition:
       width var(--duration-slow) var(--ease-out),
@@ -85,13 +85,13 @@ const Element = href ? 'a' : 'button';
   .variant-primary {
     background-color: var(--color-primary);
     color: white;
-    box-shadow: 0 1px 3px rgba(107, 165, 67, 0.3);
+    box-shadow: var(--shadow-sm);
   }
 
   .variant-primary:hover {
     background-color: var(--color-primary-hover);
     transform: translateY(-1px) translateZ(0);
-    box-shadow: 0 4px 12px rgba(107, 165, 67, 0.4);
+    box-shadow: var(--shadow-lg);
   }
 
   .variant-primary:active {
