@@ -120,7 +120,8 @@ export async function checkoutClient(clientName: string) {
     const packageJsonPath = join(clientPath, 'package.json');
 
     if (existsSync(packageJsonPath)) {
-      const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
+      const originalContent = readFileSync(packageJsonPath, 'utf-8');
+      const packageJson = JSON.parse(originalContent);
 
       if (!packageJson.dependencies) {
         packageJson.dependencies = {};
@@ -133,7 +134,10 @@ export async function checkoutClient(clientName: string) {
 
       packageJson.dependencies['@colombalink/shared'] = `file:${relativeSharedPath}`;
 
-      writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf-8');
+      // Preserve original trailing newline format
+      const hasTrailingNewline = originalContent.endsWith('\n');
+      const newContent = JSON.stringify(packageJson, null, 2) + (hasTrailingNewline ? '\n' : '');
+      writeFileSync(packageJsonPath, newContent, 'utf-8');
       spinner.succeed('Updated package.json with file: protocol reference');
     } else {
       spinner.warn('package.json not found in client worktree');

@@ -156,9 +156,11 @@ export async function upgradeSharedLib(clientName: string, newVersion: string) {
       // Update package.json
       const packageJsonPath = join(clientPath, 'package.json');
       if (existsSync(packageJsonPath)) {
-        const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
+        const originalContent = readFileSync(packageJsonPath, 'utf-8');
+        const packageJson = JSON.parse(originalContent);
         packageJson.dependencies['@colombalink/shared'] = 'file:../../packages/shared-latest';
-        writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf-8');
+        const hasTrailingNewline = originalContent.endsWith('\n');
+        writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + (hasTrailingNewline ? '\n' : ''), 'utf-8');
       }
 
       spinner.succeed(`${chalk.green('✓')} Switched to shared-latest (${chalk.cyan(actualNewVersion)})`);
@@ -177,9 +179,11 @@ export async function upgradeSharedLib(clientName: string, newVersion: string) {
       // Update package.json
       const packageJsonPath = join(clientPath, 'package.json');
       if (existsSync(packageJsonPath)) {
-        const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
+        const originalContent = readFileSync(packageJsonPath, 'utf-8');
+        const packageJson = JSON.parse(originalContent);
         packageJson.dependencies['@colombalink/shared'] = `file:../../packages/shared-${newVersion}`;
-        writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf-8');
+        const hasTrailingNewline = originalContent.endsWith('\n');
+        writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + (hasTrailingNewline ? '\n' : ''), 'utf-8');
       }
 
       spinner.succeed(`${chalk.green('✓')} Pinned to specific version ${chalk.cyan(newVersion)}`);
@@ -201,9 +205,11 @@ export async function upgradeSharedLib(clientName: string, newVersion: string) {
       // Update package.json
       const packageJsonPath = join(clientPath, 'package.json');
       if (existsSync(packageJsonPath)) {
-        const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
+        const originalContent = readFileSync(packageJsonPath, 'utf-8');
+        const packageJson = JSON.parse(originalContent);
         packageJson.dependencies['@colombalink/shared'] = `file:../../packages/shared-${newVersion}`;
-        writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf-8');
+        const hasTrailingNewline = originalContent.endsWith('\n');
+        writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + (hasTrailingNewline ? '\n' : ''), 'utf-8');
       }
 
       spinner.succeed(`${chalk.green('✓')} Updated to version ${chalk.cyan(newVersion)}`);
