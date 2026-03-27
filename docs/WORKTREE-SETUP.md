@@ -4,24 +4,9 @@
 
 This project uses git worktrees for parallel development:
 
-- **`packages/shared/`** → Development worktree (shared/components branch)
-- **`sites/<client>/`** → Client worktrees (client/* branches)
-- **`sites/<client>/src/shared/`** → NOT a worktree (extracted files)
-
-## Auto-Sync Development Worktree
-
-Enable automatic syncing of `packages/shared/` when switching to main:
-
-```bash
-chmod +x .git/hooks/post-checkout
-```
-
-This hook updates `packages/shared/` to the latest `shared/components` when you checkout main.
-
-**Manual sync:**
-```bash
-cli sync
-```
+- **`packages/shared-main/`** → Development worktree (packages/shared-main branch)
+- **`packages/shared-latest/`** → Latest version worktree (detached HEAD)
+- **`sites/<client>/`** → Client worktrees (client/\* branches)
 
 ## Checking Worktree Status
 
@@ -30,21 +15,20 @@ cli sync
 git worktree list
 
 # Check shared components version
-cd packages/shared
+cd packages/shared-main
 git describe --tags
 ```
 
 ## Manual Worktree Operations
 
 ```bash
-# Switch to specific version
-cd packages/shared
-git checkout v1.0.0
+# Update development branch
+cd packages/shared-main
+git pull origin packages/shared-main
 
-# Update to latest
-cd packages/shared
-git checkout shared/components
-git pull origin shared/components
+# Switch to specific version (in shared-latest)
+cd packages/shared-latest
+git checkout v1.0.0
 ```
 
 ---

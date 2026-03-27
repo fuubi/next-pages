@@ -7,7 +7,6 @@ import { listSharedVersions } from './commands/list-shared.ts';
 import { checkoutClient } from './commands/checkout.ts';
 import { closeClient, closeAllClients } from './commands/close.ts';
 import { upgradeSharedLib } from './commands/upgrade-shared.ts';
-import { syncWorktrees } from './commands/sync.ts';
 
 const program = new Command();
 
@@ -72,10 +71,5 @@ program
   .command('list-shared')
   .description('List all checked-out shared library versions')
   .action(listSharedVersions);
-
-program
-  .command('sync')
-  .description('Sync worktrees to ensure they are at correct versions')
-  .action(syncWorktrees);
 
 program.parse();

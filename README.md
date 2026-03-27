@@ -8,7 +8,7 @@ This repository uses a **coordinator pattern** with **orphan branches**:
 
 - **`main` branch**: CLI tooling, documentation, client registry
 - **`client/*` branches**: Isolated client sites (no shared git history)
-- **`shared/components` branch**: Versioned component library (tags: v1.0.0, v1.1.0...)
+- **`packages/shared-main` branch**: Active component development (git worktree)
 
 **Benefits:**
 
@@ -32,11 +32,11 @@ This monorepo supports two types of sites:
 - **`sites/garage-mueller`**: Full production-like site for testing components in context
 - **`sites/demo-showcase`**: Isolated component gallery for rapid iteration
 
-Both use **workspace dependencies** (`@colombalink/shared`) for instant live reloading when editing components in `packages/shared/`.
+Both use **workspace dependencies** (`@colombalink/shared`) for instant live reloading when editing components in `packages/shared-main/`.
 
 ```bash
 # Develop components
-cd packages/shared
+cd packages/shared-main
 # Edit any component
 
 # See changes instantly in:
