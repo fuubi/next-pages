@@ -1,16 +1,5 @@
 {
   "$schema": "./clients.schema.json",
   "sharedComponentsBranch": "shared/components",
-  "clients": [
-    {
-      "name": "test-site2",
-      "branch": "client/test-site2",
-      "sharedLibVersion": "latest",
-      "sharedLibRepo": "origin",
-      "domain": "test-site.ch",
-      "language": "de",
-      "created": "2026-03-27T14:27:42.900Z",
-      "notes": ""
-    }
-  ]
+  "clients": []
 }
