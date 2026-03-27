@@ -9,12 +9,16 @@ import {
   getClientConfig,
   getSharedVersionWorktreePath,
 } from '../utils/workspace.ts';
+import { normalizeSiteName } from '../utils/normalize.ts';
 
 /**
  * Close (remove) a client's worktree
  * Note: Shared library is now in packages/shared-{version}, not nested
  */
 export async function closeClient(clientName: string, options: { cleanUnusedShared?: boolean } = {}) {
+  // Normalize site name (strip sites/ prefix for tab-completion support)
+  clientName = normalizeSiteName(clientName);
+
   const spinner = ora(`Closing ${clientName}...`).start();
 
   try {

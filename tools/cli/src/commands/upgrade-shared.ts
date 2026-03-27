@@ -12,12 +12,16 @@ import {
   getLatestSharedVersion,
   getCurrentLatestWorktreeVersion,
 } from '../utils/workspace.ts';
+import { normalizeSiteName } from '../utils/normalize.ts';
 
 /**
  * Upgrade the shared library version for a specific client
  * Updates the version worktree and client's package.json reference
  */
 export async function upgradeSharedLib(clientName: string, newVersion: string) {
+  // Normalize site name (strip sites/ prefix for tab-completion support)
+  clientName = normalizeSiteName(clientName);
+
   const spinner = ora(`Upgrading shared library for ${clientName}...`).start();
 
   try {

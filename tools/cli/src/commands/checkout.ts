@@ -29,6 +29,9 @@ interface ClientsRegistry {
  * Supports multiple clients checked out simultaneously
  */
 export async function checkoutClient(clientName: string) {
+  // Normalize site name (strip sites/ prefix for tab-completion support)
+  clientName = normalizeSiteName(clientName);
+
   const spinner = ora(`Checking out ${clientName}...`).start();
 
   try {

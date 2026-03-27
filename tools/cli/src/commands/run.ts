@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { getWorkspaceRoot, getClientConfig } from '../utils/workspace.ts';
+import { normalizeSiteName } from '../utils/normalize.ts';
 
 interface RunOptions {
     background?: boolean;
@@ -18,6 +19,9 @@ export async function runSiteScript(
     script: string,
     options: RunOptions = {}
 ) {
+    // Normalize site name (strip sites/ prefix for tab-completion support)
+    siteName = normalizeSiteName(siteName);
+
     try {
         const workspaceRoot = getWorkspaceRoot();
         const sitePath = join(workspaceRoot, 'sites', siteName);

@@ -2,6 +2,7 @@ import { existsSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 import chalk from 'chalk';
 import { getWorkspaceRoot } from '../utils/workspace.ts';
+import { normalizeSiteName } from '../utils/normalize.ts';
 
 interface ValidationResult {
   site: string;
@@ -17,6 +18,11 @@ export async function validateSite(siteName?: string) {
   if (!existsSync(sitesDir)) {
     console.error(chalk.red('✗ sites/ directory not found. Are you in the monorepo root?'));
     process.exit(1);
+  }
+
+  // Normalize site name if provided (strip sites/ prefix for tab-completion support)
+  if (siteName) {
+    siteName = normalizeSiteName(siteName);
   }
 
   const sitesToValidate = siteName
