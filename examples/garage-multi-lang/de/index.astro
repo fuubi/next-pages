@@ -20,10 +20,11 @@ const alternateLanguages = getAlternateLanguageUrls('/', 'de').map(
 );
 
 // Language switcher data (all languages including current)
+// Note: When copying to your site, use absolute paths like '/de/', '/fr/', '/it/'
 const allLanguages = [
-  { lang: 'de', url: '/de/' },
-  { lang: 'fr', url: '/fr/' },
-  { lang: 'it', url: '/it/' },
+  { lang: 'de', url: '/examples/garage-multi-lang/de/' },
+  { lang: 'fr', url: '/examples/garage-multi-lang/fr/' },
+  { lang: 'it', url: '/examples/garage-multi-lang/it/' },
 ];
 
 // Type-safe props from JSON
