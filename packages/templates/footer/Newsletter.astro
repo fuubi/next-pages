@@ -146,55 +146,55 @@ const currentYear = new Date().getFullYear();
 
 <style>
   .footer-newsletter {
-    background-color: #ffffff;
+    background-color: var(--color-surface);
   }
 
   .footer-top {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #ffffff;
-    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: var(--color-primary-contrast);
+    padding: var(--space-12) 0;
   }
 
   .footer-container {
-    max-width: 1200px;
+    max-width: var(--container-lg);
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 0 var(--space-6);
   }
 
   .newsletter-section {
     text-align: center;
-    max-width: 600px;
+    max-width: var(--container-md);
     margin: 0 auto;
   }
 
   .newsletter-heading {
-    font-size: 2rem;
-    font-weight: 700;
-    margin: 0 0 0.75rem;
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    margin: 0 0 var(--space-3);
   }
 
   .newsletter-text {
-    font-size: 1rem;
-    margin: 0 0 1.5rem;
+    font-size: var(--font-size-lg);
+    margin: 0 0 var(--space-6);
     opacity: 0.95;
   }
 
   .newsletter-form {
     display: flex;
-    gap: 0.75rem;
+    gap: var(--space-3);
     max-width: 500px;
     margin: 0 auto;
   }
 
   .newsletter-input {
     flex: 1;
-    padding: 0.875rem 1.25rem;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    font-size: 1rem;
-    transition: all 0.2s;
+    padding: var(--space-3) var(--space-5);
+    border: var(--border-width-2) solid var(--color-glass-border);
+    border-radius: var(--border-radius-lg);
+    background-color: var(--color-glass-bg);
+    color: var(--color-primary-contrast);
+    font-size: var(--font-size-lg);
+    transition: all var(--transition-fast);
   }
 
   .newsletter-input::placeholder {
@@ -208,51 +208,51 @@ const currentYear = new Date().getFullYear();
   }
 
   .newsletter-button {
-    padding: 0.875rem 2rem;
-    background-color: #ffffff;
-    color: #667eea;
+    padding: var(--space-3) var(--space-8);
+    background-color: var(--color-primary-contrast);
+    color: var(--color-primary);
     border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 1rem;
+    border-radius: var(--border-radius-lg);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-lg);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all var(--transition-fast);
     white-space: nowrap;
   }
 
   .newsletter-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-lg);
   }
 
   .footer-main {
-    background-color: #f8f9fa;
-    padding: 3rem 0;
-    border-top: 1px solid #e0e0e0;
+    background-color: var(--color-surface);
+    padding: var(--space-12) 0;
+    border-top: var(--border-width) solid var(--color-border);
   }
 
   .footer-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2.5rem;
+    gap: var(--space-10);
   }
 
   .footer-column {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--space-4);
   }
 
   .footer-heading {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #1a1a1a;
-    margin: 0 0 0.5rem;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin: 0 0 var(--space-2);
   }
 
   .footer-tagline {
-    font-size: 0.95rem;
-    color: #666;
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
     margin: 0;
   }
 
@@ -263,84 +263,84 @@ const currentYear = new Date().getFullYear();
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--space-3);
   }
 
   .footer-link {
-    color: #4a4a4a;
+    color: var(--color-text-secondary);
     text-decoration: none;
-    transition: color 0.2s;
-    font-size: 0.95rem;
+    transition: color var(--transition-fast);
+    font-size: var(--font-size-base);
   }
 
   .footer-link:hover {
-    color: #667eea;
+    color: var(--color-primary);
   }
 
   .contact-item {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--space-3);
   }
 
   .contact-icon {
-    width: 1.25rem;
-    height: 1.25rem;
-    color: #888;
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    color: var(--color-text-tertiary);
     flex-shrink: 0;
   }
 
   .contact-link {
-    color: #4a4a4a;
+    color: var(--color-text-secondary);
     text-decoration: none;
-    transition: color 0.2s;
-    font-size: 0.95rem;
+    transition: color var(--transition-fast);
+    font-size: var(--font-size-base);
   }
 
   .contact-link:hover {
-    color: #667eea;
+    color: var(--color-primary);
   }
 
   .social-links {
     display: flex;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
   }
 
   .social-link {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    background-color: #e0e0e0;
+    width: var(--space-10);
+    height: var(--space-10);
+    border-radius: var(--border-radius-full);
+    background-color: var(--color-border-soft);
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: #1a1a1a;
-    transition: all 0.2s;
+    color: var(--color-text);
+    transition: all var(--transition-fast);
   }
 
   .social-link:hover {
-    background-color: #667eea;
-    color: #ffffff;
+    background-color: var(--color-primary);
+    color: var(--color-primary-contrast);
     transform: translateY(-2px);
   }
 
   .social-icon {
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
   }
 
   .footer-bottom {
-    background-color: #f8f9fa;
-    padding: 1.5rem 0;
-    border-top: 1px solid #e0e0e0;
+    background-color: var(--color-surface);
+    padding: var(--space-6) 0;
+    border-top: var(--border-width) solid var(--color-border);
   }
 
   .copyright {
     text-align: center;
-    font-size: 0.875rem;
-    color: #888;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
     margin: 0;
   }
 

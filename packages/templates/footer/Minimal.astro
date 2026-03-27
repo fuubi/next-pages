@@ -64,28 +64,28 @@ const currentYear = new Date().getFullYear();
 
 <style>
   .footer-minimal {
-    background-color: #f8f9fa;
-    border-top: 1px solid #e0e0e0;
+    background-color: var(--color-surface);
+    border-top: var(--border-width) solid var(--color-border);
   }
 
   .footer-container {
-    max-width: 1200px;
+    max-width: var(--container-lg);
     margin: 0 auto;
-    padding: 2rem 1.5rem;
+    padding: var(--space-8) var(--space-6);
   }
 
   .footer-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.25rem;
+    gap: var(--space-5);
     text-align: center;
   }
 
   .company-name {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #1a1a1a;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
   }
 
   .footer-nav {
@@ -93,41 +93,41 @@ const currentYear = new Date().getFullYear();
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--space-3);
   }
 
   .nav-link {
-    color: #4a4a4a;
+    color: var(--color-text-secondary);
     text-decoration: none;
-    font-size: 0.95rem;
-    transition: color 0.2s;
+    font-size: var(--font-size-base);
+    transition: color var(--transition-fast);
   }
 
   .nav-link:hover {
-    color: #000000;
+    color: var(--color-text);
   }
 
   .separator {
-    color: #ccc;
-    font-size: 0.75rem;
+    color: var(--color-border-soft);
+    font-size: var(--font-size-xs);
   }
 
   .social-links {
     display: flex;
-    gap: 1.25rem;
+    gap: var(--space-5);
     flex-wrap: wrap;
     justify-content: center;
   }
 
   .social-link {
-    color: #4a4a4a;
+    color: var(--color-text-secondary);
     text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.2s;
+    font-size: var(--font-size-sm);
+    transition: color var(--transition-fast);
   }
 
   .social-link:hover {
-    color: #000000;
+    color: var(--color-text);
   }
 
   .social-text {
@@ -135,19 +135,19 @@ const currentYear = new Date().getFullYear();
   }
 
   .copyright {
-    font-size: 0.875rem;
-    color: #888;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
     margin: 0;
   }
 
   /* Mobile Responsive */
   @media (max-width: 640px) {
     .footer-container {
-      padding: 1.5rem 1rem;
+      padding: var(--space-6) var(--space-4);
     }
 
     .footer-content {
-      gap: 1rem;
+      gap: var(--space-4);
     }
 
     .company-name {

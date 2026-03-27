@@ -125,115 +125,114 @@ const currentYear = new Date().getFullYear();
 
 <style>
   .footer-compact {
-    background-color: #2c3e50;
-    color: #ecf0f1;
+    background-color: var(--color-footer-bg);
+    color: var(--color-footer-text);
   }
 
   .footer-main {
-    padding: 2.5rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: var(--space-10) 0;
+    border-bottom: var(--border-width) solid var(--color-footer-border);
   }
 
   .footer-container {
-    max-width: 1200px;
+    max-width: var(--container-lg);
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 0 var(--space-6);
   }
 
   .footer-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 3rem;
+    gap: var(--space-12);
     align-items: start;
   }
 
   .footer-left {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--space-4);
   }
 
   .company-name {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #ffffff;
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-inverse);
     margin: 0;
   }
 
   .tagline {
-    font-size: 0.95rem;
-    color: #bdc3c7;
+    font-size: var(--font-size-base);
+    color: var(--color-footer-text-secondary);
     margin: 0;
-    line-height: 1.5;
+    line-height: var(--line-height-normal);
   }
 
   .social-links {
     display: flex;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
   }
 
   .social-link {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
+    width: var(--space-10);
+    height: var(--space-10);
+    border-radius: var(--border-radius-full);
+    background-color: var(--color-glass-bg);
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: #ffffff;
-    transition: all 0.2s;
+    color: var(--color-text-inverse);
+    transition: all var(--transition-fast);
   }
 
   .social-link:hover {
-    background-color: #3498db;
+    background-color: var(--color-primary);
     transform: translateY(-2px);
   }
 
   .social-icon {
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
   }
 
   .footer-right {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: var(--space-8);
   }
 
   .links-section,
   .contact-section {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--space-4);
   }
 
   .section-heading {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #ffffff;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-inverse);
     margin: 0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    font-size: 0.85rem;
   }
 
   .link-grid {
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
+    gap: var(--space-2);
   }
 
   .footer-link {
-    color: #bdc3c7;
+    color: var(--color-footer-text-secondary);
     text-decoration: none;
-    transition: color 0.2s;
-    font-size: 0.95rem;
+    transition: color var(--transition-fast);
+    font-size: var(--font-size-base);
   }
 
   .footer-link:hover {
-    color: #3498db;
+    color: var(--color-footer-link-hover);
   }
 
   .contact-list {
@@ -242,41 +241,41 @@ const currentYear = new Date().getFullYear();
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--space-3);
   }
 
   .contact-item {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--space-3);
   }
 
   .contact-icon {
-    width: 1.15rem;
-    height: 1.15rem;
-    color: #95a5a6;
+    width: var(--icon-sm);
+    height: var(--icon-sm);
+    color: var(--color-text-tertiary);
     flex-shrink: 0;
   }
 
   .contact-link {
-    color: #bdc3c7;
+    color: var(--color-footer-text-secondary);
     text-decoration: none;
-    transition: color 0.2s;
-    font-size: 0.95rem;
+    transition: color var(--transition-fast);
+    font-size: var(--font-size-base);
   }
 
   .contact-link:hover {
-    color: #3498db;
+    color: var(--color-footer-link-hover);
   }
 
   .footer-bottom {
-    padding: 1.25rem 0;
+    padding: var(--space-5) 0;
   }
 
   .copyright {
     text-align: center;
-    font-size: 0.875rem;
-    color: #95a5a6;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
     margin: 0;
   }
 
