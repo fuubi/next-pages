@@ -7,6 +7,7 @@ import { listSharedVersions } from './commands/list-shared.ts';
 import { checkoutClient } from './commands/checkout.ts';
 import { closeClient, closeAllClients } from './commands/close.ts';
 import { upgradeSharedLib } from './commands/upgrade-shared.ts';
+import { runSiteScript } from './commands/run.ts';
 
 const program = new Command();
 
@@ -77,5 +78,19 @@ program
   .command('list-shared')
   .description('List all checked-out shared library versions')
   .action(listSharedVersions);
+
+program
+  .command('run')
+  .description('Run npm scripts in a client site (kubectl-style)')
+  .argument('<site>', 'Site name (e.g., garage-mueller)')
+  .argument('<script>', 'Script to run: install, dev, build, preview, test, lint, etc.')
+  .option('-b, --background', 'Run in background (for dev servers)')
+  .addHelpText('after', `
+Examples:
+  $ cli run garage-mueller install     # npm install
+  $ cli run garage-mueller dev         # npm run dev
+  $ cli run garage-mueller build       # npm run build
+  $ cli run garage-mueller preview     # npm run preview`)
+  .action(runSiteScript);
 
 program.parse();
