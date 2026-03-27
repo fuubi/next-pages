@@ -55,6 +55,10 @@ export async function upgradeSharedLib(clientName: string, newVersion: string) {
         sharedLibVersion: newVersion,
       });
 
+      // Commit the clients.json update
+      await execa('git', ['add', 'clients.json'], { cwd: workspaceRoot });
+      await execa('git', ['commit', '-m', `Upgrade ${clientName} shared lib to ${newVersion}`], { cwd: workspaceRoot });
+
       spinner.succeed(
         chalk.green(
           `✓ Updated ${clientName} shared lib version: ${oldVersion} → ${newVersion}`
@@ -210,6 +214,10 @@ export async function upgradeSharedLib(clientName: string, newVersion: string) {
       ...client,
       sharedLibVersion: newVersion,
     });
+
+    // Commit the clients.json update
+    await execa('git', ['add', 'clients.json'], { cwd: workspaceRoot });
+    await execa('git', ['commit', '-m', `Upgrade ${clientName} shared lib to ${newVersion}`], { cwd: workspaceRoot });
 
     console.log();
     console.log(chalk.bold('Version Update:'));
