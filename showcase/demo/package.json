@@ -10,8 +10,6 @@
     "preview": "astro preview --host"
   },
   "dependencies": {
-    "@colombalink/shared": "*",
-    "@colombalink/templates": "*",
     "astro": "^6.0.0"
   },
   "devDependencies": {
