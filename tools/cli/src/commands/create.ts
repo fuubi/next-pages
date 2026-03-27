@@ -137,17 +137,17 @@ export async function createSite(name: string, options: CreateOptions) {
   }
 }
 
-function createSiteStructure(workspaceRoot: string, name: string, config: any, sharedVersion: string) {
-  // Create directories in the root (orphan branch)
-  mkdirSync('src/pages/de', { recursive: true });
-  mkdirSync('src/pages/fr', { recursive: true });
-  mkdirSync('src/pages/it', { recursive: true });
-  mkdirSync('src/i18n', { recursive: true });
-  mkdirSync('public/images', { recursive: true });
+function createSiteStructure(basePath: string, name: string, config: any, sharedVersion: string) {
+  // Create directories in the base path (temp worktree)
+  mkdirSync(join(basePath, 'src/pages/de'), { recursive: true });
+  mkdirSync(join(basePath, 'src/pages/fr'), { recursive: true });
+  mkdirSync(join(basePath, 'src/pages/it'), { recursive: true });
+  mkdirSync(join(basePath, 'src/i18n'), { recursive: true });
+  mkdirSync(join(basePath, 'public/images'), { recursive: true });
 
   // Create site.config.ts
   writeFileSync(
-    'site.config.ts',
+    join(basePath, 'site.config.ts'),
     `export default {
   name: '${config.businessName}',
   domain: '${config.domain}',
@@ -171,7 +171,7 @@ function createSiteStructure(workspaceRoot: string, name: string, config: any, s
 
   // Create astro.config.ts
   writeFileSync(
-    'astro.config.ts',
+    join(basePath, 'astro.config.ts'),
     `import { defineConfig } from 'astro/config';
 
 export default defineConfig({
@@ -198,7 +198,7 @@ export default defineConfig({
     : `../../packages/shared-${sharedVersion}`;
 
   writeFileSync(
-    'package.json',
+    join(basePath, 'package.json'),
     JSON.stringify({
       name: name,
       version: '1.0.0',
@@ -223,7 +223,7 @@ export default defineConfig({
 
   // Create tsconfig.json
   writeFileSync(
-    'tsconfig.json',
+    join(basePath, 'tsconfig.json'),
     JSON.stringify({
       extends: '../../tsconfig.json'
     }, null, 2)
@@ -231,7 +231,7 @@ export default defineConfig({
 
   // Create i18n utils
   writeFileSync(
-    'src/i18n/utils.ts',
+    join(basePath, 'src/i18n/utils.ts'),
     `import { createI18n } from '@colombalink/shared/utils/i18n';
 
 export const languages = {
@@ -279,7 +279,7 @@ export const { getLangFromUrl, useTranslatedPath, getAlternateLanguageUrls } = i
 
   // Create root index page (redirects to default language)
   writeFileSync(
-    'src/pages/index.astro',
+    join(basePath, 'src/pages/index.astro'),
     `---
 // Redirect root to default language
 import { defaultLang } from '../i18n/utils';
@@ -290,12 +290,12 @@ return Astro.redirect(\`/\${defaultLang}/\`);
 
   // Create German page with colocated content
   writeFileSync(
-    'src/pages/de/index.json',
+    join(basePath, 'src/pages/de/index.json'),
     JSON.stringify(contentDe, null, 2)
   );
 
   writeFileSync(
-    'src/pages/de/index.astro',
+    join(basePath, 'src/pages/de/index.astro'),
     `---
 import BaseLayout from '@colombalink/shared/layouts/BaseLayout.astro';
 import Hero from '@colombalink/shared/components/sections/Hero/Hero.astro';
@@ -320,12 +320,12 @@ const alternateLanguages = getAlternateLanguageUrls('/', 'de').map((alt: { lang:
 
   // Create French page with colocated content
   writeFileSync(
-    'src/pages/fr/index.json',
+    join(basePath, 'src/pages/fr/index.json'),
     JSON.stringify(contentFr, null, 2)
   );
 
   writeFileSync(
-    'src/pages/fr/index.astro',
+    join(basePath, 'src/pages/fr/index.astro'),
     `---
 import BaseLayout from '@colombalink/shared/layouts/BaseLayout.astro';
 import Hero from '@colombalink/shared/components/sections/Hero/Hero.astro';
@@ -350,12 +350,12 @@ const alternateLanguages = getAlternateLanguageUrls('/', 'fr').map((alt: { lang:
 
   // Create Italian page with colocated content
   writeFileSync(
-    'src/pages/it/index.json',
+    join(basePath, 'src/pages/it/index.json'),
     JSON.stringify(contentIt, null, 2)
   );
 
   writeFileSync(
-    'src/pages/it/index.astro',
+    join(basePath, 'src/pages/it/index.astro'),
     `---
 import BaseLayout from '@colombalink/shared/layouts/BaseLayout.astro';
 import Hero from '@colombalink/shared/components/sections/Hero/Hero.astro';
