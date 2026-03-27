@@ -5,6 +5,9 @@ import {
     getWorkspaceRoot,
     getClientsRegistry,
     getCheckedOutClients,
+    getCheckedOutSharedVersions,
+    isSharedVersionCheckedOut,
+    getCurrentLatestWorktreeVersion,
 } from '../utils/workspace.ts';
 
 interface ListOptions {
@@ -31,6 +34,22 @@ export async function listSites(options: ListOptions = {}) {
             clientsToShow = registry.clients.filter(c => !checkedOut.includes(c.name));
         }
 
+        // Get shared version info for summary
+        const sharedVersionMap = new Map<string, string[]>(); // version -> client names
+        for (const client of registry.clients.filter(c => checkedOut.includes(c.name))) {
+            const version = client.sharedLibVersion;
+            if (!sharedVersionMap.has(version)) {
+                sharedVersionMap.set(version, []);
+            }
+            sharedVersionMap.get(version)!.push(client.name);
+        }
+
+        // Get actual version for "latest" if it exists
+        let latestActualVersion: string | undefined;
+        if (sharedVersionMap.has('latest') && isSharedVersionCheckedOut('latest')) {
+            latestActualVersion = await getCurrentLatestWorktreeVersion();
+        }
+
         // Show checked out clients section
         if (!options.availableOnly) {
             const checkedOutClients = registry.clients.filter(c => checkedOut.includes(c.name));
@@ -40,6 +59,9 @@ export async function listSites(options: ListOptions = {}) {
                 console.log('');
 
                 for (const client of checkedOutClients) {
+                    const sharedVersionExists = isSharedVersionCheckedOut(client.sharedLibVersion);
+                    const sharedVersionStatus = sharedVersionExists ? chalk.green('✓') : chalk.red('✗');
+
                     console.log(chalk.cyan(`  • ${client.name}`));
                     if (client.domain) {
                         console.log(chalk.gray(`    Domain: ${client.domain}`));
@@ -47,7 +69,14 @@ export async function listSites(options: ListOptions = {}) {
                     if (client.language) {
                         console.log(chalk.gray(`    Language: ${client.language}`));
                     }
-                    console.log(chalk.gray(`    Shared lib: ${client.sharedLibVersion}`));
+
+                    // Show shared lib version with status indicator
+                    let versionDisplay = client.sharedLibVersion;
+                    if (client.sharedLibVersion === 'latest' && latestActualVersion) {
+                        versionDisplay = `latest (${latestActualVersion})`;
+                    }
+                    console.log(chalk.gray(`    Shared lib: ${versionDisplay} ${sharedVersionStatus}`));
+
                     console.log(chalk.gray(`    Branch: ${client.branch}`));
                     const workspaceRoot = getWorkspaceRoot();
                     const clientPath = join(workspaceRoot, 'sites', client.name);
@@ -86,6 +115,22 @@ export async function listSites(options: ListOptions = {}) {
         console.log(chalk.gray(`  Total clients: ${registry.clients.length}`));
         console.log(chalk.gray(`  Checked out: ${checkedOut.length}`));
         console.log(chalk.gray(`  Available: ${registry.clients.length - checkedOut.length}`));
+
+        // Show shared versions summary
+        if (sharedVersionMap.size > 0) {
+            console.log('');
+            console.log(chalk.bold('Shared Versions'));
+            for (const [version, clients] of sharedVersionMap.entries()) {
+                const versionExists = isSharedVersionCheckedOut(version);
+                const status = versionExists ? chalk.green('✓') : chalk.red('✗');
+                let versionDisplay = version;
+                if (version === 'latest' && latestActualVersion) {
+                    versionDisplay = `latest (${latestActualVersion})`;
+                }
+                console.log(chalk.gray(`  ${status} ${versionDisplay}: ${clients.length} client${clients.length > 1 ? 's' : ''} (${clients.join(', ')})`));
+            }
+        }
+
         console.log('');
 
         // Tips

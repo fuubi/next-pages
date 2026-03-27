@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
-import { getWorkspaceRoot } from '../utils/workspace.ts';
+import { getWorkspaceRoot, upsertClientConfig } from '../utils/workspace.ts';
 
 interface CreateOptions {
   name?: string;
@@ -12,6 +12,8 @@ interface CreateOptions {
   language?: string;
   template?: string;
   worktree?: boolean;
+  sharedVersion?: string;
+  checkout?: boolean;
 }
 
 export async function createSite(name: string, options: CreateOptions) {
@@ -19,17 +21,15 @@ export async function createSite(name: string, options: CreateOptions) {
 
   try {
     // Validate name
-    if (!/^garage-[a-z0-9-]+$/.test(name)) {
-      throw new Error('Site name must follow pattern: garage-{name} (lowercase, hyphens only)');
+    if (!/^[a-z0-9-]+$/.test(name)) {
+      throw new Error('Site name must be lowercase with hyphens only');
     }
 
     const workspaceRoot = getWorkspaceRoot();
-    const sitePath = join(workspaceRoot, 'sites', name);
+    const branchName = `client/${name}`;
 
-    // Check if site already exists
-    if (existsSync(sitePath)) {
-      throw new Error(`Site ${name} already exists at ${sitePath}`);
-    }
+    // Default to "latest" if no version specified
+    const sharedVersion = options.sharedVersion || 'latest';
 
     spinner.text = 'Gathering site information...';
 
@@ -75,26 +75,60 @@ export async function createSite(name: string, options: CreateOptions) {
       Object.assign(answers, responses);
     }
 
-    spinner.text = 'Creating directory structure...';
+    spinner.text = 'Creating orphan branch...';
 
-    // Create site structure
-    createSiteStructure(sitePath, name, answers);
+    // Create orphan branch for the client
+    await execa('git', ['checkout', '--orphan', branchName], { cwd: workspaceRoot });
 
-    if (options.worktree) {
-      spinner.text = 'Setting up git worktree...';
-      await setupWorktree(name, sitePath);
+    // Remove all files from staging
+    try {
+      await execa('git', ['rm', '-rf', '.'], { cwd: workspaceRoot });
+    } catch {
+      // Ignore if there's nothing to remove
     }
 
-    spinner.succeed(chalk.green(`✓ Site ${name} created successfully!`));
+    spinner.text = 'Creating site structure...';
+
+    // Create site with shared library version info
+    createSiteStructure(workspaceRoot, name, answers, sharedVersion);
+
+    spinner.text = 'Committing initial structure...';
+
+    // Commit the initial structure
+    await execa('git', ['add', '.'], { cwd: workspaceRoot });
+    await execa('git', ['commit', '-m', `Initial setup for ${name}`], { cwd: workspaceRoot });
+
+    spinner.text = 'Pushing branch to remote...';
+
+    // Push the branch
+    await execa('git', ['push', 'origin', branchName], { cwd: workspaceRoot });
+
+    // Switch back to coordinator branch
+    await execa('git', ['checkout', '-'], { cwd: workspaceRoot });
+
+    spinner.text = 'Registering client in clients.json...';
+
+    // Register the client in clients.json
+    upsertClientConfig({
+      name,
+      branch: branchName,
+      sharedLibVersion: sharedVersion,
+      sharedLibRepo: 'origin', // Same repo
+      domain: answers.domain,
+      language: answers.language,
+      created: new Date().toISOString(),
+      notes: '',
+    });
+
+    spinner.succeed(chalk.green(`✓ Client ${name} created successfully!`));
 
     console.log('\n' + chalk.bold('Next steps:'));
-    if (options.worktree) {
-      console.log(chalk.cyan(`  cd ../${name}-work`));
-    } else {
-      console.log(chalk.cyan(`  cd sites/${name}`));
-    }
+    console.log(chalk.cyan(`  cli checkout ${name}`));
+    console.log(chalk.cyan(`  cd sites/${name}`));
     console.log(chalk.cyan('  npm install'));
     console.log(chalk.cyan('  npm run dev'));
+    console.log('');
+    console.log(chalk.dim(`Shared library version: ${sharedVersion}`));
 
   } catch (error) {
     spinner.fail(chalk.red('Failed to create site'));
@@ -103,18 +137,17 @@ export async function createSite(name: string, options: CreateOptions) {
   }
 }
 
-function createSiteStructure(sitePath: string, name: string, config: any) {
-  // Create directories
-  mkdirSync(sitePath, { recursive: true });
-  mkdirSync(join(sitePath, 'src/pages/de'), { recursive: true });
-  mkdirSync(join(sitePath, 'src/pages/fr'), { recursive: true });
-  mkdirSync(join(sitePath, 'src/pages/it'), { recursive: true });
-  mkdirSync(join(sitePath, 'src/i18n'), { recursive: true });
-  mkdirSync(join(sitePath, 'public/images'), { recursive: true });
+function createSiteStructure(workspaceRoot: string, name: string, config: any, sharedVersion: string) {
+  // Create directories in the root (orphan branch)
+  mkdirSync('src/pages/de', { recursive: true });
+  mkdirSync('src/pages/fr', { recursive: true });
+  mkdirSync('src/pages/it', { recursive: true });
+  mkdirSync('src/i18n', { recursive: true });
+  mkdirSync('public/images', { recursive: true });
 
   // Create site.config.ts
   writeFileSync(
-    join(sitePath, 'site.config.ts'),
+    'site.config.ts',
     `export default {
   name: '${config.businessName}',
   domain: '${config.domain}',
@@ -138,13 +171,8 @@ function createSiteStructure(sitePath: string, name: string, config: any) {
 
   // Create astro.config.ts
   writeFileSync(
-    join(sitePath, 'astro.config.ts'),
+    'astro.config.ts',
     `import { defineConfig } from 'astro/config';
-import { fileURLToPath } from 'url';
-import { dirname, resolve } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 export default defineConfig({
   output: 'static',
@@ -160,21 +188,17 @@ export default defineConfig({
       prefixDefaultLocale: true,
     },
   },
-  vite: {
-    resolve: {
-      alias: {
-        '@shared': resolve(__dirname, '../../packages/shared'),
-        '@templates': resolve(__dirname, '../../packages/templates'),
-      },
-    },
-  },
 });
 `
   );
 
-  // Create package.json
+  // Create package.json with file: protocol reference
+  const sharedPath = sharedVersion === 'latest'
+    ? '../../packages/shared-latest'
+    : `../../packages/shared-${sharedVersion}`;
+
   writeFileSync(
-    join(sitePath, 'package.json'),
+    'package.json',
     JSON.stringify({
       name: name,
       version: '1.0.0',
@@ -186,6 +210,7 @@ export default defineConfig({
         preview: 'astro preview --host'
       },
       dependencies: {
+        '@colombalink/shared': `file:${sharedPath}`,
         astro: '^6.0.0',
         motion: '^10.16.0'
       },
@@ -198,23 +223,16 @@ export default defineConfig({
 
   // Create tsconfig.json
   writeFileSync(
-    join(sitePath, 'tsconfig.json'),
+    'tsconfig.json',
     JSON.stringify({
-      extends: '../../tsconfig.json',
-      compilerOptions: {
-        baseUrl: '.',
-        paths: {
-          '@shared/*': ['../../packages/shared/*'],
-          '@templates/*': ['../../packages/templates/*']
-        }
-      }
+      extends: '../../tsconfig.json'
     }, null, 2)
   );
 
   // Create i18n utils
   writeFileSync(
-    join(sitePath, 'src/i18n/utils.ts'),
-    `import { createI18n } from '@shared/utils/i18n.ts';
+    'src/i18n/utils.ts',
+    `import { createI18n } from '@colombalink/shared/utils/i18n';
 
 export const languages = {
   de: 'Deutsch',
@@ -261,10 +279,10 @@ export const { getLangFromUrl, useTranslatedPath, getAlternateLanguageUrls } = i
 
   // Create root index page (redirects to default language)
   writeFileSync(
-    join(sitePath, 'src/pages/index.astro'),
+    'src/pages/index.astro',
     `---
 // Redirect root to default language
-import { defaultLang } from '../i18n/utils.ts';
+import { defaultLang } from '../i18n/utils';
 return Astro.redirect(\`/\${defaultLang}/\`);
 ---
 `
@@ -272,16 +290,16 @@ return Astro.redirect(\`/\${defaultLang}/\`);
 
   // Create German page with colocated content
   writeFileSync(
-    join(sitePath, 'src/pages/de/index.json'),
+    'src/pages/de/index.json',
     JSON.stringify(contentDe, null, 2)
   );
 
   writeFileSync(
-    join(sitePath, 'src/pages/de/index.astro'),
+    'src/pages/de/index.astro',
     `---
-import BaseLayout from '@shared/layouts/BaseLayout.astro';
-import Hero from '@templates/hero/Classic.astro';
-import { getAlternateLanguageUrls } from '../../i18n/utils.ts';
+import BaseLayout from '@colombalink/shared/layouts/BaseLayout.astro';
+import Hero from '@colombalink/shared/components/sections/Hero/Hero.astro';
+import { getAlternateLanguageUrls } from '../../i18n/utils';
 import content from './index.json';
 
 const alternateLanguages = getAlternateLanguageUrls('/', 'de').map((alt: { lang: string; url: string }) => ({
@@ -302,16 +320,16 @@ const alternateLanguages = getAlternateLanguageUrls('/', 'de').map((alt: { lang:
 
   // Create French page with colocated content
   writeFileSync(
-    join(sitePath, 'src/pages/fr/index.json'),
+    'src/pages/fr/index.json',
     JSON.stringify(contentFr, null, 2)
   );
 
   writeFileSync(
-    join(sitePath, 'src/pages/fr/index.astro'),
+    'src/pages/fr/index.astro',
     `---
-import BaseLayout from '@shared/layouts/BaseLayout.astro';
-import Hero from '@templates/hero/Classic.astro';
-import { getAlternateLanguageUrls } from '../../i18n/utils.ts';
+import BaseLayout from '@colombalink/shared/layouts/BaseLayout.astro';
+import Hero from '@colombalink/shared/components/sections/Hero/Hero.astro';
+import { getAlternateLanguageUrls } from '../../i18n/utils';
 import content from './index.json';
 
 const alternateLanguages = getAlternateLanguageUrls('/', 'fr').map((alt: { lang: string; url: string }) => ({
@@ -332,16 +350,16 @@ const alternateLanguages = getAlternateLanguageUrls('/', 'fr').map((alt: { lang:
 
   // Create Italian page with colocated content
   writeFileSync(
-    join(sitePath, 'src/pages/it/index.json'),
+    'src/pages/it/index.json',
     JSON.stringify(contentIt, null, 2)
   );
 
   writeFileSync(
-    join(sitePath, 'src/pages/it/index.astro'),
+    'src/pages/it/index.astro',
     `---
-import BaseLayout from '@shared/layouts/BaseLayout.astro';
-import Hero from '@templates/hero/Classic.astro';
-import { getAlternateLanguageUrls } from '../../i18n/utils.ts';
+import BaseLayout from '@colombalink/shared/layouts/BaseLayout.astro';
+import Hero from '@colombalink/shared/components/sections/Hero/Hero.astro';
+import { getAlternateLanguageUrls } from '../../i18n/utils';
 import content from './index.json';
 
 const alternateLanguages = getAlternateLanguageUrls('/', 'it').map((alt: { lang: string; url: string }) => ({
@@ -359,22 +377,4 @@ const alternateLanguages = getAlternateLanguageUrls('/', 'it').map((alt: { lang:
 </BaseLayout>
 `
   );
-}
-
-async function setupWorktree(name: string, sitePath: string) {
-  const branchName = `site/${name}`;
-
-  // Create branch
-  await execa('git', ['branch', branchName]);
-
-  // Create worktree
-  const worktreePath = join(process.cwd(), '..', `${name}-work`);
-  await execa('git', ['worktree', 'add', worktreePath, branchName]);
-
-  // Move site files to worktree
-  await execa('mv', [sitePath, join(worktreePath, 'sites', name)]);
-
-  // Commit initial structure
-  await execa('git', ['-C', worktreePath, 'add', '.']);
-  await execa('git', ['-C', worktreePath, 'commit', '-m', `Initial setup for ${name}`]);
 }

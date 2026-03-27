@@ -3,6 +3,7 @@ import { Command } from 'commander';
 import { createSite } from './commands/create.ts';
 import { validateSite } from './commands/validate.ts';
 import { listSites } from './commands/list.ts';
+import { listSharedVersions } from './commands/list-shared.ts';
 import { checkoutClient } from './commands/checkout.ts';
 import { closeClient, closeAllClients } from './commands/close.ts';
 import { upgradeSharedLib } from './commands/upgrade-shared.ts';
@@ -22,7 +23,7 @@ program
   .option('-n, --name <businessName>', 'Business name')
   .option('-d, --domain <domain>', 'Domain (e.g., garage-mueller.ch)')
   .option('-l, --language <language>', 'Primary language (de|fr|it|en)', 'de')
-  .option('-s, --shared-version <version>', 'Shared library version tag (e.g., v1.0.0)', 'v1.0.0')
+  .option('-s, --shared-version <version>', 'Shared library version tag (e.g., v1.0.0 or "latest")', 'latest')
   .option('--no-checkout', 'Do not automatically checkout after creating')
   .action(createSite);
 
@@ -38,11 +39,12 @@ program
   .description('Close (remove) client worktrees')
   .argument('[name]', 'Client name to close (closes all if omitted)')
   .option('-a, --all', 'Close all checked-out clients')
-  .action(async (name: string | undefined, options: { all?: boolean }) => {
+  .option('--clean-unused-shared', 'Remove orphaned shared version worktrees')
+  .action(async (name: string | undefined, options: { all?: boolean; cleanUnusedShared?: boolean }) => {
     if (options.all || !name) {
-      await closeAllClients();
+      await closeAllClients({ cleanUnusedShared: options.cleanUnusedShared });
     } else {
-      await closeClient(name);
+      await closeClient(name, { cleanUnusedShared: options.cleanUnusedShared });
     }
   });
 
@@ -65,6 +67,11 @@ program
   .option('-c, --checked-out-only', 'Show only checked-out clients')
   .option('-a, --available-only', 'Show only available (not checked- out) clients')
   .action(listSites);
+
+program
+  .command('list-shared')
+  .description('List all checked-out shared library versions')
+  .action(listSharedVersions);
 
 program
   .command('sync')
