@@ -1,14 +1,5 @@
 {
   "$schema": "./clients.schema.json",
   "sharedComponentsBranch": "shared/components",
-  "clients": [
-    {
-      "name": "garage-mueller",
-      "branch": "client/garage-mueller",
-      "sharedLibVersion": "v1.4.0",
-      "domain": "garage-mueller.ch",
-      "language": "de",
-      "created": "2026-03-25"
-    }
-  ]
+  "clients": []
 }

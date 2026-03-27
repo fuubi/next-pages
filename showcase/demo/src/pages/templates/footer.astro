@@ -1,0 +1,103 @@
+---
+import Classic from '@templates/footer/Classic.astro';
+import Minimal from '@templates/footer/Minimal.astro';
+import Compact from '@templates/footer/Compact.astro';
+import Newsletter from '@templates/footer/Newsletter.astro';
+import '@shared/styles/global.css';
+import '@shared/styles/tokens.css';
+
+const footerData = {
+  companyName: 'Demo Company',
+  tagline: 'Component showcase example',
+  phone: '+41 44 123 45 67',
+  email: 'info@example.com',
+  address: 'Example Street 123, 8000 Zürich',
+  links: [
+    { label: 'About', href: '/about' },
+    { label: 'Services', href: '/services' },
+    { label: 'Contact', href: '/contact' }
+  ]
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Footer Templates - Showcase</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    header {
+      background: var(--color-background-secondary, #f5f5f5);
+      padding: 2rem;
+      border-bottom: 1px solid var(--color-border, #e0e0e0);
+    }
+    header h1 {
+      margin: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .component-showcase {
+      margin: 3rem 0;
+      padding: 2rem 0;
+      border-bottom: 2px solid var(--color-border, #e0e0e0);
+    }
+    .component-label {
+      max-width: 1200px;
+      margin: 0 auto 1rem;
+      padding: 0 2rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-primary, #0066cc);
+    }
+    nav {
+      max-width: 1200px;
+      margin: 0 auto 1rem;
+      padding: 0 2rem;
+    }
+    nav a {
+      color: var(--color-primary, #0066cc);
+      text-decoration: none;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">← Back to Home</a> |
+      <a href="/templates/hero">Hero Templates</a>
+    </nav>
+    <h1>🦶 Footer Templates</h1>
+    <p style="margin: 0.5rem 0 0; color: var(--color-text-secondary, #666);">
+      Pre-built footer layout variations from packages/templates
+    </p>
+  </header>
+
+  <div class="component-showcase">
+    <div class="component-label">Classic Footer</div>
+    <Classic {...footerData} />
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">Minimal Footer</div>
+    <Minimal {...footerData} />
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">Compact Footer</div>
+    <Compact {...footerData} />
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">Newsletter Footer</div>
+    <Newsletter {...footerData} />
+  </div>
+</body>
+</html>

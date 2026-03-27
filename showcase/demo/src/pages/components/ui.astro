@@ -1,0 +1,160 @@
+---
+import Button from '@shared/components/ui/Button/Button.astro';
+import Card from '@shared/components/ui/Card/Card.astro';
+import Badge from '@shared/components/ui/Badge/Badge.astro';
+import Input from '@shared/components/ui/Input/Input.astro';
+import Textarea from '@shared/components/ui/Textarea/Textarea.astro';
+import Container from '@shared/components/site/Container/Container.astro';
+import '@shared/styles/global.css';
+import '@shared/styles/tokens.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UI Components - Showcase</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    header {
+      background: var(--color-background-secondary, #f5f5f5);
+      padding: 2rem;
+      border-bottom: 1px solid var(--color-border, #e0e0e0);
+    }
+    header h1 {
+      margin: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .component-showcase {
+      margin: 3rem 0;
+      padding: 2rem 0;
+      border-bottom: 2px solid var(--color-border, #e0e0e0);
+    }
+    .component-label {
+      max-width: 1200px;
+      margin: 0 auto 1rem;
+      padding: 0 2rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-primary, #0066cc);
+    }
+    .component-variants {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+    nav {
+      max-width: 1200px;
+      margin: 0 auto 1rem;
+      padding: 0 2rem;
+    }
+    nav a {
+      color: var(--color-primary, #0066cc);
+      text-decoration: none;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .form-demo {
+      max-width: 600px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">← Back to Home</a> |
+      <a href="/components/sections">Section Components</a> |
+      <a href="/components/site">Site Components</a>
+    </nav>
+    <h1>🧩 UI Components</h1>
+    <p style="margin: 0.5rem 0 0; color: var(--color-text-secondary, #666);">
+      Reusable UI primitives and elements
+    </p>
+  </header>
+
+  <div class="component-showcase">
+    <div class="component-label">Button</div>
+    <div class="component-variants">
+      <Button variant="primary">Primary Button</Button>
+      <Button variant="secondary">Secondary Button</Button>
+      <Button variant="outline">Outline Button</Button>
+    </div>
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">Badge</div>
+    <div class="component-variants">
+      <Badge variant="primary">Primary</Badge>
+      <Badge variant="secondary">Secondary</Badge>
+      <Badge variant="success">Success</Badge>
+      <Badge variant="warning">Warning</Badge>
+      <Badge variant="error">Error</Badge>
+    </div>
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">Card</div>
+    <Container>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+        <Card>
+          <h3>Card Title</h3>
+          <p>This is a basic card component with some content inside it.</p>
+        </Card>
+        <Card>
+          <h3>Another Card</h3>
+          <p>Cards can contain any content and are great for layouts.</p>
+        </Card>
+        <Card>
+          <h3>Third Card</h3>
+          <p>Responsive grid layout with cards.</p>
+        </Card>
+      </div>
+    </Container>
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">Form Inputs</div>
+    <Container>
+      <div class="form-demo">
+        <Input 
+          name="name"
+          placeholder="Enter your name"
+          required
+        />
+        <Input 
+          name="email"
+          type="email"
+          placeholder="your@email.com"
+          required
+        />
+        <Textarea 
+          name="message"
+          placeholder="Enter your message..."
+          rows={5}
+        />
+      </div>
+    </Container>
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">Accordion</div>
+    <Container>
+      <div style="max-width: 600px;">
+        <p style="color: var(--color-text-secondary, #666); margin-bottom: 1rem;">
+          Accordion component - see actual component source for usage
+        </p>
+      </div>
+    </Container>
+  </div>
+</body>
+</html>

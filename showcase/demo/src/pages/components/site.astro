@@ -1,0 +1,110 @@
+---
+import Container from '@shared/components/site/Container/Container.astro';
+import Section from '@shared/components/site/Section/Section.astro';
+import SectionHeader from '@shared/components/site/SectionHeader/SectionHeader.astro';
+import '@shared/styles/global.css';
+import '@shared/styles/tokens.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Site Components - Showcase</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .page-header {
+      background: var(--color-background-secondary, #f5f5f5);
+      padding: 2rem;
+      border-bottom: 1px solid var(--color-border, #e0e0e0);
+    }
+    .page-header h1 {
+      margin: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .component-showcase {
+      margin: 3rem 0;
+      padding: 2rem 0;
+      border-bottom: 2px solid var(--color-border, #e0e0e0);
+    }
+    .component-label {
+      max-width: 1200px;
+      margin: 0 auto 1rem;
+      padding: 0 2rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-primary, #0066cc);
+    }
+    nav {
+      max-width: 1200px;
+      margin: 0 auto 1rem;
+      padding: 0 2rem;
+    }
+    nav a {
+      color: var(--color-primary, #0066cc);
+      text-decoration: none;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .demo-box {
+      background: var(--color-background-secondary, #f5f5f5);
+      padding: 2rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <nav>
+      <a href="/">← Back to Home</a> |
+      <a href="/components/sections">Section Components</a> |
+      <a href="/components/ui">UI Components</a>
+    </nav>
+    <h1>🏗️ Site Components</h1>
+    <p style="margin: 0.5rem 0 0; color: var(--color-text-secondary, #666);">
+      Structural elements for site layout
+    </p>
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">Container</div>
+    <Container>
+      <div class="demo-box">
+        <p>Content inside a Container component for consistent max-width and padding</p>
+      </div>
+    </Container>
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">Section</div>
+    <Section>
+      <div class="demo-box">
+        <p>Content inside a Section component for consistent spacing</p>
+      </div>
+    </Section>
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">SectionHeader</div>
+    <Container>
+      <SectionHeader 
+        headline="Section Heading"
+      />
+    </Container>
+  </div>
+
+  <div style="padding: 2rem; max-width: 1200px; margin: 0 auto;">
+    <p style="color: var(--color-text-secondary, #666);">
+      <strong>Note:</strong> Header and Footer components require site-specific configuration.
+      See <code>sites/garage-mueller</code> for full implementation examples.
+    </p>
+  </div>
+</body>
+</html>

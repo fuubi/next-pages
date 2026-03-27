@@ -1,0 +1,184 @@
+---
+import Hero from '@shared/components/sections/Hero/Hero.astro';
+import ServiceGrid from '@shared/components/sections/ServiceGrid/ServiceGrid.astro';
+import FeatureGrid from '@shared/components/sections/FeatureGrid/FeatureGrid.astro';
+import ContactBlock from '@shared/components/sections/ContactBlock/ContactBlock.astro';
+import FAQ from '@shared/components/sections/FAQ/FAQ.astro';
+import Testimonials from '@shared/components/sections/Testimonials/Testimonials.astro';
+import '@shared/styles/global.css';
+import '@shared/styles/tokens.css';
+
+// Sample data for components
+const heroData = {
+  headline: "Sample Hero Section",
+  subheadline: "This is how the Hero component looks with different variants",
+  cta: { text: "Get Started", href: "#" },
+  secondaryCta: { text: "Learn More", href: "#" }
+};
+
+const serviceData = {
+  headline: "Our Services",
+  subheadline: "Professional automotive care",
+  services: [
+    {
+      icon: "🔧",
+      title: "General Repairs",
+      description: "Complete mechanical services"
+    },
+    {
+      icon: "🛢️",
+      title: "Oil Changes",
+      description: "Quick and affordable"
+    },
+    {
+      icon: "🔋",
+      title: "Battery Service",
+      description: "Testing and replacement"
+    }
+  ]
+};
+
+const featureData = {
+  heading: "Features",
+  subheading: "Why choose us",
+  items: [
+    { icon: "⚡", title: "Fast", description: "Quick turnaround" },
+    { icon: "💰", title: "Affordable", description: "Fair pricing" },
+    { icon: "✅", title: "Quality", description: "Expert service" }
+  ]
+};
+
+const contactData = {
+  headline: "Get in Touch",
+  phone: "+41 44 123 45 67",
+  email: "demo@example.com",
+  address: "Example Street 123, 8000 Zürich"
+};
+
+const faqData = {
+  heading: "Frequently Asked Questions",
+  faqs: [
+    {
+      id: "faq-1",
+      question: "What are your hours?",
+      answer: "We're open Monday-Friday 8AM-6PM, Saturday 9AM-4PM"
+    },
+    {
+      id: "faq-2",
+      question: "Do you accept walk-ins?",
+      answer: "Yes, but appointments are recommended for faster service"
+    }
+  ]
+};
+
+const testimonialData = {
+  heading: "What Our Customers Say",
+  testimonials: [
+    {
+      quote: "Excellent service and fair prices!",
+      author: "John D.",
+      role: "Customer",
+      company: ""
+    },
+    {
+      quote: "Very professional and quick",
+      author: "Sarah M.",
+      role: "Customer",
+      company: ""
+    }
+  ]
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Section Components - Showcase</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    header {
+      background: var(--color-background-secondary, #f5f5f5);
+      padding: 2rem;
+      border-bottom: 1px solid var(--color-border, #e0e0e0);
+    }
+    header h1 {
+      margin: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .component-showcase {
+      margin: 3rem 0;
+      padding: 2rem 0;
+      border-bottom: 2px solid var(--color-border, #e0e0e0);
+    }
+    .component-label {
+      max-width: 1200px;
+      margin: 0 auto 1rem;
+      padding: 0 2rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-primary, #0066cc);
+    }
+    nav {
+      max-width: 1200px;
+      margin: 0 auto 1rem;
+      padding: 0 2rem;
+    }
+    nav a {
+      color: var(--color-primary, #0066cc);
+      text-decoration: none;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">← Back to Home</a> |
+      <a href="/components/site">Site Components</a> |
+      <a href="/components/ui">UI Components</a>
+    </nav>
+    <h1>📄 Section Components</h1>
+    <p style="margin: 0.5rem 0 0; color: var(--color-text-secondary, #666);">
+      Large page sections for building complete pages
+    </p>
+  </header>
+
+  <div class="component-showcase">
+    <div class="component-label">Hero</div>
+    <Hero {...heroData} />
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">ServiceGrid</div>
+    <ServiceGrid {...serviceData} />
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">FeatureGrid</div>
+    <FeatureGrid {...featureData} />
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">ContactBlock</div>
+    <ContactBlock {...contactData} />
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">FAQ</div>
+    <FAQ {...faqData} />
+  </div>
+
+  <div class="component-showcase">
+    <div class="component-label">Testimonials</div>
+    <Testimonials {...testimonialData} />
+  </div>
+</body>
+</html>

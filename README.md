@@ -21,30 +21,140 @@ This repository uses a **coordinator pattern** with **orphan branches**:
 
 ---
 
+## Development vs Production Sites
+
+This monorepo supports two types of sites:
+
+### Development Sites (Workspace Dependencies)
+
+**Purpose**: Active component development with live hot-reloading
+
+- **`sites/garage-mueller`**: Full production-like site for testing components in context
+- **`sites/demo-showcase`**: Isolated component gallery for rapid iteration
+
+Both use **workspace dependencies** (`@colombalink/shared`) for instant live reloading when editing components in `packages/shared/`.
+
+```bash
+# Develop components
+cd packages/shared
+# Edit any component
+
+# See changes instantly in:
+cd sites/garage-mueller && npm run dev        # Full site context
+cd sites/demo-showcase && npm run dev         # Isolated components
+```
+
+### Production Client Sites (Extraction Pattern)
+
+**Purpose**: Real client deployments with version isolation
+
+Client sites listed in `clients.json` use the **extraction pattern**:
+
+- Components extracted as static copies at specific versions
+- Each client pinned to a version (e.g., v1.4.0)
+- Independent upgrades via `cli upgrade-shared`
+- Orphan branches for complete isolation
+
+```bash
+cli checkout <client-name>    # Extracts components at pinned version
+```
+
+**Key difference**: Dev sites get live updates, production sites get versioned stability.
+
+---
+
 ## Structure
 
 ```
 /workspaces/next-pages/           # Coordinator repository
-├── clients.json                  # Registry of all clients
+├── clients.json                  # Registry of production clients
 ├── tools/cli/                    # Client management CLI
-└── sites/                        # Client checkouts (when working)
-    ├── garage-mueller/           # Client worktree
-    │   ├── public/               # Static assets (tracked in git)
-    │   │   ├── images/           # Images (shared samples + custom)
-    │   │   ├── favicon.svg
-    │   │   └── robots.txt
-    │   ├── src/
-    │   │   ├── pages/            # Client pages & content
-    │   │   └── shared/           # Shared components (v1.0.0)
-    │   └── package.json
-    └── garage-other/             # Another client (different version possible)
-        ├── public/               # Site-specific assets (independent)
-        └── src/shared/           # Shared components (v1.1.0)
+├── packages/
+│   ├── shared/                   # Source of truth for components
+│   │   ├── components/           # All shared components
+│   │   ├── layouts/              # Page layouts
+│   │   ├── styles/               # Global styles & tokens
+│   │   └── utils/                # Shared utilities
+│   └── templates/                # Pre-built component variations
+└── sites/
+    ├── garage-mueller/           # DEV SITE: Full context testing
+    │   ├── public/               # Site-specific assets
+    │   └── src/pages/            # Test pages in multiple languages
+    ├── demo-showcase/            # DEV SITE: Isolated component gallery
+    │   └── src/pages/            # Component showcase pages
+    └── <client-name>/            # PRODUCTION: Client worktree (via cli checkout)
+        ├── public/               # Client assets (tracked in git)
+        └── src/shared/           # Extracted components (pinned version)
 ```
+
+**Development workflow:**
+
+1. Edit components in `packages/shared/`
+2. Preview in `sites/demo-showcase` (isolated) or `sites/garage-mueller` (full context)
+3. Both dev sites use workspace dependencies for instant hot reload
+4. Production clients use `cli checkout` for versioned extraction
 
 ---
 
-## Quick Start
+## Component Development
+
+Develop shared components in `packages/shared/` with live feedback from two dev environments:
+
+### Quick Workflow
+
+```bash
+# View isolated components
+cd sites/demo-showcase
+npm run dev
+# Visit http://localhost:4321 - browse components by category
+
+# View in full site context
+cd sites/garage-mueller
+npm run dev
+# Visit http://localhost:4321/de/ - see components in real pages
+
+# Edit components - changes reflect instantly in both
+cd packages/shared/components/sections/Hero
+# Edit Hero.astro - save and see live updates
+```
+
+### Demo Showcase
+
+`sites/demo-showcase` provides a component gallery organized by category:
+
+- `/components/sections` - Section components (Hero, Features, etc.)
+- `/components/site` - Site structure (Container, Section, etc.)
+- `/components/ui` - UI primitives (Button, Card, Input, etc.)
+- `/templates/hero` - Hero variations
+- `/templates/footer` - Footer variations
+
+Perfect for:
+
+- Seeing all component variants side-by-side
+- Testing components in isolation
+- Rapid iteration without site context
+- Component documentation
+
+### garage-mueller Dev Site
+
+`sites/garage-mueller` is a complete multi-language site showing components in production context:
+
+- Real i18n routing (`/de/`, `/fr/`, `/it/`)
+- Actual page layouts
+- Full component integration
+- Testing responsive design
+- Verifying accessibility
+
+Perfect for:
+
+- Integration testing
+- Final visual QA
+- Real-world component usage
+- Full site builds
+
+---
+
+## Quick Start (Production Clients)
 
 ```bash
 # 1. Install CLI
@@ -98,9 +208,9 @@ Use `cli <command> --help` for details.
 
 ---
 
-## Shared Components
+## Shared Components (Production Clients)
 
-Each client uses a specific version of shared components from the `shared/components` branch:
+Production client sites use versioned copies of shared components from the `shared/components` branch:
 
 ```bash
 # Check current version
