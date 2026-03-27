@@ -1,0 +1,96 @@
+---
+import '@shared/styles/global.css';
+import '@shared/styles/tokens.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shared Component Library - Examples</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      h1 {
+        color: var(--color-text-primary, #1a1a1a);
+        margin-bottom: 2rem;
+      }
+      .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+      }
+      .category-card {
+        border: 1px solid var(--color-border, #e0e0e0);
+        border-radius: 8px;
+        padding: 1.5rem;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.2s;
+      }
+      .category-card:hover {
+        border-color: var(--color-primary, #0066cc);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+      }
+      .category-card h2 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.25rem;
+        color: var(--color-primary, #0066cc);
+      }
+      .category-card p {
+        margin: 0;
+        color: var(--color-text-secondary, #666);
+        font-size: 0.9rem;
+      }
+      .category-card .count {
+        display: inline-block;
+        margin-top: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        background: var(--color-background-secondary, #f5f5f5);
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>📦 Shared Component Library</h1>
+    <p style="margin-bottom: 2rem; color: var(--color-text-secondary, #666);">
+      Examples and templates for efficient component development
+    </p>
+
+    <h2 style="margin-top: 3rem; margin-bottom: 1rem; color: var(--color-text-primary, #1a1a1a);">
+      📄 Full Page Examples
+    </h2>
+    <p style="margin-bottom: 2rem; color: var(--color-text-secondary, #666);">
+      Complete page templates ready to copy and customize
+    </p>
+
+    <div class="category-grid">
+      <a href="/components/" class="category-card">
+        <h2>Component Showcase</h2>
+        <p>All UI components demonstrated in one page</p>
+        <span class="count">Full page</span>
+      </a>
+
+      <a href="/moon-landing/" class="category-card">
+        <h2>Moon Landing</h2>
+        <p>Dark theme automotive/garage single-page template</p>
+        <span class="count">Full page</span>
+      </a>
+
+      <a href="/garage-multi-lang/de/" class="category-card">
+        <h2>Multi-Language Garage</h2>
+        <p>Complete multi-language site example (DE/FR/IT)</p>
+        <span class="count">3 languages</span>
+      </a>
+    </div>
+  </body>
+</html>

@@ -1,6 +1,5 @@
-// When copying to your site, use: import { createI18n } from '@shared/utils/i18n.ts';
-// Or update to: import { createI18n } from '@colombalink/shared/utils/i18n.ts';
-import { createI18n } from '../../../utils/i18n.ts';
+// When copying to your site, update to: import { createI18n } from '@colombalink/shared/utils/i18n.ts';
+import { createI18n } from '@shared/utils/i18n.ts';
 
 export const languages = {
     de: 'Deutsch',

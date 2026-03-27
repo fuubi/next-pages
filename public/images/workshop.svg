@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="workshopGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#workshopGrad)"/>
+  <g opacity="0.1">
+    <rect x="100" y="200" width="200" height="150" fill="white" rx="8"/>
+    <rect x="350" y="200" width="200" height="150" fill="white" rx="8"/>
+    <rect x="600" y="200" width="200" height="150" fill="white" rx="8"/>
+    <circle cx="500" cy="500" r="80" fill="white"/>
+    <rect x="420" y="490" width="160" height="20" fill="white"/>
+  </g>
+  <text x="600" y="380" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle">WORKSHOP</text>
+  <text x="600" y="460" font-family="Arial, sans-serif" font-size="36" fill="rgba(255,255,255,0.8)" text-anchor="middle">Modern Garage Interior</text>
+</svg>

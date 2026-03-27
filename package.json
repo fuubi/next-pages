@@ -6,6 +6,10 @@
   "engines": {
     "node": ">=25.0.0"
   },
+  "scripts": {
+    "dev": "astro dev --host",
+    "build": "astro build"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/colombalink/client-sites.git",
@@ -25,5 +29,13 @@
     "./styles/*": "./styles/*",
     "./templates/*": "./templates/*",
     "./utils/*": "./utils/*"
+  },
+  "dependencies": {
+    "astro": "^6.0.0",
+    "motion": "^10.16.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.0",
+    "typescript": "^5.6.0"
   }
 }

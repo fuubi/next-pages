@@ -12,7 +12,7 @@ import content from './index.json';
 // import '@site/styles/tokens.css';
 // import '@site/styles/global.css';
 
-const alternateLanguages = getAlternateLanguageUrls('/', 'fr').map(
+const alternateLanguages = getAlternateLanguageUrls('/', 'de').map(
   (alt: { lang: string; url: string }) => ({
     lang: alt.lang,
     url: `https://garage-mueller.ch${alt.url}`,
@@ -22,9 +22,9 @@ const alternateLanguages = getAlternateLanguageUrls('/', 'fr').map(
 // Language switcher data (all languages including current)
 // Note: When copying to your site, use absolute paths like '/de/', '/fr/', '/it/'
 const allLanguages = [
-  { lang: 'de', url: '/examples/garage-multi-lang/de/' },
-  { lang: 'fr', url: '/examples/garage-multi-lang/fr/' },
-  { lang: 'it', url: '/examples/garage-multi-lang/it/' },
+  { lang: 'de', url: '/garage-multi-lang/de/' },
+  { lang: 'fr', url: '/garage-multi-lang/fr/' },
+  { lang: 'it', url: '/garage-multi-lang/it/' },
 ];
 
 // Type-safe props from JSON
@@ -37,20 +37,20 @@ const heroProps = {
 const footerData = {
   variant: 'classic' as const,
   companyName: 'Garage Mueller',
-  tagline: 'Votre garage de confiance à Zurich',
+  tagline: 'Ihre zuverlässige Autowerkstatt in Zürich',
   phone: '+41 44 123 45 67',
   email: 'info@garage-mueller.ch',
-  address: 'Musterstrasse 123, 8000 Zurich',
+  address: 'Musterstrasse 123, 8000 Zürich',
   hours: [
-    { day: 'Lundi - Vendredi', time: '08:00 - 18:00' },
-    { day: 'Samedi', time: '09:00 - 16:00' },
-    { day: 'Dimanche', time: 'Fermé' },
+    { day: 'Montag - Freitag', time: '08:00 - 18:00' },
+    { day: 'Samstag', time: '09:00 - 16:00' },
+    { day: 'Sonntag', time: 'Geschlossen' },
   ],
   links: [
-    { label: 'À propos', href: '/fr/about' },
-    { label: 'Services', href: '/fr/services' },
-    { label: 'Contact', href: '/fr/contact' },
-    { label: 'FAQ', href: '/fr/faq' },
+    { label: 'Über uns', href: '/de/about' },
+    { label: 'Dienstleistungen', href: '/de/services' },
+    { label: 'Kontakt', href: '/de/contact' },
+    { label: 'FAQ', href: '/de/faq' },
   ],
   socialLinks: [
     { platform: 'Facebook', href: 'https://facebook.com/garagemueller' },
@@ -61,12 +61,12 @@ const footerData = {
 ---
 
 <BaseLayout
-  title="Garage Mueller - Votre garage à Zurich"
-  lang="fr"
+  title="Garage Mueller - Ihre Autowerkstatt in Zürich"
+  lang="de"
   alternateLanguages={alternateLanguages}
 >
   <UtilityBar {...content.utilityBar} />
-  <LanguageSwitcher currentLang="fr" currentPath="/" languages={allLanguages} />
+  <LanguageSwitcher currentLang="de" currentPath="/" languages={allLanguages} />
   <Hero {...heroProps} />
   <ServiceGrid {...content.services} />
   <ContactBlock {...content.contact} />
