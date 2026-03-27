@@ -163,6 +163,38 @@ function createSiteStructure(basePath: string, name: string, config: any, shared
   mkdirSync(join(basePath, 'src/i18n'), { recursive: true });
   mkdirSync(join(basePath, 'public/images'), { recursive: true });
 
+  // Create .gitignore
+  writeFileSync(
+    join(basePath, '.gitignore'),
+    `# build output
+dist/
+.output/
+
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# editor files
+.vscode/
+.idea/
+`
+  );
+
   // Create site.config.ts
   writeFileSync(
     join(basePath, 'site.config.ts'),
